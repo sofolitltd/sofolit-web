@@ -21,11 +21,10 @@ export const Header = () => {
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
   const navLinks = [
+    { name: "Home", href: "/" },
     { name: "Services", href: "/services" },
     { name: "Work", href: "/work" },
     { name: "Blog", href: "/blog" },
-    { name: "Process", href: "/#process" },
-    { name: "Our Story", href: "/#story" },
   ];
 
   return (
