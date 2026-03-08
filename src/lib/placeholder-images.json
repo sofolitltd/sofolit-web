@@ -35,6 +35,24 @@
       "description": "Professional portrait of the founder",
       "imageUrl": "https://picsum.photos/seed/founder/600/800",
       "imageHint": "professional portrait"
+    },
+    {
+      "id": "blog-1",
+      "description": "Minimalist tech workspace",
+      "imageUrl": "https://picsum.photos/seed/blog1/1200/800",
+      "imageHint": "minimalist workspace"
+    },
+    {
+      "id": "blog-2",
+      "description": "Team collaboration brainstorming",
+      "imageUrl": "https://picsum.photos/seed/blog2/1200/800",
+      "imageHint": "team brainstorming"
+    },
+    {
+      "id": "blog-3",
+      "description": "Digital growth analytics",
+      "imageUrl": "https://picsum.photos/seed/blog3/1200/800",
+      "imageHint": "data analytics"
     }
   ]
 }
