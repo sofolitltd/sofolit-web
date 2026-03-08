@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from "react";
@@ -17,23 +16,23 @@ export const Hero = () => {
       {/* Atmospheric Mesh Gradient */}
       <div className="absolute inset-0 mesh-gradient opacity-20" />
 
-      <div className="container relative z-10 px-4 mx-auto text-center space-y-8 animate-fade-in-up">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-primary border-primary/20 mb-4 animate-slide-in-left">
+      <div className="container relative z-10 px-4 mx-auto text-center space-y-8">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-primary border-primary/20 mb-4 animate-slide-in-left opacity-0" style={{ animationDelay: '0.1s' }}>
           <Sparkles className="w-4 h-4" />
           <span>Innovating Digital Products</span>
         </div>
         
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-tight animate-fade-in-up">
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-tight animate-fade-in-up opacity-0" style={{ animationDelay: '0.3s' }}>
           <span className="block opacity-70">From Concept</span>
           <span className="text-gradient block">Idea to Product</span>
         </h1>
         
-        <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground animate-fade-in-up delay-200">
+        <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground animate-fade-in-up opacity-0" style={{ animationDelay: '0.5s' }}>
           We bridge the gap between imagination and reality with premium software craftsmanship 
           and AI-driven strategies.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-fade-in-up delay-300">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-fade-in-up opacity-0" style={{ animationDelay: '0.7s' }}>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
             <MagneticButton className="text-lg">
               Book a Call <Calendar className="w-5 h-5 ml-1" />

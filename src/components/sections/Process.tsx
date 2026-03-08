@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Lightbulb, Target, Palette, Code2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const steps = [
   {
@@ -31,10 +32,27 @@ const steps = [
 ];
 
 export const Process = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="process" className="py-24 relative overflow-hidden">
+    <section id="process" ref={sectionRef} className="py-24 relative overflow-hidden">
       <div className="container px-4 mx-auto">
-        <div className="text-center mb-16 space-y-4">
+        <div className={cn(
+          "text-center mb-16 space-y-4 opacity-0",
+          isVisible && "animate-fade-in-up"
+        )}>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Guided Journey</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
             Our systematic approach ensures every project is delivered with excellence and speed.
@@ -45,7 +63,11 @@ export const Process = () => {
           {steps.map((step, idx) => (
             <div 
               key={idx}
-              className="group relative glass-card p-8 rounded-2xl hover:bg-white/5 transition-all duration-500 overflow-hidden"
+              className={cn(
+                "group relative glass-card p-8 rounded-2xl hover:bg-white/5 transition-all duration-500 overflow-hidden opacity-0",
+                isVisible && "animate-fade-in-up"
+              )}
+              style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
             >
               <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${step.color} to-transparent scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-700`} />
               

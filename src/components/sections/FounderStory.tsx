@@ -1,19 +1,37 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Quote } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { cn } from "@/lib/utils";
 
 export const FounderStory = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const founderImg = PlaceHolderImages.find(img => img.id === "founder-portrait");
 
   return (
-    <section id="story" className="py-24 bg-background relative overflow-hidden">
+    <section id="story" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
       <div className="container px-4 mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="relative group">
+            <div className={cn(
+              "relative group opacity-0",
+              isVisible && "animate-slide-in-left"
+            )}>
               <div className="absolute -inset-4 bg-gradient-to-r from-primary to-secondary opacity-20 blur-2xl group-hover:opacity-30 transition-opacity" />
               <div className="relative rounded-3xl overflow-hidden aspect-[3/4] glass-card border-white/10">
                 {founderImg && (
@@ -33,7 +51,10 @@ export const FounderStory = () => {
               </div>
             </div>
 
-            <div className="space-y-8">
+            <div className={cn(
+              "space-y-8 opacity-0",
+              isVisible && "animate-slide-in-right"
+            )}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-xs font-bold uppercase tracking-widest text-primary border-primary/20">
                 Our Story
               </div>
@@ -59,12 +80,12 @@ export const FounderStory = () => {
               </div>
               
               <div className="flex items-center gap-8 pt-4">
-                <div>
+                <div className="animate-fade-in opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
                   <p className="text-3xl font-black text-primary">50+</p>
                   <p className="text-sm font-bold uppercase text-muted-foreground">Products Launched</p>
                 </div>
                 <div className="w-px h-12 bg-border" />
-                <div>
+                <div className="animate-fade-in opacity-0" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
                   <p className="text-3xl font-black text-secondary">10+</p>
                   <p className="text-sm font-bold uppercase text-muted-foreground">Years Experience</p>
                 </div>

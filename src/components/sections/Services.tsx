@@ -1,9 +1,9 @@
-
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Smartphone, Globe, Rocket, Zap, Heart, Target, Layout, MousePointer2, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const services = [
   {
@@ -16,7 +16,8 @@ const services = [
       { icon: <Heart className="w-4 h-4" />, text: "User-First Design" },
       { icon: <Target className="w-4 h-4" />, text: "Founder-Centric" }
     ],
-    features: ["MVP Development", "Cross-Platform (iOS & Android)", "Easy App Store Launch", "Scalable for Growth"]
+    features: ["MVP Development", "Cross-Platform (iOS & Android)", "Easy App Store Launch", "Scalable for Growth"],
+    animation: "animate-slide-in-left"
   },
   {
     title: "High-Conversion Web",
@@ -28,21 +29,38 @@ const services = [
       { icon: <Layout className="w-4 h-4" />, text: "Super Fast" },
       { icon: <Rocket className="w-4 h-4" />, text: "SEO Ready" }
     ],
-    features: ["Professional Landing Pages", "Custom SaaS Dashboards", "E-commerce & Payments", "Simple Analytics"]
+    features: ["Professional Landing Pages", "Custom SaaS Dashboards", "E-commerce & Payments", "Simple Analytics"],
+    animation: "animate-slide-in-right"
   }
 ];
 
 export const Services = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="services" className="py-24 bg-background relative overflow-hidden">
+    <section id="services" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-secondary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container px-4 mx-auto relative z-10">
-        <div className="max-w-3xl mb-16 space-y-6 text-center lg:text-left">
+        <div className={cn(
+          "max-w-3xl mb-16 space-y-6 text-center lg:text-left opacity-0",
+          isVisible && "animate-fade-in-up"
+        )}>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20">
             Founder-First Solutions
           </div>
@@ -60,7 +78,11 @@ export const Services = () => {
           {services.map((service, idx) => (
             <Card 
               key={idx} 
-              className="group relative bg-card/80 dark:bg-card/40 border-border/50 shadow-xl overflow-hidden transition-all duration-500 hover:border-primary/40 hover:translate-y-[-4px]"
+              className={cn(
+                "group relative bg-card/80 dark:bg-card/40 border-border/50 shadow-xl overflow-hidden transition-all duration-500 hover:border-primary/40 hover:translate-y-[-4px] opacity-0",
+                isVisible && service.animation
+              )}
+              style={{ animationDelay: `${0.2 + idx * 0.2}s` }}
             >
               <CardContent className="p-8 md:p-12 space-y-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -115,7 +137,10 @@ export const Services = () => {
         </div>
 
         {/* Strategic CTA Block */}
-        <div className="mt-20 p-8 md:p-12 rounded-[2.5rem] bg-muted/30 border border-border relative overflow-hidden group">
+        <div className={cn(
+          "mt-20 p-8 md:p-12 rounded-[2.5rem] bg-muted/30 border border-border relative overflow-hidden group opacity-0",
+          isVisible && "animate-zoom-in"
+        )} style={{ animationDelay: '0.6s' }}>
           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left">
             <div className="space-y-3 max-w-xl">
               <h4 className="text-2xl md:text-3xl font-black tracking-tight">Ready to bring your idea to life?</h4>

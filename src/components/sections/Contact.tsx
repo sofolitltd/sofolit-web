@@ -1,7 +1,6 @@
-
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -10,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -19,7 +19,21 @@ const contactSchema = z.object({
 });
 
 export const Contact = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -40,10 +54,13 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 bg-background relative overflow-hidden">
+    <section id="contact" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
       <div className="container px-4 mx-auto relative z-10">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
-          <div className="space-y-12">
+          <div className={cn(
+            "space-y-12 opacity-0",
+            isVisible && "animate-slide-in-left"
+          )}>
             <div className="space-y-6">
               <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-none">
                 Let's Build <br />
@@ -76,7 +93,10 @@ export const Contact = () => {
             </div>
           </div>
 
-          <div className="glass-card p-10 rounded-3xl border-border bg-card relative">
+          <div className={cn(
+            "glass-card p-10 rounded-3xl border-border bg-card relative opacity-0",
+            isVisible && "animate-slide-in-right"
+          )} style={{ animationDelay: '0.2s' }}>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
