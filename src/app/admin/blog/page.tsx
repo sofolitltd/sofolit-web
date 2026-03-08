@@ -1,7 +1,7 @@
 
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { 
   Plus, 
@@ -15,7 +15,7 @@ import {
   ArrowUpDown,
   CheckCircle2,
   Clock,
-  ArrowRight
+  Loader2
 } from "lucide-react";
 import { 
   DropdownMenu, 
@@ -23,18 +23,41 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-
-const blogs = [
-  { id: 1, title: "The Art of the Solo MVP", status: "Published", author: "Alex Sofol", date: "March 15, 2024", views: 2450, category: "Strategy" },
-  { id: 2, title: "Scaling Without Technical Debt", status: "Draft", author: "Alex Sofol", date: "March 10, 2024", views: 0, category: "Engineering" },
-  { id: 3, title: "Psychology of High-Conversion Landing Pages", status: "Published", author: "Alex Sofol", date: "March 05, 2024", views: 1890, category: "Growth" },
-];
+import { getAdminPosts, deletePost } from "@/lib/actions/blog";
+import { useToast } from "@/hooks/use-toast";
+import type { Post } from "@/lib/db/schema";
 
 export default function ManageBlogPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isDeleting, startDelete] = useTransition();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    async function loadPosts() {
+      const data = await getAdminPosts();
+      setPosts(data);
+      setLoading(false);
+    }
+    loadPosts();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this post?")) return;
+
+    startDelete(async () => {
+      const result = await deletePost(id);
+      if (result.success) {
+        setPosts(posts.filter(p => p.id !== id));
+        toast({ title: "Deleted", description: "Post has been removed from database." });
+      } else {
+        toast({ variant: "destructive", title: "Error", description: result.error });
+      }
+    });
+  };
+
   return (
     <div className="max-w-7xl mx-auto py-8">
-      {/* Sanity-style Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <div className="flex items-center gap-2 text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-2">
@@ -51,26 +74,16 @@ export default function ManageBlogPage() {
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-        {/* Table Filters/Search Bar */}
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 bg-slate-50/30">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
-              placeholder="Search by title, author, or category..." 
-              className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500/10 transition-all text-slate-900"
+              placeholder="Search articles..." 
+              className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500/10"
             />
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-2 hover:bg-slate-50 transition-colors">
-              <Filter className="w-3.5 h-3.5" /> Filter
-            </button>
-            <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 flex items-center gap-2 hover:bg-slate-50 transition-colors">
-              <ArrowUpDown className="w-3.5 h-3.5" /> Sort
-            </button>
           </div>
         </div>
 
-        {/* CMS-style Content List */}
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
@@ -78,34 +91,45 @@ export default function ManageBlogPage() {
                 <th className="px-8 py-4">Title</th>
                 <th className="px-8 py-4">Category</th>
                 <th className="px-8 py-4">Status</th>
-                <th className="px-8 py-4">Last Modified</th>
+                <th className="px-8 py-4">Date</th>
                 <th className="px-8 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {blogs.map((blog) => (
-                <tr key={blog.id} className="hover:bg-blue-50/30 transition-colors group">
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="px-8 py-20 text-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-slate-300 mx-auto" />
+                    <p className="text-xs font-bold text-slate-400 mt-4 uppercase tracking-widest">Loading database...</p>
+                  </td>
+                </tr>
+              ) : posts.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-8 py-20 text-center text-slate-400 font-bold uppercase text-xs tracking-widest">
+                    No articles found in Neon DB
+                  </td>
+                </tr>
+              ) : posts.map((post) => (
+                <tr key={post.id} className="hover:bg-blue-50/30 transition-colors group">
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded bg-slate-100 flex-shrink-0 flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                      <div className="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
                         <FileText className="w-5 h-5" />
                       </div>
                       <div>
-                        <Link href="/admin/blog/builder" className="font-bold text-sm text-slate-900 hover:text-blue-600 transition-colors block mb-0.5">
-                          {blog.title}
-                        </Link>
-                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{blog.author}</span>
+                        <p className="font-bold text-sm text-slate-900">{post.title}</p>
+                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{post.author}</span>
                       </div>
                     </div>
                   </td>
                   <td className="px-8 py-5">
                     <span className="px-2 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                      {blog.category}
+                      {post.category}
                     </span>
                   </td>
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-2">
-                      {blog.status === "Published" ? (
+                      {post.isPublished ? (
                         <div className="flex items-center gap-1.5 text-green-600 font-bold text-xs">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Published
                         </div>
@@ -117,25 +141,28 @@ export default function ManageBlogPage() {
                     </div>
                   </td>
                   <td className="px-8 py-5">
-                    <p className="text-xs text-slate-500 font-medium">{blog.date}</p>
+                    <p className="text-xs text-slate-500 font-medium">
+                      {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'N/A'}
+                    </p>
                   </td>
                   <td className="px-8 py-5 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Link href="/admin/blog/builder" className="p-2 hover:bg-white rounded border border-transparent hover:border-slate-200 text-slate-400 hover:text-blue-600 transition-all">
-                        <Edit2 className="w-4 h-4" />
-                      </Link>
+                      <button 
+                        onClick={() => handleDelete(post.id)}
+                        disabled={isDeleting}
+                        className="p-2 hover:bg-white rounded border border-transparent hover:border-slate-200 text-slate-400 hover:text-red-600 transition-all"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <button className="p-2 hover:bg-white rounded border border-transparent hover:border-slate-200 text-slate-400 transition-all">
                             <MoreVertical className="w-4 h-4" />
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-white border border-slate-200 shadow-xl rounded-lg p-1 min-w-[160px]">
-                          <DropdownMenuItem className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs focus:bg-blue-50 focus:text-blue-600">
+                        <DropdownMenuContent align="end" className="bg-white border border-slate-200 shadow-xl p-1 min-w-[160px]">
+                          <DropdownMenuItem className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs">
                             <Eye className="w-3.5 h-3.5" /> View Public
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="flex items-center gap-3 cursor-pointer p-2 rounded text-red-600 font-bold text-xs focus:bg-red-50 focus:text-red-700">
-                            <Trash2 className="w-3.5 h-3.5" /> Delete Document
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -145,16 +172,6 @@ export default function ManageBlogPage() {
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* Footer Info */}
-      <div className="mt-6 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2">
-        <div>Showing {blogs.length} of {blogs.length} Articles</div>
-        <div className="flex items-center gap-4">
-          <button className="hover:text-slate-900 transition-colors">Previous</button>
-          <button className="text-slate-900">1</button>
-          <button className="hover:text-slate-900 transition-colors">Next</button>
         </div>
       </div>
     </div>
