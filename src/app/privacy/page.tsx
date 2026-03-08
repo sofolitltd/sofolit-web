@@ -3,31 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import { Shield } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { Footer } from "@/components/sections/Footer";
 
 export default function PrivacyPolicy() {
   return (
     <main className="min-h-screen bg-background selection:bg-primary/30">
-      <nav className="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center glass-card bg-background/50 backdrop-blur-md border-b">
-        <Link href="/" className="text-2xl font-black tracking-tighter">
-          SOFOL <span className="text-primary">IT</span>
-        </Link>
-        <div className="flex items-center gap-4 md:gap-8 text-sm font-medium text-muted-foreground">
-          <div className="hidden lg:flex items-center gap-8">
-            <Link href="/#process" className="hover:text-primary transition-colors">Process</Link>
-            <Link href="/#services" className="hover:text-primary transition-colors">Services</Link>
-            <Link href="/#story" className="hover:text-primary transition-colors">Our Story</Link>
-            <Link href="/#portfolio" className="hover:text-primary transition-colors">Work</Link>
-          </div>
-          <ThemeToggle />
-          <Link href="/#contact" className="px-5 py-2 rounded-full border border-input hover:border-primary/50 text-foreground transition-all bg-background/50">
-            Get Started
-          </Link>
-        </div>
-      </nav>
-
-      <div className="container px-4 mx-auto pt-32 pb-24 max-w-4xl">
+      <div className="container px-4 mx-auto pt-40 pb-24 max-w-4xl">
         <div className="space-y-8">
           <div className="flex items-center gap-4 mb-12">
             <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
