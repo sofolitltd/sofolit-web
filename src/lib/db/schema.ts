@@ -1,4 +1,3 @@
-
 import { pgTable, serial, text, varchar, timestamp, boolean, jsonb } from "drizzle-orm/pg-core";
 
 export const posts = pgTable("posts", {
