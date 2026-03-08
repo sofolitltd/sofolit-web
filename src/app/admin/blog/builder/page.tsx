@@ -72,35 +72,34 @@ export default function BlogBuilderPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-      <div className="flex items-center justify-between border-b border-border pb-6 sticky top-0 bg-[#030303]/80 backdrop-blur-xl z-20">
-        <Link href="/admin/blog" className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-6 sticky top-0 bg-slate-50/80 backdrop-blur-xl z-20">
+        <Link href="/admin/blog" className="flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-primary transition-colors">
           <ChevronLeft className="w-4 h-4" /> Back to Articles
         </Link>
         <div className="flex gap-4">
-          <button className="px-6 py-2.5 rounded-xl border border-border text-sm font-bold hover:bg-muted transition-colors">
+          <button className="px-6 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-600 bg-white hover:bg-slate-50 transition-colors">
             Save Draft
           </button>
-          <button className="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-bold flex items-center gap-2 hover:shadow-lg transition-all">
+          <button className="px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-bold flex items-center gap-2 hover:shadow-lg hover:shadow-primary/20 transition-all">
             <Save className="w-4 h-4" /> Publish Article
           </button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Editor Main */}
         <div className="lg:col-span-3 space-y-8">
           <div className="space-y-4">
             <input 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Article Title"
-              className="text-4xl md:text-5xl font-black bg-transparent outline-none border-none placeholder:text-muted/30 w-full"
+              className="text-4xl md:text-5xl font-black bg-transparent outline-none border-none placeholder:text-slate-300 w-full text-slate-900"
             />
             <div className="flex gap-4">
               <select 
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="bg-card border border-border rounded-lg px-4 py-2 text-xs font-black uppercase tracking-widest outline-none"
+                className="bg-white border border-slate-200 rounded-lg px-4 py-2 text-xs font-black uppercase tracking-widest outline-none text-slate-600"
               >
                 <option>Strategy</option>
                 <option>Engineering</option>
@@ -113,27 +112,27 @@ export default function BlogBuilderPage() {
           <div className="space-y-4">
             {blocks.map((block, idx) => (
               <div key={block.id} className="group relative">
-                <div className="absolute -left-12 top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onClick={() => moveBlock(idx, 'up')} className="p-1 hover:bg-muted rounded"><MoveUp className="w-3 h-3" /></button>
-                  <button onClick={() => moveBlock(idx, 'down')} className="p-1 hover:bg-muted rounded"><MoveDown className="w-3 h-3" /></button>
-                  <button onClick={() => removeBlock(block.id)} className="p-1 hover:bg-destructive/10 text-destructive rounded"><Trash2 className="w-3 h-3" /></button>
+                <div className="absolute -left-12 top-4 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button onClick={() => moveBlock(idx, 'up')} className="p-1.5 hover:bg-slate-100 rounded text-slate-400"><MoveUp className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => moveBlock(idx, 'down')} className="p-1.5 hover:bg-slate-100 rounded text-slate-400"><MoveDown className="w-3.5 h-3.5" /></button>
+                  <button onClick={() => removeBlock(block.id)} className="p-1.5 hover:bg-red-50 text-red-500 rounded"><Trash2 className="w-3.5 h-3.5" /></button>
                 </div>
 
                 <div className={cn(
-                  "p-4 rounded-xl border border-transparent hover:border-border/50 hover:bg-card/30 transition-all",
-                  block.type === 'h1' && "text-3xl font-black",
-                  block.type === 'h2' && "text-2xl font-bold",
-                  block.type === 'bullet' && "pl-8 relative before:absolute before:left-3 before:top-1/2 before:-translate-y-1/2 before:w-1.5 before:h-1.5 before:bg-primary before:rounded-full"
+                  "p-4 rounded-xl border border-transparent hover:border-slate-200 hover:bg-white transition-all",
+                  block.type === 'h1' && "text-3xl font-black text-slate-900",
+                  block.type === 'h2' && "text-2xl font-bold text-slate-900",
+                  block.type === 'bullet' && "pl-8 relative before:absolute before:left-3 before:top-[1.1rem] before:w-1.5 before:h-1.5 before:bg-primary before:rounded-full"
                 )}>
                   {block.type === 'space' ? (
-                    <div className="flex items-center gap-4 text-xs font-bold text-muted-foreground uppercase tracking-widest bg-muted/20 p-2 rounded-lg">
+                    <div className="flex items-center gap-4 text-xs font-bold text-slate-500 uppercase tracking-widest bg-slate-100 p-2 rounded-lg">
                       <Layout className="w-4 h-4" />
                       Spacing: {block.content}px
                       <input 
                         type="range" min="8" max="120" step="8"
                         value={block.content}
                         onChange={(e) => updateBlock(block.id, e.target.value)}
-                        className="flex-1"
+                        className="flex-1 accent-primary"
                       />
                     </div>
                   ) : (
@@ -142,7 +141,7 @@ export default function BlogBuilderPage() {
                       value={block.content}
                       onChange={(e) => updateBlock(block.id, e.target.value)}
                       placeholder={block.type === 'link' ? "Paste URL here..." : "Type something..."}
-                      className="bg-transparent border-none outline-none w-full resize-none placeholder:text-muted/50"
+                      className="bg-transparent border-none outline-none w-full resize-none placeholder:text-slate-300 text-slate-700 leading-relaxed"
                       rows={block.type === 'p' ? 3 : 1}
                     />
                   )}
@@ -151,17 +150,17 @@ export default function BlogBuilderPage() {
             ))}
           </div>
 
-          <div className="p-12 border-2 border-dashed border-border rounded-3xl flex flex-col items-center justify-center gap-6 group hover:border-primary/40 transition-colors">
+          <div className="p-12 border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center gap-6 group hover:border-primary/40 hover:bg-white transition-all">
             <div className="p-4 rounded-full bg-primary/10 text-primary group-hover:scale-110 transition-transform">
               <Plus className="w-8 h-8" />
             </div>
-            <p className="text-muted-foreground font-bold">Add a new block to your story</p>
+            <p className="text-slate-500 font-bold">Add a new block to your story</p>
             <div className="flex flex-wrap justify-center gap-2">
               {toolbar.map((tool) => (
                 <button 
                   key={tool.type}
                   onClick={() => addBlock(tool.type as BlockType)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-card border border-border hover:border-primary transition-all text-sm font-bold"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-slate-200 hover:border-primary hover:text-primary transition-all text-sm font-bold text-slate-600 shadow-sm"
                 >
                   {tool.icon} {tool.label}
                 </button>
@@ -170,29 +169,28 @@ export default function BlogBuilderPage() {
           </div>
         </div>
 
-        {/* Sidebar Settings */}
         <div className="space-y-6">
-          <div className="glass-card p-6 rounded-2xl border-border bg-card">
-            <h3 className="text-sm font-black uppercase tracking-widest mb-6">Article Settings</h3>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h3 className="text-sm font-black uppercase tracking-widest mb-6 text-slate-900">Article Settings</h3>
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Featured Image</label>
-                <div className="aspect-video rounded-xl border border-border bg-muted/50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-muted transition-colors">
-                  <ImageIcon className="w-6 h-6 text-muted-foreground" />
-                  <span className="text-[10px] font-bold">Click to Upload</span>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Featured Image</label>
+                <div className="aspect-video rounded-xl border border-slate-200 bg-slate-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-slate-100 transition-colors">
+                  <ImageIcon className="w-6 h-6 text-slate-300" />
+                  <span className="text-[10px] font-bold text-slate-400">Click to Upload</span>
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Slug URL</label>
-                <div className="text-[10px] font-mono bg-muted p-2 rounded-lg break-all">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Slug URL</label>
+                <div className="text-[10px] font-mono bg-slate-50 p-2 rounded-lg break-all text-slate-500 border border-slate-100">
                   /blog/{title.toLowerCase().replace(/ /g, '-')}
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Excerpt</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Excerpt</label>
                 <textarea 
                   placeholder="Short summary for SEO..."
-                  className="w-full bg-muted border border-border rounded-xl p-3 text-xs outline-none h-24 resize-none"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs outline-none h-24 resize-none text-slate-600 focus:border-primary transition-colors"
                 />
               </div>
             </div>

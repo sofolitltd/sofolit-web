@@ -16,10 +16,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * AdminLayout provides a fully isolated dashboard environment.
- * It handles its own navigation and sidebar, separate from the main site.
- */
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -27,7 +23,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Simple authentication guard
     const auth = localStorage.getItem("admin_auth");
     if (auth === "true") {
       setIsAuthenticated(true);
@@ -44,8 +39,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push("/admin/login");
   };
 
-  if (pathname === "/admin/login") return <>{children}</>;
-  if (isAuthenticated === null) return null; // Avoid flicker during auth check
+  if (pathname === "/admin/login") return <div className="bg-slate-50 min-h-screen">{children}</div>;
+  if (isAuthenticated === null) return null;
   if (isAuthenticated === false) return null;
 
   const navItems = [
@@ -55,10 +50,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="min-h-screen bg-[#030303] text-foreground flex">
-      {/* Isolated Admin Sidebar */}
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans">
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0 shadow-sm",
         !isSidebarOpen && "-translate-x-full"
       )}>
         <div className="h-full flex flex-col p-6">
@@ -66,10 +60,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
               <Rocket className="w-5 h-5 text-white" />
             </div>
-            <span>SOFOL <span className="text-primary">ADMIN</span></span>
+            <span className="text-slate-900">SOFOL <span className="text-primary">ADMIN</span></span>
           </Link>
 
-          <nav className="flex-1 space-y-2">
+          <nav className="flex-1 space-y-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -77,8 +71,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all group",
                   pathname === item.href 
-                    ? "bg-primary text-white shadow-lg shadow-primary/20" 
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-primary/10 text-primary border border-primary/20" 
+                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-900 border border-transparent"
                 )}
               >
                 {item.icon}
@@ -90,7 +84,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-destructive hover:bg-destructive/10 transition-all mt-auto"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-600 hover:bg-red-50 transition-all mt-auto"
           >
             <LogOut className="w-5 h-5" />
             Logout
@@ -98,20 +92,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* Admin Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#0a0a0a]">
-        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-xl flex items-center justify-between px-8 sticky top-0 z-30">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <header className="h-16 border-b border-slate-200 bg-white/80 backdrop-blur-xl flex items-center justify-between px-8 sticky top-0 z-30">
           <button 
-            className="lg:hidden p-2 hover:bg-muted rounded-lg"
+            className="lg:hidden p-2 hover:bg-slate-100 rounded-lg text-slate-600"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             {isSidebarOpen ? <X /> : <Menu />}
           </button>
           <div className="flex items-center gap-4 ml-auto">
-            <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">
+            <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full">
               System Administrator
             </span>
-            <div className="w-8 h-8 rounded-full bg-muted border border-border" />
+            <div className="w-8 h-8 rounded-full bg-slate-200 border border-slate-300" />
           </div>
         </header>
 
