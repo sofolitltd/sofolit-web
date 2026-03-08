@@ -10,6 +10,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const blogs = [
   { id: 1, title: "How to Launch Your MVP in 4 Weeks", status: "Published", author: "Alex Sofol", date: "March 15, 2024", views: 1240 },
