@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, ArrowRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const projects = [
@@ -88,10 +88,7 @@ export const Portfolio = () => {
               
               <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
                 <p className="text-sm font-medium text-primary mb-2">{project.category}</p>
-                <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
-                <div className="inline-flex px-6 py-2 rounded-full bg-background/50 backdrop-blur-md text-sm font-semibold border border-border group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all items-center gap-2">
-                  Case Study <ArrowRight className="w-3 h-3" />
-                </div>
+                <h3 className="text-2xl font-bold">{project.title}</h3>
               </div>
             </Link>
           ))}
