@@ -99,8 +99,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Admin Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-16 border-b border-border bg-card/50 backdrop-blur-xl flex items-center justify-between px-8 sticky top-0 z-30">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#0a0a0a]">
+        <header className="h-16 border-b border-border bg-card/80 backdrop-blur-xl flex items-center justify-between px-8 sticky top-0 z-30">
           <button 
             className="lg:hidden p-2 hover:bg-muted rounded-lg"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -115,7 +115,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-8 bg-background/50">
+        <div className="flex-1 overflow-y-auto p-8">
           {children}
         </div>
       </main>
