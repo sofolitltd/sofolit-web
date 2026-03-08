@@ -11,68 +11,71 @@ export default function ServicesPage() {
 
   const serviceDetails = [
     {
-      title: "Mobile App Development",
-      description: "We build native-feel cross-platform apps that scale. Perfect for solo founders who need to reach iOS and Android users with a single codebase.",
+      title: "Custom Mobile App Development",
+      description: "Launch your app on iOS and Android with a single, high-performance codebase. We specialize in building native-feel mobile experiences that scale with your user base.",
       icon: <Smartphone className="w-12 h-12 text-primary" />,
       features: [
-        "Flutter & React Native Expertise",
-        "Firebase Backend Integration",
-        "App Store & Play Store Management",
-        "Push Notifications & User Engagement"
+        "Cross-Platform Flutter & React Native",
+        "Secure Firebase Backend Integration",
+        "Seamless App Store & Play Store Publishing",
+        "Engaging Push Notifications & Analytics"
       ],
-      forWho: "Best for: Innovators launching the next big social, health, or utility app."
+      forWho: "Perfect for: Founders launching social, health, or utility apps."
     },
     {
-      title: "High-Performance Web",
-      description: "Convert visitors into customers with lightning-fast web applications. From SaaS dashboards to landing pages that actually sell.",
+      title: "High-Performance Web Development",
+      description: "Convert more visitors into customers with lightning-fast, SEO-optimized websites. We build everything from custom SaaS dashboards to high-converting landing pages.",
       icon: <Globe className="w-12 h-12 text-secondary" />,
       features: [
-        "Next.js & React Architectures",
-        "SEO-Optimized Landing Pages",
-        "Secure Payment Gateway Integration",
-        "Custom SaaS Dashboards & Analytics"
+        "Next.js & React Expert Architectures",
+        "SEO-Friendly Performance & Speed",
+        "Secure Stripe & Payment Integrations",
+        "User-Friendly SaaS Dashboards"
       ],
-      forWho: "Best for: Businesses needing a professional digital presence that handles heavy traffic."
+      forWho: "Perfect for: Businesses needing a professional, scalable web presence."
     }
   ];
 
   return (
     <main className="min-h-screen bg-background pt-32">
       <div className="container px-4 mx-auto text-center mb-24">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 mb-6">
+          Scalable Engineering
+        </div>
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
-          Premium <span className="text-gradient">Engineering</span> Services
+          Expert <span className="text-gradient">App & Web</span> Development
         </h1>
         <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
-          Enterprise-level technical excellence designed for solo founders. We build the foundation while you build the business.
+          We build the technical foundation solo founders need to scale. Get enterprise-grade software without the enterprise overhead.
         </p>
       </div>
 
       <section className="container px-4 mx-auto mb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {serviceDetails.map((service, idx) => (
-            <Card key={idx} className="glass-card border-white/5 bg-card relative overflow-hidden group">
-              <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+            <Card key={idx} className="bg-card/80 dark:bg-card/40 backdrop-blur-xl border-border/50 shadow-2xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500">
+              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all">
                 {service.icon}
               </div>
-              <CardContent className="p-12 space-y-8">
+              <CardContent className="p-8 md:p-12 space-y-8">
                 <div className="space-y-4">
                   <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
                     {service.icon}
                   </div>
-                  <h2 className="text-4xl font-black">{service.title}</h2>
-                  <p className="text-muted-foreground text-lg">{service.description}</p>
+                  <h2 className="text-3xl md:text-4xl font-black tracking-tight">{service.title}</h2>
+                  <p className="text-muted-foreground text-lg leading-relaxed">{service.description}</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {service.features.map((feature, fIdx) => (
-                    <div key={fIdx} className="flex items-center gap-3 text-sm font-medium">
-                      <ShieldCheck className="w-5 h-5 text-primary" />
+                    <div key={fIdx} className="flex items-center gap-3 text-sm font-semibold">
+                      <ShieldCheck className="w-5 h-5 text-primary shrink-0" />
                       <span>{feature}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="p-4 rounded-xl bg-muted/50 border border-border text-sm font-semibold italic text-primary">
+                <div className="p-4 rounded-xl bg-muted/50 border border-border text-sm font-bold italic text-primary">
                   {service.forWho}
                 </div>
               </CardContent>
@@ -84,21 +87,21 @@ export default function ServicesPage() {
       <section className="bg-muted/30 py-24 border-y border-border">
         <div className="container px-4 mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-black tracking-tight mb-4">Why Solo Founders Choose Us</h2>
-            <p className="text-muted-foreground">The technical partner you need to launch without the headaches.</p>
+            <h2 className="text-3xl font-black tracking-tight mb-4">Why Founders Partner With Us</h2>
+            <p className="text-muted-foreground">The technical expertise you need to launch with confidence.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
-              { icon: <Zap />, title: "Speed to Market", desc: "Launch your MVP in weeks, not months." },
-              { icon: <BarChart3 />, title: "Scalability", desc: "Architecture built to handle 10k+ users from day one." },
-              { icon: <Code2 />, title: "Zero Tech Debt", desc: "Clean, documented code that grows with you." }
+              { icon: <Zap />, title: "Rapid MVP Launch", desc: "Go from idea to a working product in weeks, not months." },
+              { icon: <BarChart3 />, title: "Built to Scale", desc: "Architecture designed to handle your first 10,000+ users." },
+              { icon: <Code2 />, title: "Zero Technical Debt", desc: "Clean, professional code that grows with your business." }
             ].map((item, idx) => (
               <div key={idx} className="text-center space-y-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto border border-primary/20 shadow-sm">
                   {item.icon}
                 </div>
                 <h3 className="text-xl font-bold">{item.title}</h3>
-                <p className="text-muted-foreground text-sm">{item.desc}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -106,20 +109,20 @@ export default function ServicesPage() {
       </section>
 
       <section className="py-24 container px-4 mx-auto text-center">
-        <div className="max-w-4xl mx-auto space-y-8 p-12 rounded-[3rem] glass-card border-primary/20 bg-primary/5">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight">Ready to launch your vision?</h2>
-          <p className="text-lg text-muted-foreground">Stop waiting for the "perfect" time. Start building today with a partner who understands your journey.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+        <div className="max-w-4xl mx-auto space-y-8 p-12 rounded-[3rem] bg-card/50 backdrop-blur-xl border border-primary/20 shadow-2xl">
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight">Ready to build your next big idea?</h2>
+          <p className="text-lg text-muted-foreground">Stop worrying about the tech and start growing your business. Let's discuss your project today.</p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
             <a 
               href={CALENDLY_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-2xl transition-all flex items-center justify-center gap-2"
+              className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all flex items-center justify-center gap-2"
             >
-              <Calendar className="w-5 h-5" /> Book a Call
+              <Calendar className="w-5 h-5" /> Book a Strategy Call
             </a>
             <a href="/work" className="px-10 py-4 rounded-full border border-border bg-background font-bold hover:bg-muted transition-all">
-              View Our Work
+              View Our Portfolio
             </a>
           </div>
         </div>
