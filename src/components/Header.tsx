@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
-import { Menu, X, Rocket } from "lucide-react";
+import { Menu, X, Rocket, Calendar } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -18,6 +18,7 @@ import {
 export const Header = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
   const navLinks = [
     { name: "Services", href: "/services" },
@@ -85,24 +86,28 @@ export const Header = () => {
                     </Link>
                   ))}
                   <hr className="border-border/50" />
-                  <Link 
-                    href="/#contact"
+                  <a 
+                    href={CALENDLY_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => setIsOpen(false)}
-                    className="w-full py-4 rounded-2xl bg-primary text-white font-black text-center shadow-lg shadow-primary/20"
+                    className="w-full py-4 rounded-2xl bg-primary text-white font-black text-center shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
                   >
-                    Get Started
-                  </Link>
+                    <Calendar className="w-5 h-5" /> Book a Call
+                  </a>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
 
-          <Link 
-            href="/#contact" 
-            className="hidden md:block px-6 py-2.5 rounded-full border border-primary/20 hover:border-primary bg-primary/5 hover:bg-primary text-foreground hover:text-white font-bold transition-all"
+          <a 
+            href={CALENDLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex items-center gap-2 px-6 py-2.5 rounded-full border border-primary/20 hover:border-primary bg-primary/5 hover:bg-primary text-foreground hover:text-white font-bold transition-all"
           >
-            Get Started
-          </Link>
+            <Calendar className="w-4 h-4" /> Book a Call
+          </a>
         </div>
       </div>
     </nav>

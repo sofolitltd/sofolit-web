@@ -2,10 +2,12 @@
 "use client";
 
 import React from "react";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Calendar } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export const Hero = () => {
+  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern">
       {/* Luminous Beams */}
@@ -32,9 +34,11 @@ export const Hero = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-fade-in-up delay-300">
-          <MagneticButton className="text-lg">
-            Start Your Project <ArrowRight className="w-5 h-5" />
-          </MagneticButton>
+          <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
+            <MagneticButton className="text-lg">
+              Book a Call <Calendar className="w-5 h-5 ml-1" />
+            </MagneticButton>
+          </a>
           <button className="px-8 py-3 rounded-full font-semibold border border-input hover:bg-muted transition-colors">
             View Case Studies
           </button>

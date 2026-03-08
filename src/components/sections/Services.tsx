@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { Smartphone, Globe, Rocket, Zap, Heart, Target, Layout, MousePointer2 } from "lucide-react";
+import { Smartphone, Globe, Rocket, Zap, Heart, Target, Layout, MousePointer2, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const services = [
@@ -33,6 +33,8 @@ const services = [
 ];
 
 export const Services = () => {
+  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
+
   return (
     <section id="services" className="py-24 bg-background relative overflow-hidden">
       {/* Background Decorative Elements */}
@@ -97,10 +99,15 @@ export const Services = () => {
                 </div>
 
                 <div className="pt-6 border-t border-border/50">
-                  <button className="text-foreground font-bold flex items-center gap-2 group/btn hover:text-primary transition-colors">
+                  <a 
+                    href={CALENDLY_URL} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-foreground font-bold flex items-center gap-2 group/btn hover:text-primary transition-colors"
+                  >
                     Learn How We Start
                     <Rocket className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  </a>
                 </div>
               </CardContent>
             </Card>
@@ -119,14 +126,16 @@ export const Services = () => {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
               <a 
-                href="#contact" 
-                className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-bold hover:shadow-lg transition-all text-center"
+                href={CALENDLY_URL} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-bold hover:shadow-lg transition-all text-center flex items-center justify-center gap-2"
               >
-                Let's Talk Business
+                <Calendar className="w-5 h-5" /> Book a Call
               </a>
-              <button className="px-8 py-4 rounded-xl border border-border bg-background hover:bg-muted transition-all font-bold">
+              <a href="/work" className="px-8 py-4 rounded-xl border border-border bg-background hover:bg-muted transition-all font-bold text-center">
                 See Our Work
-              </button>
+              </a>
             </div>
           </div>
         </div>

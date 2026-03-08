@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
-import { Calendar, Clock, ChevronLeft, Share2, Bookmark } from "lucide-react";
+import { Calendar, Clock, ChevronLeft, Share2, Bookmark, Calendar as CalendarIcon } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 const blogPostsData = {
@@ -36,6 +36,7 @@ const blogPostsData = {
 export default function BlogPostPage() {
   const { slug } = useParams();
   const post = blogPostsData[slug as keyof typeof blogPostsData];
+  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
   if (!post) {
     return (
@@ -105,9 +106,14 @@ export default function BlogPostPage() {
           <h3 className="text-3xl font-black">Ready to build your own MVP?</h3>
           <p className="text-muted-foreground text-lg">We help solo founders transform their vision into high-fidelity products in weeks, not months.</p>
           <div className="pt-4">
-            <Link href="/#contact" className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-xl transition-all inline-block">
-              Schedule a Consultation
-            </Link>
+            <a 
+              href={CALENDLY_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-xl transition-all inline-flex items-center gap-2"
+            >
+              <CalendarIcon className="w-5 h-5" /> Book a Call
+            </a>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
+
 "use client";
 
 import React from "react";
 import Image from "next/image";
 import { Footer } from "@/components/sections/Footer";
-import { ExternalLink, ArrowRight, Star } from "lucide-react";
+import { ExternalLink, ArrowRight, Star, Calendar } from "lucide-react";
 
 const portfolioItems = [
   {
@@ -41,6 +42,8 @@ const portfolioItems = [
 ];
 
 export default function WorkPage() {
+  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
+
   return (
     <main className="min-h-screen bg-background pt-32">
       <div className="container px-4 mx-auto text-center mb-24">
@@ -102,8 +105,13 @@ export default function WorkPage() {
         <div className="container px-4 mx-auto text-center space-y-12">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter">Your project could be next.</h2>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="/#contact" className="px-12 py-5 rounded-full bg-white text-primary font-black text-lg hover:shadow-2xl transition-all">
-              Talk to Our Experts
+            <a 
+              href={CALENDLY_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-12 py-5 rounded-full bg-white text-primary font-black text-lg hover:shadow-2xl transition-all flex items-center justify-center gap-2 mx-auto sm:mx-0"
+            >
+              <Calendar className="w-6 h-6" /> Book a Call
             </a>
             <a href="/services" className="px-12 py-5 rounded-full border border-white/30 bg-transparent font-black text-lg hover:bg-white/10 transition-all">
               Our Services

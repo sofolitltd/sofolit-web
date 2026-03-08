@@ -1,11 +1,14 @@
+
 "use client";
 
 import React from "react";
 import { Footer } from "@/components/sections/Footer";
-import { Smartphone, Globe, Rocket, Zap, ShieldCheck, BarChart3, Users, Code2 } from "lucide-react";
+import { Smartphone, Globe, Rocket, Zap, ShieldCheck, BarChart3, Users, Code2, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function ServicesPage() {
+  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
+
   const serviceDetails = [
     {
       title: "Mobile App Development",
@@ -107,8 +110,13 @@ export default function ServicesPage() {
           <h2 className="text-4xl md:text-5xl font-black tracking-tight">Ready to launch your vision?</h2>
           <p className="text-lg text-muted-foreground">Stop waiting for the "perfect" time. Start building today with a partner who understands your journey.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="/#contact" className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-2xl transition-all">
-              Schedule Free Consultation
+            <a 
+              href={CALENDLY_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-2xl transition-all flex items-center justify-center gap-2"
+            >
+              <Calendar className="w-5 h-5" /> Book a Call
             </a>
             <a href="/work" className="px-10 py-4 rounded-full border border-border bg-background font-bold hover:bg-muted transition-all">
               View Our Work
