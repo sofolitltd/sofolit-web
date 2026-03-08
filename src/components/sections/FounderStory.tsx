@@ -84,12 +84,12 @@ export const FounderStory = () => {
               
               <div className="flex items-center gap-8 pt-4">
                 <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '0.8s' }}>
-                  <p className="text-3xl font-black text-primary">50+</p>
+                  <p className="text-3xl font-black text-primary">15+</p>
                   <p className="text-sm font-bold uppercase text-muted-foreground">Products Launched</p>
                 </div>
                 <div className="w-px h-12 bg-border" />
                 <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '1s' }}>
-                  <p className="text-3xl font-black text-secondary">10+</p>
+                  <p className="text-3xl font-black text-secondary">3+</p>
                   <p className="text-sm font-bold uppercase text-muted-foreground">Years Experience</p>
                 </div>
               </div>
