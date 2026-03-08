@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from "react";
@@ -27,12 +28,12 @@ export const SocialProof = () => {
   return (
     <section className="py-24 bg-background">
       {/* Tech Stack Marquee */}
-      <div className="mb-24 overflow-hidden border-y border-white/5 py-10 bg-white/2">
+      <div className="mb-24 overflow-hidden border-y border-border py-10 bg-muted/20">
         <div className="marquee-content">
           {[...techStack, ...techStack].map((tech, idx) => (
             <span 
               key={idx}
-              className="text-2xl md:text-4xl font-black mx-12 text-white/10 hover:text-primary/50 transition-colors cursor-default whitespace-nowrap"
+              className="text-2xl md:text-4xl font-black mx-12 text-muted-foreground/20 hover:text-primary transition-colors cursor-default whitespace-nowrap"
             >
               {tech}
             </span>
@@ -45,14 +46,14 @@ export const SocialProof = () => {
           {testimonials.map((t, idx) => (
             <div 
               key={idx}
-              className="relative p-10 rounded-3xl glass-card animate-border-trace bg-white/5"
+              className="relative p-10 rounded-3xl glass-card animate-border-trace bg-card"
             >
               <div className="flex gap-1 mb-6">
                 {[...Array(t.stars)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-primary text-primary" />
                 ))}
               </div>
-              <Quote className="w-12 h-12 text-primary/20 absolute top-8 right-8" />
+              <Quote className="w-12 h-12 text-primary/10 absolute top-8 right-8" />
               <p className="text-xl md:text-2xl font-medium mb-8 leading-relaxed italic">
                 "{t.content}"
               </p>

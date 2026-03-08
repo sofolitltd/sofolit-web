@@ -1,3 +1,4 @@
+
 "use client";
 
 import React from "react";
@@ -27,7 +28,7 @@ const projects = [
 
 export const Portfolio = () => {
   return (
-    <section id="portfolio" className="py-24 bg-[#050505]">
+    <section id="portfolio" className="py-24 bg-background">
       <div className="container px-4 mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="space-y-4">
@@ -51,15 +52,15 @@ export const Portfolio = () => {
                 src={project.image}
                 alt={project.title}
                 fill
-                className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-60 group-hover:opacity-100"
+                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100 dark:opacity-60"
                 data-ai-hint={project.hint}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-100 transition-opacity" />
               
               <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
                 <p className="text-sm font-medium text-primary mb-2">{project.category}</p>
                 <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
-                <button className="px-6 py-2 rounded-full bg-white/10 backdrop-blur-md text-sm font-semibold border border-white/20 hover:bg-white/20 transition-colors">
+                <button className="px-6 py-2 rounded-full bg-background/50 backdrop-blur-md text-sm font-semibold border border-border hover:bg-background/80 transition-colors">
                   Case Study
                 </button>
               </div>

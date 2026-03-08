@@ -1,10 +1,11 @@
+
 "use client";
 
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Send, Mail, MapPin, Phone } from "lucide-react";
+import { Send, Mail, Phone } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -39,7 +40,7 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-24 bg-[#030303] relative overflow-hidden">
+    <section id="contact" className="py-24 bg-background relative overflow-hidden">
       <div className="container px-4 mx-auto relative z-10">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div className="space-y-12">
@@ -75,7 +76,7 @@ export const Contact = () => {
             </div>
           </div>
 
-          <div className="glass-card p-10 rounded-3xl border-white/5 bg-white/2 relative">
+          <div className="glass-card p-10 rounded-3xl border-border bg-card relative">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -86,7 +87,7 @@ export const Contact = () => {
                       <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} className="bg-white/5 border-white/10" />
+                          <Input placeholder="John Doe" {...field} className="bg-background border-border" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -99,7 +100,7 @@ export const Contact = () => {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="john@example.com" {...field} className="bg-white/5 border-white/10" />
+                          <Input placeholder="john@example.com" {...field} className="bg-background border-border" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -113,7 +114,7 @@ export const Contact = () => {
                     <FormItem>
                       <FormLabel>Company (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="Acme Inc." {...field} className="bg-white/5 border-white/10" />
+                        <Input placeholder="Acme Inc." {...field} className="bg-background border-border" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -129,7 +130,7 @@ export const Contact = () => {
                         <Textarea 
                           placeholder="Tell us about your goals..." 
                           {...field} 
-                          className="bg-white/5 border-white/10 h-32"
+                          className="bg-background border-border h-32"
                         />
                       </FormControl>
                       <FormMessage />
@@ -138,7 +139,7 @@ export const Contact = () => {
                 />
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-xl bg-primary text-white font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all"
+                  className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all"
                 >
                   Send Inquiry <Send className="w-4 h-4" />
                 </button>
