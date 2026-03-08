@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const projects = [
@@ -11,18 +12,21 @@ const projects = [
     category: "Web Application",
     image: "https://picsum.photos/seed/sofol2/800/600",
     hint: "dashboard ui",
+    slug: "apex-fintech",
   },
   {
     title: "Nova Mobile",
     category: "Mobile App",
     image: "https://picsum.photos/seed/sofol3/800/600",
     hint: "mobile app",
+    slug: "nova-health",
   },
   {
     title: "Nexus SaaS",
     category: "Desktop Platform",
     image: "https://picsum.photos/seed/sofol4/800/600",
     hint: "saas web",
+    slug: "nexus-saas",
   },
 ];
 
@@ -57,17 +61,18 @@ export const Portfolio = () => {
               Showcasing our ability to deliver high-fidelity products across various industries.
             </p>
           </div>
-          <button className="text-primary font-semibold flex items-center gap-2 group">
+          <Link href="/work" className="text-primary font-semibold flex items-center gap-2 group">
             View All Projects <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {projects.map((project, idx) => (
-            <div 
+            <Link 
               key={idx}
+              href={`/work/${project.slug}`}
               className={cn(
-                "group relative rounded-3xl overflow-hidden aspect-[4/5] glass-card opacity-0",
+                "group relative rounded-3xl overflow-hidden aspect-[4/5] glass-card opacity-0 block",
                 isVisible && "animate-fade-in-up"
               )}
               style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
@@ -84,11 +89,11 @@ export const Portfolio = () => {
               <div className="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
                 <p className="text-sm font-medium text-primary mb-2">{project.category}</p>
                 <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
-                <button className="px-6 py-2 rounded-full bg-background/50 backdrop-blur-md text-sm font-semibold border border-border hover:bg-background/80 transition-colors">
-                  Case Study
-                </button>
+                <div className="inline-flex px-6 py-2 rounded-full bg-background/50 backdrop-blur-md text-sm font-semibold border border-border group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all items-center gap-2">
+                  Case Study <ArrowRight className="w-3 h-3" />
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

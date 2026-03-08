@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Sparkles, Rocket, ChevronRight } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -57,7 +58,7 @@ export const Hero = () => {
           "max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground opacity-0",
           isVisible && "animate-fade-in-up"
         )} style={{ animationDelay: '0.5s' }}>
-          Elite software engineering for founders who demand excellence. We build the technical foundation of your future empire.
+          Elite software engineering for founders who demand excellence. We bridge the gap between imagination and reality with premium software craftsmanship.
         </p>
 
         <div className={cn(
@@ -69,9 +70,11 @@ export const Hero = () => {
               Start Your Journey <Rocket className="w-5 h-5 ml-2" />
             </MagneticButton>
           </a>
-          <button className="px-10 h-14 rounded-full font-bold border border-input hover:bg-muted transition-all flex items-center gap-2 group">
-            View Case Studies <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
+          <Link href="#portfolio" scroll={true}>
+            <button className="px-10 h-14 rounded-full font-bold border border-input hover:bg-muted transition-all flex items-center gap-2 group">
+              View Case Studies <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
         </div>
       </div>
 
