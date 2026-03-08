@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Facebook, Linkedin, Twitter, Instagram, Youtube, ArrowUpRight } from "lucide-react";
 
 const socialLinks = [
@@ -12,9 +13,9 @@ const socialLinks = [
 ];
 
 const legalLinks = [
-  { title: "Terms of Service", href: "#" },
-  { title: "Privacy Policy", href: "#" },
-  { title: "Refund Policy", href: "#" },
+  { title: "Terms of Service", href: "/terms" },
+  { title: "Privacy Policy", href: "/privacy" },
+  { title: "Refund Policy", href: "/refund" },
 ];
 
 export const Footer = () => {
@@ -51,10 +52,10 @@ export const Footer = () => {
           <div>
             <h4 className="font-bold text-lg mb-6">Exploration</h4>
             <ul className="space-y-4 text-muted-foreground">
-              <li><a href="#process" className="hover:text-primary transition-colors flex items-center gap-1">Our Process <ArrowUpRight className="w-3 h-3" /></a></li>
-              <li><a href="#services" className="hover:text-primary transition-colors flex items-center gap-1">Services <ArrowUpRight className="w-3 h-3" /></a></li>
-              <li><a href="#portfolio" className="hover:text-primary transition-colors flex items-center gap-1">Recent Work <ArrowUpRight className="w-3 h-3" /></a></li>
-              <li><a href="#story" className="hover:text-primary transition-colors flex items-center gap-1">Our Story <ArrowUpRight className="w-3 h-3" /></a></li>
+              <li><a href="#process" className="hover:text-primary transition-colors flex items-center gap-1 text-sm">Our Process <ArrowUpRight className="w-3 h-3" /></a></li>
+              <li><a href="#services" className="hover:text-primary transition-colors flex items-center gap-1 text-sm">Services <ArrowUpRight className="w-3 h-3" /></a></li>
+              <li><a href="#portfolio" className="hover:text-primary transition-colors flex items-center gap-1 text-sm">Recent Work <ArrowUpRight className="w-3 h-3" /></a></li>
+              <li><a href="#story" className="hover:text-primary transition-colors flex items-center gap-1 text-sm">Our Story <ArrowUpRight className="w-3 h-3" /></a></li>
             </ul>
           </div>
 
@@ -64,9 +65,9 @@ export const Footer = () => {
             <ul className="space-y-4 text-muted-foreground">
               {legalLinks.map((link, idx) => (
                 <li key={idx}>
-                  <a href={link.href} className="hover:text-primary transition-colors">
+                  <Link href={link.href} className="hover:text-primary transition-colors text-sm">
                     {link.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
