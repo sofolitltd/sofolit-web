@@ -2,8 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, RefreshCcw } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Footer } from "@/components/sections/Footer";
 
 export default function RefundPolicy() {
   return (
@@ -12,10 +13,16 @@ export default function RefundPolicy() {
         <Link href="/" className="text-2xl font-black tracking-tighter">
           SOFOL <span className="text-primary">IT</span>
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 md:gap-8 text-sm font-medium text-muted-foreground">
+          <div className="hidden lg:flex items-center gap-8">
+            <Link href="/#process" className="hover:text-primary transition-colors">Process</Link>
+            <Link href="/#services" className="hover:text-primary transition-colors">Services</Link>
+            <Link href="/#story" className="hover:text-primary transition-colors">Our Story</Link>
+            <Link href="/#portfolio" className="hover:text-primary transition-colors">Work</Link>
+          </div>
           <ThemeToggle />
-          <Link href="/" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Home
+          <Link href="/#contact" className="px-5 py-2 rounded-full border border-input hover:border-primary/50 text-foreground transition-all bg-background/50">
+            Get Started
           </Link>
         </div>
       </nav>
@@ -60,6 +67,7 @@ export default function RefundPolicy() {
           </section>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }
