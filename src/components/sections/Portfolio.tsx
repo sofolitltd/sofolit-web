@@ -1,9 +1,9 @@
-
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const projects = [
   {
@@ -27,10 +27,30 @@ const projects = [
 ];
 
 export const Portfolio = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="portfolio" className="py-24 bg-background">
+    <section id="portfolio" ref={sectionRef} className="py-24 bg-background">
       <div className="container px-4 mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <div className={cn(
+          "flex flex-col md:flex-row justify-between items-end mb-16 gap-6 opacity-0",
+          isVisible && "animate-fade-in-up"
+        )}>
           <div className="space-y-4">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Recent Work</h2>
             <p className="text-muted-foreground max-w-lg">
@@ -46,7 +66,11 @@ export const Portfolio = () => {
           {projects.map((project, idx) => (
             <div 
               key={idx}
-              className="group relative rounded-3xl overflow-hidden aspect-[4/5] glass-card"
+              className={cn(
+                "group relative rounded-3xl overflow-hidden aspect-[4/5] glass-card opacity-0",
+                isVisible && "animate-fade-in-up"
+              )}
+              style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
             >
               <Image 
                 src={project.image}

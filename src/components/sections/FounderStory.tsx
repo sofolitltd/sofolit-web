@@ -13,9 +13,12 @@ export const FounderStory = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2, rootMargin: "0px 0px -50px 0px" }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -80,12 +83,12 @@ export const FounderStory = () => {
               </div>
               
               <div className="flex items-center gap-8 pt-4">
-                <div className="animate-fade-in opacity-0" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
+                <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '0.8s' }}>
                   <p className="text-3xl font-black text-primary">50+</p>
                   <p className="text-sm font-bold uppercase text-muted-foreground">Products Launched</p>
                 </div>
                 <div className="w-px h-12 bg-border" />
-                <div className="animate-fade-in opacity-0" style={{ animationDelay: '1s', animationFillMode: 'forwards' }}>
+                <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '1s' }}>
                   <p className="text-3xl font-black text-secondary">10+</p>
                   <p className="text-sm font-bold uppercase text-muted-foreground">Years Experience</p>
                 </div>
