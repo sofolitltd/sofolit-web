@@ -42,7 +42,7 @@ export const Header = () => {
   ];
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50 flex justify-center p-4 md:p-6 pointer-events-none">
+    <div className="fixed top-0 left-0 w-full z-50 flex justify-center p-2 md:p-4 pointer-events-none">
       <nav className={cn(
         "w-full max-w-7xl px-6 py-3 flex justify-between items-center transition-all duration-500 pointer-events-auto",
         "bg-background/70 backdrop-blur-xl border border-border/50 shadow-2xl rounded-full",

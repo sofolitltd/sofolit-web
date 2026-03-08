@@ -27,7 +27,7 @@ export const Hero = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern pt-32 pb-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern pt-24 pb-20"
     >
       {/* Luminous Beams */}
       <div className="absolute top-0 left-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-primary/10 to-transparent" />
@@ -49,7 +49,7 @@ export const Hero = () => {
           "text-5xl md:text-7xl lg:text-[7.5rem] font-black tracking-tight leading-[0.9] opacity-0",
           isVisible && "animate-fade-in-up"
         )} style={{ animationDelay: '0.3s' }}>
-          <span className="block text-muted-foreground/30 mb-2">From Concept to</span>
+          <span className="block text-muted-foreground/30 mb-2 text-3xl md:text-5xl lg:text-7xl">From Concept to</span>
           <span className="block text-gradient">Market Reality</span>
         </h1>
         
