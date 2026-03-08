@@ -29,6 +29,12 @@
       "description": "Health Tracking App Mockup",
       "imageUrl": "https://picsum.photos/seed/sofol5/800/600",
       "imageHint": "health app"
+    },
+    {
+      "id": "founder-portrait",
+      "description": "Professional portrait of the founder",
+      "imageUrl": "https://picsum.photos/seed/founder/600/800",
+      "imageHint": "professional portrait"
     }
   ]
 }
