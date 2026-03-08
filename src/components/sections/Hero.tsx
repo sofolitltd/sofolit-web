@@ -1,15 +1,34 @@
-
 "use client";
 
-import React from "react";
-import { Sparkles, Calendar } from "lucide-react";
+import React, { useEffect, useState, useRef } from "react";
+import { Sparkles, Rocket, ChevronRight } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { cn } from "@/lib/utils";
 
 export const Hero = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern">
+    <section 
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern"
+    >
       {/* Luminous Beams */}
       <div className="absolute top-0 left-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-primary/10 to-transparent" />
       <div className="absolute top-0 right-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-secondary/10 to-transparent" />
@@ -18,29 +37,40 @@ export const Hero = () => {
       <div className="absolute inset-0 mesh-gradient opacity-20" />
 
       <div className="container relative z-10 px-4 mx-auto text-center space-y-8">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-primary border-primary/20 mb-4 animate-slide-in-left opacity-0" style={{ animationDelay: '0.1s' }}>
+        <div className={cn(
+          "inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-primary border-primary/20 mb-4 opacity-0",
+          isVisible && "animate-slide-in-left"
+        )} style={{ animationDelay: '0.1s' }}>
           <Sparkles className="w-4 h-4" />
-          <span>Innovating Digital Products</span>
+          <span>Transforming Vision into Value</span>
         </div>
         
-        <h1 className="text-6xl md:text-[7.5rem] font-black tracking-tight leading-[0.9] animate-fade-in-up opacity-0" style={{ animationDelay: '0.3s' }}>
-          <span className="block text-muted-foreground/40 mb-2">From Concept</span>
-          <span className="block text-primary">Idea to Product</span>
+        <h1 className={cn(
+          "text-6xl md:text-[7.5rem] font-black tracking-tight leading-[0.9] opacity-0",
+          isVisible && "animate-fade-in-up"
+        )} style={{ animationDelay: '0.3s' }}>
+          <span className="block text-muted-foreground/30 mb-2">From Concept to</span>
+          <span className="block text-gradient">Market Reality</span>
         </h1>
         
-        <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground animate-fade-in-up opacity-0" style={{ animationDelay: '0.5s' }}>
-          We bridge the gap between imagination and reality with premium software craftsmanship 
-          and AI-driven strategies.
+        <p className={cn(
+          "max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground opacity-0",
+          isVisible && "animate-fade-in-up"
+        )} style={{ animationDelay: '0.5s' }}>
+          Elite software engineering for founders who demand excellence. We build the technical foundation of your future empire.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 animate-fade-in-up opacity-0" style={{ animationDelay: '0.7s' }}>
+        <div className={cn(
+          "flex flex-col sm:flex-row items-center justify-center gap-4 pt-8 opacity-0",
+          isVisible && "animate-fade-in-up"
+        )} style={{ animationDelay: '0.7s' }}>
           <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">
-            <MagneticButton className="text-lg">
-              Book a Call <Calendar className="w-5 h-5 ml-1" />
+            <MagneticButton className="text-lg px-10 h-14">
+              Start Your Journey <Rocket className="w-5 h-5 ml-2" />
             </MagneticButton>
           </a>
-          <button className="px-8 py-3 rounded-full font-semibold border border-input hover:bg-muted transition-colors">
-            View Case Studies
+          <button className="px-10 h-14 rounded-full font-bold border border-input hover:bg-muted transition-all flex items-center gap-2 group">
+            View Case Studies <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       </div>
