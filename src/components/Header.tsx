@@ -42,11 +42,11 @@ export const Header = () => {
   ];
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50 flex justify-center p-1 md:p-2 pointer-events-none">
+    <div className="fixed top-0 left-0 w-full z-50 flex justify-center p-2 md:p-3 pointer-events-none">
       <nav className={cn(
-        "w-full max-w-7xl px-6 py-2 flex justify-between items-center transition-all duration-500 pointer-events-auto",
+        "w-full max-w-7xl px-8 py-4 flex justify-between items-center transition-all duration-500 pointer-events-auto",
         "bg-background/70 backdrop-blur-xl border border-border/50 shadow-2xl rounded-full",
-        isScrolled ? "scale-[0.98] border-primary/20" : "scale-100"
+        isScrolled ? "scale-[0.98] border-primary/20 py-3" : "scale-100"
       )}>
         <Link href="/" className="text-xl font-black tracking-tighter flex items-center gap-2 group">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
@@ -82,7 +82,7 @@ export const Header = () => {
             <div className="lg:hidden">
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
-                  <button className="p-2 rounded-full border border-border bg-background/50 text-foreground hover:bg-muted transition-colors">
+                  <button className="p-2.5 rounded-full border border-border bg-background/50 text-foreground hover:bg-muted transition-colors">
                     <Menu className="w-5 h-5" />
                   </button>
                 </SheetTrigger>
@@ -125,7 +125,7 @@ export const Header = () => {
               href={CALENDLY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 px-6 py-2 rounded-full bg-primary text-white font-bold text-sm hover:shadow-[0_0_20px_rgba(51,150,230,0.4)] transition-all active:scale-95"
+              className="hidden sm:flex items-center gap-2 px-8 py-2.5 rounded-full bg-primary text-white font-bold text-sm hover:shadow-[0_0_20px_rgba(51,150,230,0.4)] transition-all active:scale-95"
             >
               <Calendar className="w-4 h-4" /> Book a Call
             </a>
