@@ -65,7 +65,7 @@
   }
   
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#3396E6] to-[#2ED0E6];
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-primary via-primary to-blue-400;
   }
 
   .mesh-gradient {

@@ -1,7 +1,8 @@
+
 "use client";
 
 import React from "react";
-import { ArrowRight, Sparkles, Calendar } from "lucide-react";
+import { Sparkles, Calendar } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export const Hero = () => {
@@ -22,9 +23,9 @@ export const Hero = () => {
           <span>Innovating Digital Products</span>
         </div>
         
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-tight animate-fade-in-up opacity-0" style={{ animationDelay: '0.3s' }}>
-          <span className="block opacity-70">From Concept</span>
-          <span className="text-gradient block">Idea to Product</span>
+        <h1 className="text-6xl md:text-[7.5rem] font-black tracking-tight leading-[0.9] animate-fade-in-up opacity-0" style={{ animationDelay: '0.3s' }}>
+          <span className="block text-muted-foreground/40 mb-2">From Concept</span>
+          <span className="block text-primary">Idea to Product</span>
         </h1>
         
         <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground animate-fade-in-up opacity-0" style={{ animationDelay: '0.5s' }}>
