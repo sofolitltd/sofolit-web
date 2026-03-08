@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -19,7 +20,7 @@ export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
-  // Hide header on admin routes
+  // Completely isolate Admin UI from User UI
   if (pathname?.startsWith('/admin')) {
     return null;
   }

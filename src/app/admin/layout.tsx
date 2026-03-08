@@ -16,6 +16,10 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+/**
+ * AdminLayout provides a fully isolated dashboard environment.
+ * It handles its own navigation and sidebar, separate from the main site.
+ */
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -23,6 +27,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
+    // Simple authentication guard
     const auth = localStorage.getItem("admin_auth");
     if (auth === "true") {
       setIsAuthenticated(true);
@@ -40,7 +45,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   if (pathname === "/admin/login") return <>{children}</>;
-  if (isAuthenticated === null) return null; // Avoid flicker
+  if (isAuthenticated === null) return null; // Avoid flicker during auth check
   if (isAuthenticated === false) return null;
 
   const navItems = [
@@ -51,14 +56,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-[#030303] text-foreground flex">
-      {/* Sidebar */}
+      {/* Isolated Admin Sidebar */}
       <aside className={cn(
         "fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0",
         !isSidebarOpen && "-translate-x-full"
       )}>
         <div className="h-full flex flex-col p-6">
-          <Link href="/" className="text-xl font-black tracking-tighter flex items-center gap-2 mb-10">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+          <Link href="/" className="text-xl font-black tracking-tighter flex items-center gap-2 mb-10 group">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
               <Rocket className="w-5 h-5 text-white" />
             </div>
             <span>SOFOL <span className="text-primary">ADMIN</span></span>
@@ -93,9 +98,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* Admin Content Area */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-16 border-b border-border bg-card/50 backdrop-blur-xl flex items-center justify-between px-8">
+        <header className="h-16 border-b border-border bg-card/50 backdrop-blur-xl flex items-center justify-between px-8 sticky top-0 z-30">
           <button 
             className="lg:hidden p-2 hover:bg-muted rounded-lg"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -104,13 +109,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
           <div className="flex items-center gap-4 ml-auto">
             <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">
-              Admin Access
+              System Administrator
             </span>
             <div className="w-8 h-8 rounded-full bg-muted border border-border" />
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-8 bg-background/50">
           {children}
         </div>
       </main>
