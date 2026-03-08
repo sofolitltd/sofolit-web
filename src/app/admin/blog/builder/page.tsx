@@ -1,315 +1,244 @@
 
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { 
   ChevronLeft, 
-  Plus, 
   Save, 
-  Trash2, 
-  Heading, 
+  Eye, 
+  Settings2, 
+  FileText, 
+  Search, 
+  MoreVertical, 
+  Plus, 
   Type, 
-  Link as LinkIcon, 
-  List, 
-  Image as ImageIcon,
-  MoveUp,
-  MoveDown,
-  Layout,
-  MoreVertical,
-  Settings2,
-  Eye,
-  Type as QuoteIcon,
-  Minus
+  Image as ImageIcon, 
+  Hash, 
+  Link as LinkIcon,
+  Globe,
+  Lock,
+  History,
+  CheckCircle2,
+  AlertCircle
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-type BlockType = 'h1' | 'h2' | 'h3' | 'p' | 'list' | 'quote' | 'image' | 'spacer' | 'divider';
-
-interface Block {
-  id: string;
-  type: BlockType;
-  content: string;
-}
-
-export default function WordPressStyleBuilder() {
-  const [title, setTitle] = useState("Your Enterprise Story Starts Here");
-  const [category, setCategory] = useState("Strategy");
-  const [blocks, setBlocks] = useState<Block[]>([
-    { id: '1', type: 'h1', content: 'The Future of Solo Product Development' },
-    { id: '2', type: 'p', content: 'In an era defined by rapid iteration and AI-driven workflows, the solo founder has never been more powerful...' },
-  ]);
-  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
-
-  const addBlock = (type: BlockType, index?: number) => {
-    const newBlock: Block = { 
-      id: Math.random().toString(36).substr(2, 9), 
-      type, 
-      content: type === 'spacer' ? '32' : '' 
-    };
-    
-    if (typeof index === 'number') {
-      const newBlocks = [...blocks];
-      newBlocks.splice(index + 1, 0, newBlock);
-      setBlocks(newBlocks);
-    } else {
-      setBlocks([...blocks, newBlock]);
-    }
-    setSelectedBlockId(newBlock.id);
-  };
-
-  const updateBlock = (id: string, content: string) => {
-    setBlocks(blocks.map(b => b.id === id ? { ...b, content } : b));
-  };
-
-  const removeBlock = (id: string) => {
-    setBlocks(blocks.filter(b => b.id !== id));
-    if (selectedBlockId === id) setSelectedBlockId(null);
-  };
-
-  const moveBlock = (index: number, direction: 'up' | 'down') => {
-    const newBlocks = [...blocks];
-    const newIndex = direction === 'up' ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= newBlocks.length) return;
-    [newBlocks[index], newBlocks[newIndex]] = [newBlocks[newIndex], newBlocks[index]];
-    setBlocks(newBlocks);
-  };
+export default function SanityStyleBuilder() {
+  const [isSaving, setIsSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState("content");
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* WordPress Top Bar */}
-      <header className="h-14 border-b border-slate-200 flex items-center justify-between px-4 sticky top-0 bg-white/90 backdrop-blur-md z-50">
+    <div className="fixed inset-0 top-16 left-64 bg-white flex flex-col">
+      {/* Sanity-style Top Navigation Bar */}
+      <header className="h-14 border-b border-slate-200 flex items-center justify-between px-4 bg-white z-20">
         <div className="flex items-center gap-4">
-          <Link href="/admin/blog" className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors">
-            <ChevronLeft className="w-5 h-5" />
+          <Link href="/admin/blog" className="p-2 hover:bg-slate-50 rounded-md text-slate-400 transition-colors">
+            <ChevronLeft className="w-4 h-4" />
           </Link>
-          <div className="h-4 w-px bg-slate-200" />
-          <span className="text-xs font-black uppercase tracking-widest text-slate-400">Article Editor</span>
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-blue-50 text-blue-600 rounded">
+              <FileText className="w-4 h-4" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-bold text-slate-900 leading-none">The Future of Solo Product Development</span>
+              <span className="text-[10px] text-slate-400 font-medium">Post • Draft</span>
+            </div>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-            Save Draft
+          <div className="flex items-center gap-1 mr-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+            Syncing...
+          </div>
+          <button className="p-2 hover:bg-slate-50 rounded text-slate-500">
+            <History className="w-4 h-4" />
           </button>
-          <button className="px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 rounded-lg transition-colors flex items-center gap-2">
-            <Eye className="w-4 h-4" /> Preview
+          <button className="p-2 hover:bg-slate-50 rounded text-slate-500">
+            <Eye className="w-4 h-4" />
           </button>
-          <button className="px-6 py-2 bg-primary text-white text-sm font-black rounded-lg hover:shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
-            <Save className="w-4 h-4" /> Publish
+          <div className="h-4 w-px bg-slate-200 mx-1" />
+          <button className="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 transition-all flex items-center gap-2">
+            Publish
+          </button>
+          <button className="p-2 hover:bg-slate-50 rounded text-slate-500">
+            <MoreVertical className="w-4 h-4" />
           </button>
         </div>
       </header>
 
-      <div className="flex">
-        {/* Editor Main Canvas */}
-        <main className="flex-1 min-h-[calc(100vh-56px)] overflow-y-auto bg-slate-50/30 flex flex-col items-center py-12 px-4">
-          <div className="w-full max-w-3xl space-y-1">
-            {/* Title Block */}
-            <div className="mb-12">
-              <textarea 
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Add title"
-                className="w-full text-5xl font-black bg-transparent border-none outline-none placeholder:text-slate-200 text-slate-900 resize-none h-auto overflow-hidden leading-tight"
-                rows={1}
-                onInput={(e) => {
-                  const target = e.target as HTMLTextAreaElement;
-                  target.style.height = 'auto';
-                  target.style.height = target.scrollHeight + 'px';
-                }}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Pane 1: Document Structure / Navigation (Sanity Style) */}
+        <aside className="w-64 border-r border-slate-100 bg-slate-50/30 flex flex-col">
+          <div className="p-4 border-b border-slate-100 bg-white">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+              <input 
+                placeholder="Search..." 
+                className="w-full bg-slate-50 border border-slate-200 rounded px-8 py-1.5 text-xs outline-none focus:ring-1 focus:ring-blue-500/20"
               />
             </div>
+          </div>
+          <div className="flex-1 overflow-y-auto p-2">
+            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-3 py-2 mb-1">
+              Document Sections
+            </div>
+            {[
+              { label: 'Main Content', icon: <Type className="w-3.5 h-3.5" />, active: activeTab === 'content', id: 'content' },
+              { label: 'Metadata & SEO', icon: <Globe className="w-3.5 h-3.5" />, active: activeTab === 'seo', id: 'seo' },
+              { label: 'Media Assets', icon: <ImageIcon className="w-3.5 h-3.5" />, active: activeTab === 'media', id: 'media' },
+              { label: 'Social & Sharing', icon: <Hash className="w-3.5 h-3.5" />, active: activeTab === 'social', id: 'social' },
+              { label: 'Access Control', icon: <Lock className="w-3.5 h-3.5" />, active: activeTab === 'access', id: 'access' },
+            ].map((item) => (
+              <button 
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={cn(
+                  "w-full flex items-center gap-3 px-3 py-2 rounded text-xs font-bold transition-all",
+                  item.active ? "bg-white text-blue-600 shadow-sm border border-slate-200" : "text-slate-500 hover:bg-slate-100"
+                )}
+              >
+                <span className={cn(item.active ? "text-blue-600" : "text-slate-400")}>{item.icon}</span>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </aside>
 
-            {/* Block List */}
-            <div className="space-y-2">
-              {blocks.map((block, idx) => (
-                <div 
-                  key={block.id} 
-                  className={cn(
-                    "group relative rounded-lg transition-all border border-transparent",
-                    selectedBlockId === block.id ? "ring-1 ring-primary/20 border-slate-200 bg-white" : "hover:bg-slate-50/50"
-                  )}
-                  onClick={() => setSelectedBlockId(block.id)}
-                >
-                  {/* Block Controls - Only visible on selected or hover */}
-                  <div className={cn(
-                    "absolute -left-12 top-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity",
-                    selectedBlockId === block.id && "opacity-100"
-                  )}>
-                    <button onClick={() => moveBlock(idx, 'up')} className="p-1.5 hover:bg-slate-200 rounded text-slate-400 disabled:opacity-30" disabled={idx === 0}>
-                      <MoveUp className="w-3.5 h-3.5" />
-                    </button>
-                    <button onClick={() => moveBlock(idx, 'down')} className="p-1.5 hover:bg-slate-200 rounded text-slate-400 disabled:opacity-30" disabled={idx === blocks.length - 1}>
-                      <MoveDown className="w-3.5 h-3.5" />
-                    </button>
+        {/* Pane 2: The Structured Editor */}
+        <main className="flex-1 bg-white overflow-y-auto">
+          <div className="max-w-4xl mx-auto py-12 px-12">
+            <div className="space-y-12">
+              {activeTab === 'content' && (
+                <div className="space-y-10 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-900 flex items-center gap-2">
+                      Article Title <span className="text-red-500">*</span>
+                    </label>
+                    <input 
+                      className="w-full text-3xl font-black border-b border-slate-100 focus:border-blue-500 outline-none pb-2 transition-colors placeholder:text-slate-200"
+                      placeholder="Enter title..."
+                      defaultValue="The Future of Solo Product Development"
+                    />
+                    <p className="text-[10px] text-slate-400 font-medium">This will be used as the primary H1 heading and page title.</p>
                   </div>
 
-                  {/* Contextual Action Menu */}
-                  <div className="absolute -right-12 top-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="p-1.5 hover:bg-slate-200 rounded text-slate-400"><MoreVertical className="w-3.5 h-3.5" /></button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="bg-white border-slate-200 shadow-xl">
-                        <DropdownMenuItem onClick={() => removeBlock(block.id)} className="text-red-500 focus:text-red-500 focus:bg-red-50">
-                          <Trash2 className="w-4 h-4 mr-2" /> Delete Block
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                  <div className="grid grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-900">Slug</label>
+                      <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded px-3 py-2">
+                        <LinkIcon className="w-3.5 h-3.5 text-slate-400" />
+                        <span className="text-xs text-slate-500 font-mono">future-of-solo-product</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-slate-900">Category</label>
+                      <select className="w-full bg-slate-50 border border-slate-200 rounded px-3 py-2 text-xs font-bold outline-none focus:ring-1 focus:ring-blue-500/20 cursor-pointer">
+                        <option>Strategy</option>
+                        <option>Engineering</option>
+                        <option>Growth</option>
+                      </select>
+                    </div>
                   </div>
 
-                  {/* Content Rendering */}
-                  <div className="p-4">
-                    {block.type === 'h1' && (
-                      <textarea 
-                        value={block.content}
-                        onChange={(e) => updateBlock(block.id, e.target.value)}
-                        placeholder="Heading 1"
-                        className="w-full text-4xl font-black bg-transparent border-none outline-none text-slate-900 resize-none"
-                      />
-                    )}
-                    {block.type === 'h2' && (
-                      <textarea 
-                        value={block.content}
-                        onChange={(e) => updateBlock(block.id, e.target.value)}
-                        placeholder="Heading 2"
-                        className="w-full text-3xl font-bold bg-transparent border-none outline-none text-slate-800 resize-none"
-                      />
-                    )}
-                    {block.type === 'p' && (
-                      <textarea 
-                        value={block.content}
-                        onChange={(e) => updateBlock(block.id, e.target.value)}
-                        placeholder="Start typing..."
-                        className="w-full text-lg leading-relaxed bg-transparent border-none outline-none text-slate-600 resize-none min-h-[80px]"
-                        rows={1}
-                        onInput={(e) => {
-                          const target = e.target as HTMLTextAreaElement;
-                          target.style.height = 'auto';
-                          target.style.height = target.scrollHeight + 'px';
-                        }}
-                      />
-                    )}
-                    {block.type === 'quote' && (
-                      <div className="pl-6 border-l-4 border-primary bg-primary/5 py-4 rounded-r-lg">
-                        <textarea 
-                          value={block.content}
-                          onChange={(e) => updateBlock(block.id, e.target.value)}
-                          placeholder="Add a brilliant quote..."
-                          className="w-full text-xl italic font-medium bg-transparent border-none outline-none text-slate-700 resize-none"
-                        />
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-900">Main Excerpt</label>
+                    <textarea 
+                      className="w-full bg-slate-50 border border-slate-200 rounded p-4 text-xs font-medium leading-relaxed outline-none focus:ring-1 focus:ring-blue-500/20 h-24 resize-none"
+                      placeholder="A short summary for previews..."
+                    />
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                      <label className="text-xs font-bold text-slate-900">Portable Text Content</label>
+                      <div className="flex gap-1">
+                        <button className="p-1 hover:bg-slate-50 rounded text-slate-400"><Type className="w-3.5 h-3.5" /></button>
+                        <button className="p-1 hover:bg-slate-50 rounded text-slate-400"><ImageIcon className="w-3.5 h-3.5" /></button>
+                        <button className="p-1 hover:bg-slate-50 rounded text-slate-400"><LinkIcon className="w-3.5 h-3.5" /></button>
                       </div>
-                    )}
-                    {block.type === 'spacer' && (
-                      <div className="flex items-center gap-4 bg-slate-100/50 p-3 rounded-lg border border-slate-200/50">
-                        <Layout className="w-4 h-4 text-slate-400" />
-                        <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Spacer: {block.content}px</span>
-                        <input 
-                          type="range" min="16" max="160" step="16"
-                          value={block.content}
-                          onChange={(e) => updateBlock(block.id, e.target.value)}
-                          className="flex-1 accent-primary"
-                        />
-                      </div>
-                    )}
-                    {block.type === 'divider' && (
-                      <div className="py-4">
-                        <hr className="border-slate-200" />
-                      </div>
-                    )}
+                    </div>
+                    <div className="min-h-[400px] border border-slate-200 rounded-lg p-6 bg-slate-50/30 font-serif text-lg text-slate-700 leading-relaxed outline-none focus:bg-white transition-colors" contentEditable>
+                      In an era defined by rapid iteration and AI-driven workflows, the solo founder has never been more powerful...
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              )}
 
-            {/* In-Canvas Add Block Button */}
-            <div className="pt-8 flex justify-center opacity-0 hover:opacity-100 transition-opacity">
-              <button 
-                onClick={() => addBlock('p')}
-                className="p-3 bg-slate-900 text-white rounded-full shadow-lg hover:scale-110 transition-transform"
-              >
-                <Plus className="w-5 h-5" />
-              </button>
+              {activeTab === 'seo' && (
+                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="p-6 bg-blue-50 rounded-xl border border-blue-100 flex gap-4">
+                    <div className="p-2 bg-blue-100 text-blue-600 rounded-lg h-fit">
+                      <Globe className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-blue-900">Search Engine Optimization</h4>
+                      <p className="text-xs text-blue-700 mt-1 leading-relaxed">Configure how this article appears in search results and on social platforms. These fields override default settings.</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-900">Meta Title</label>
+                    <input className="w-full bg-white border border-slate-200 rounded px-4 py-2 text-xs font-medium outline-none focus:border-blue-500" placeholder="SEO optimized title..." />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-900">Meta Description</label>
+                    <textarea className="w-full bg-white border border-slate-200 rounded px-4 py-2 text-xs font-medium outline-none focus:border-blue-500 h-32" placeholder="Briefly explain the article for search results..." />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </main>
 
-        {/* WordPress Style Settings Sidebar */}
-        <aside className="w-[320px] h-[calc(100vh-56px)] border-l border-slate-200 bg-white sticky top-[56px] overflow-y-auto">
-          <div className="p-6 space-y-8">
-            <div className="flex items-center gap-2 text-slate-900 font-black text-xs uppercase tracking-widest">
-              <Settings2 className="w-4 h-4 text-primary" /> Document Settings
-            </div>
-
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Post Category</label>
-                <select 
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/10 transition-all font-bold text-slate-700"
-                >
-                  <option>Strategy</option>
-                  <option>Engineering</option>
-                  <option>Growth</option>
-                  <option>Product</option>
-                </select>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Featured Image</label>
-                <div className="aspect-video rounded-xl border border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-slate-100 transition-colors group">
-                  <div className="p-3 rounded-full bg-white shadow-sm text-slate-300 group-hover:text-primary transition-colors">
-                    <ImageIcon className="w-6 h-6" />
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-400">Set Featured Image</span>
+        {/* Pane 3: Inspector / Inspector (Sanity Style) */}
+        <aside className="w-[320px] border-l border-slate-100 bg-slate-50/10 flex flex-col">
+          <div className="p-4 border-b border-slate-100 flex items-center gap-2">
+            <Settings2 className="w-4 h-4 text-slate-400" />
+            <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Document Inspector</span>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-6 space-y-8">
+            <div className="space-y-4">
+              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Publishing Status</h5>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-amber-500" />
+                  <span className="text-xs font-bold text-slate-700">Draft version</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-slate-300" />
+                  <span className="text-xs font-medium text-slate-400">Not published</span>
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">URL Slug</label>
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-[10px] font-mono text-slate-400 break-all leading-relaxed">
-                  sofol.it/blog/{title.toLowerCase().replace(/ /g, '-').slice(0, 40)}
+            <div className="space-y-4">
+              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Featured Image</h5>
+              <div className="aspect-square rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center gap-3 hover:bg-slate-100 transition-colors cursor-pointer group">
+                <div className="p-3 bg-white rounded-full shadow-sm text-slate-300 group-hover:text-blue-500 transition-colors">
+                  <Plus className="w-5 h-5" />
                 </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Summary / Excerpt</label>
-                <textarea 
-                  placeholder="Summarize this post for SEO..."
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs outline-none h-32 resize-none text-slate-600 focus:border-primary transition-colors"
-                />
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Upload Asset</span>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-slate-100">
-              <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Add Content Blocks</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { type: 'h2', icon: <Heading className="w-3.5 h-3.5" />, label: 'Heading' },
-                  { type: 'p', icon: <Type className="w-3.5 h-3.5" />, label: 'Paragraph' },
-                  { type: 'list', icon: <List className="w-3.5 h-3.5" />, label: 'List' },
-                  { type: 'quote', icon: <QuoteIcon className="w-3.5 h-3.5" />, label: 'Quote' },
-                  { type: 'image', icon: <ImageIcon className="w-3.5 h-3.5" />, label: 'Media' },
-                  { type: 'divider', icon: <Minus className="w-3.5 h-3.5" />, label: 'Divider' },
-                ].map((item) => (
-                  <button 
-                    key={item.type}
-                    onClick={() => addBlock(item.type as BlockType)}
-                    className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white border border-slate-200 hover:border-primary hover:bg-primary/5 transition-all group"
-                  >
-                    <div className="text-slate-400 group-hover:text-primary transition-colors">{item.icon}</div>
-                    <span className="text-[10px] font-bold text-slate-500 group-hover:text-primary">{item.label}</span>
-                  </button>
-                ))}
+            <div className="space-y-4 pt-6 border-t border-slate-100">
+              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Validation</h5>
+              <div className="flex items-center gap-3 text-red-500 bg-red-50 p-3 rounded-lg border border-red-100">
+                <AlertCircle className="w-4 h-4" />
+                <span className="text-[10px] font-bold">Featured image is missing</span>
               </div>
             </div>
+          </div>
+
+          <div className="p-4 border-t border-slate-100 bg-white">
+            <button className="w-full py-3 bg-slate-900 text-white text-xs font-bold rounded flex items-center justify-center gap-2 hover:bg-black transition-colors">
+              Save Changes
+            </button>
           </div>
         </aside>
       </div>
