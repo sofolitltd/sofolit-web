@@ -5,6 +5,7 @@ import { Portfolio } from "@/components/sections/Portfolio";
 import { FounderStory } from "@/components/sections/FounderStory";
 import { SocialProof } from "@/components/sections/SocialProof";
 import { Contact } from "@/components/sections/Contact";
+import { Footer } from "@/components/sections/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -37,11 +38,7 @@ export default function Home() {
       <SocialProof />
       <Contact />
       
-      <footer className="py-12 border-t border-border text-center text-sm text-muted-foreground">
-        <div className="container mx-auto">
-          <p>&copy; {new Date().getFullYear()} Sofol IT. Premium Software Craftsmanship.</p>
-        </div>
-      </footer>
+      <Footer />
       
       <Toaster />
     </main>
