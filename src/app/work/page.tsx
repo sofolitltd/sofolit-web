@@ -23,7 +23,7 @@ const portfolioItems = [
     category: "Mobile App",
     desc: "AI-driven wellness tracker that helps users maintain healthy habits through gamification and community.",
     image: "https://picsum.photos/seed/work2/800/600",
-    tags: ["React Native", "FCM", "Vercel"],
+    tags: ["Flutter", "FCM", "Vercel"],
     results: "50k+ active monthly users"
   },
   {

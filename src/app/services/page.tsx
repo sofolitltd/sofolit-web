@@ -15,7 +15,7 @@ export default function ServicesPage() {
       description: "Launch your app on iOS and Android with a single, high-performance codebase. We specialize in building native-feel mobile experiences that scale with your user base.",
       icon: <Smartphone className="w-12 h-12 text-primary" />,
       features: [
-        "Cross-Platform Flutter & React Native",
+        "Cross-Platform Flutter Expertise",
         "Secure Firebase Backend Integration",
         "Seamless App Store & Play Store Publishing",
         "Engaging Push Notifications & Analytics"

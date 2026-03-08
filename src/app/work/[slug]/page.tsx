@@ -44,14 +44,14 @@ const caseStudiesData = {
     image: "https://picsum.photos/seed/work2/1920/1080",
     overview: "Nova Health is a gamified wellness platform that uses behavioral science to help users build long-term healthy habits.",
     challenge: "Scaling to 50k+ active users required a robust notification system and a backend capable of processing millions of health data points daily without degrading performance.",
-    solution: "Utilizing React Native and Vercel Edge functions, we built a responsive frontend coupled with a serverless architecture that scales horizontally based on demand.",
+    solution: "Utilizing Flutter and Vercel Edge functions, we built a responsive frontend coupled with a serverless architecture that scales horizontally based on demand.",
     results: [
       "50k+ Monthly Active Users",
       "12% Growth in weekly goal completion",
       "Featured in 'Apps We Love' on Google Play",
       "Zero infrastructure downtime during traffic peaks"
     ],
-    techStack: ["React Native", "Node.js", "Vercel", "MongoDB", "FCM"],
+    techStack: ["Flutter", "Node.js", "Vercel", "MongoDB", "FCM"],
   },
   "nexus-saas": {
     title: "Nexus SaaS: Streamlining Agency Operations",
