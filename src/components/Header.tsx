@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -19,6 +18,11 @@ export const Header = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
+
+  // Hide header on admin routes
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const navLinks = [
     { name: "Home", href: "/" },
