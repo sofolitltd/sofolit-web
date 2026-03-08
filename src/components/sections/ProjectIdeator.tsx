@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { projectIdeation, type ProjectIdeationOutput } from "@/ai/flows/project-ideation";
-import { Loader2, Sparkles, Send, BrainCircuit, CheckCircle2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Loader2, Sparkles, Send, BrainCircuit, CheckCircle2, Code2 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const ProjectIdeator = () => {
@@ -132,5 +132,3 @@ export const ProjectIdeator = () => {
     </section>
   );
 };
-
-import { Code2 } from "lucide-react";
