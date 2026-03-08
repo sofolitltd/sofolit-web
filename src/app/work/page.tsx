@@ -3,11 +3,13 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
 import { ExternalLink, ArrowRight, Star, Calendar } from "lucide-react";
 
 const portfolioItems = [
   {
+    slug: "apex-fintech",
     title: "Apex Fintech",
     category: "Mobile & Web",
     desc: "A comprehensive banking solution for modern nomads. Features high-security transactions and real-time exchange rates.",
@@ -16,6 +18,7 @@ const portfolioItems = [
     results: "30% increase in user retention"
   },
   {
+    slug: "nova-health",
     title: "Nova Health",
     category: "Mobile App",
     desc: "AI-driven wellness tracker that helps users maintain healthy habits through gamification and community.",
@@ -24,6 +27,7 @@ const portfolioItems = [
     results: "50k+ active monthly users"
   },
   {
+    slug: "nexus-saas",
     title: "Nexus SaaS",
     category: "Web Platform",
     desc: "Enterprise-grade resource management tool designed for small to medium software agencies.",
@@ -32,6 +36,7 @@ const portfolioItems = [
     results: "Cut operational costs by 20%"
   },
   {
+    slug: "community-connect",
     title: "Community Connect",
     category: "Social Platform",
     desc: "Hyper-local social network for neighborhood safety and event planning. Secure and private.",
@@ -58,7 +63,7 @@ export default function WorkPage() {
       <section className="container px-4 mx-auto mb-32">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {portfolioItems.map((item, idx) => (
-            <div key={idx} className="group space-y-6">
+            <Link key={idx} href={`/work/${item.slug}`} className="group space-y-6 block outline-none">
               <div className="relative aspect-[16/10] rounded-3xl overflow-hidden glass-card border-white/5 shadow-2xl">
                 <Image 
                   src={item.image} 
@@ -68,9 +73,9 @@ export default function WorkPage() {
                   data-ai-hint="project dashboard app"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
-                  <button className="flex items-center gap-2 text-white font-bold bg-primary px-6 py-3 rounded-full hover:bg-primary/90 transition-colors">
+                  <div className="flex items-center gap-2 text-white font-bold bg-primary px-6 py-3 rounded-full hover:bg-primary/90 transition-colors">
                     View Case Study <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </div>
                 </div>
               </div>
               
@@ -78,7 +83,7 @@ export default function WorkPage() {
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-primary font-bold uppercase tracking-widest text-xs mb-1">{item.category}</p>
-                    <h2 className="text-3xl font-black tracking-tight">{item.title}</h2>
+                    <h2 className="text-3xl font-black tracking-tight group-hover:text-primary transition-colors">{item.title}</h2>
                   </div>
                   <div className="flex gap-2">
                     {item.tags.map(tag => (
@@ -96,7 +101,7 @@ export default function WorkPage() {
                   <span>Result: {item.results}</span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
