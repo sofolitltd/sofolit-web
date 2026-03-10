@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from "react";
@@ -78,23 +77,6 @@ export default function BlogPage() {
               </Link>
             );
           })}
-        </div>
-      </section>
-
-      <section className="bg-muted/30 py-24 border-y border-border">
-        <div className="container px-4 mx-auto max-w-4xl text-center space-y-8">
-          <h2 className="text-3xl md:text-4xl font-black tracking-tight">Stay Ahead of the Curve</h2>
-          <p className="text-muted-foreground">Subscribe to our monthly newsletter for curated engineering tips and growth strategies delivered straight to your inbox.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <input 
-              type="email" 
-              placeholder="Enter your email" 
-              className="px-6 py-4 rounded-xl bg-background border border-border focus:ring-2 focus:ring-primary outline-none min-w-[300px]"
-            />
-            <button className="px-8 py-4 rounded-xl bg-primary text-white font-bold hover:shadow-lg transition-all">
-              Join 5,000+ Founders
-            </button>
-          </div>
         </div>
       </section>
 
