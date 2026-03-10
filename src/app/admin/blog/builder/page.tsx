@@ -19,7 +19,9 @@ import {
   X,
   Info,
   Tag as TagIcon,
-  Plus
+  Plus,
+  ChevronRight,
+  Check
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -149,7 +151,7 @@ export default function BlogBuilderPage() {
         content,
         isPublished,
         featuredImage: finalImageUrl,
-        categoriesData: selectedCategoryIds, // Updated property name
+        categoriesData: selectedCategoryIds,
         tags: tags,
         author: "Md Asifuzzaman Reyad",
       });
@@ -181,6 +183,37 @@ export default function BlogBuilderPage() {
 
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter(t => t !== tagToRemove));
+  };
+
+  const renderHierarchicalCategories = (parentId: number | null = null, level = 0) => {
+    return dbCategories
+      .filter(cat => cat.parentId === parentId)
+      .map(cat => (
+        <React.Fragment key={cat.id}>
+          <div 
+            onClick={() => toggleCategory(cat.id)}
+            className={cn(
+              "flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all border border-transparent",
+              selectedCategoryIds.includes(cat.id) 
+                ? "bg-blue-50 border-blue-100 text-blue-700" 
+                : "hover:bg-slate-50 text-slate-600"
+            )}
+            style={{ marginLeft: `${level * 16}px` }}
+          >
+            <div className={cn(
+              "w-4 h-4 rounded border flex items-center justify-center transition-colors",
+              selectedCategoryIds.includes(cat.id) ? "bg-blue-600 border-blue-600" : "border-slate-300 bg-white"
+            )}>
+              {selectedCategoryIds.includes(cat.id) && <Check className="w-3 h-3 text-white" strokeWidth={4} />}
+            </div>
+            {level > 0 && <ChevronRight className="w-3 h-3 text-slate-300 shrink-0" />}
+            <span className="text-[11px] font-bold uppercase tracking-wider truncate">
+              {cat.name}
+            </span>
+          </div>
+          {renderHierarchicalCategories(cat.id, level + 1)}
+        </React.Fragment>
+      ));
   };
 
   const toolbarItems = [
@@ -239,7 +272,7 @@ export default function BlogBuilderPage() {
                   placeholder="The Future of Product Strategy..." 
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="h-16 bg-white border-slate-200 focus:border-blue-500/30 text-2xl font-black rounded-xl"
+                  className="h-16 bg-white border-slate-200 focus:border-blue-500/30 text-2xl font-black rounded-xl shadow-sm"
                 />
               </div>
 
@@ -273,7 +306,7 @@ export default function BlogBuilderPage() {
                 <Label className="text-[11px] font-black uppercase tracking-widest text-slate-400">Brief Excerpt</Label>
                 <Textarea 
                   placeholder="A short summary for search results and social sharing." 
-                  className="min-h-[120px] bg-white border-slate-200 text-sm rounded-xl p-5"
+                  className="min-h-[120px] bg-white border-slate-200 text-sm rounded-xl p-5 shadow-sm"
                   value={excerpt}
                   onChange={(e) => setExcerpt(e.target.value)}
                 />
@@ -293,37 +326,26 @@ export default function BlogBuilderPage() {
             </Card>
 
             <Card className="border-slate-200 shadow-sm rounded-2xl">
-              <CardHeader className="p-6 pb-2 flex items-center justify-between">
+              <CardHeader className="p-6 pb-2 flex items-center justify-between border-b border-slate-50">
                 <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">Taxonomy</CardTitle>
                 <Link href="/admin/blog/categories" className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-1">
                   <Plus className="w-3 h-3" /> Manage
                 </Link>
               </CardHeader>
               <CardContent className="p-6 space-y-8">
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <Label className="text-[10px] font-black text-slate-500 flex items-center gap-2">
                     <List className="w-3 h-3" /> CATEGORIES
                   </Label>
-                  <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                  <div className="border border-slate-100 rounded-xl bg-slate-50/30 max-h-[400px] overflow-y-auto p-2 custom-scrollbar space-y-1">
                     {dbCategories.length === 0 ? (
-                      <p className="text-[10px] text-slate-400 font-bold uppercase text-center py-4 border border-dashed rounded-xl">No categories found</p>
-                    ) : dbCategories.map((cat) => (
-                      <div 
-                        key={cat.id} 
-                        onClick={() => toggleCategory(cat.id)}
-                        className={cn(
-                          "flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer",
-                          selectedCategoryIds.includes(cat.id) ? "bg-blue-50 border-blue-100 text-blue-600" : "bg-white border-slate-100 text-slate-500"
-                        )}
-                      >
-                        <span className="text-[10px] font-black uppercase tracking-widest">{cat.name}</span>
-                        {selectedCategoryIds.includes(cat.id) && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
-                      </div>
-                    ))}
+                      <p className="text-[10px] text-slate-400 font-bold uppercase text-center py-10 border border-dashed rounded-xl">No categories found</p>
+                    ) : renderHierarchicalCategories()}
                   </div>
+                  <p className="text-[9px] text-slate-400 font-medium italic">Select one or more categories for this article.</p>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-3 pt-4 border-t border-slate-50">
                   <Label className="text-[10px] font-black text-slate-500 flex items-center gap-2">
                     <TagIcon className="w-3 h-3" /> TAGS
                   </Label>
@@ -333,14 +355,14 @@ export default function BlogBuilderPage() {
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={addTag}
-                      className="h-10 bg-slate-50/50 border-slate-100 text-xs rounded-lg"
+                      className="h-10 bg-slate-50/50 border-slate-100 text-xs rounded-lg shadow-inner"
                     />
                     <div className="flex flex-wrap gap-2">
                       {tags.map((tag) => (
                         <Badge 
                           key={tag} 
                           variant="secondary"
-                          className="bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-[10px] font-bold gap-2 cursor-default group"
+                          className="bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-[10px] font-bold gap-2 cursor-default group border border-slate-200"
                         >
                           {tag}
                           <X 
@@ -365,7 +387,7 @@ export default function BlogBuilderPage() {
                   <Input 
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
-                    className="h-10 bg-slate-50/50 border-slate-100 text-xs font-mono text-slate-500 rounded-lg"
+                    className="h-10 bg-slate-50/50 border-slate-100 text-xs font-mono text-slate-500 rounded-lg shadow-inner"
                   />
                 </div>
               </CardContent>
@@ -398,7 +420,7 @@ export default function BlogBuilderPage() {
                 <div className="relative">
                   <div 
                     onClick={() => fileInputRef.current?.click()}
-                    className="relative aspect-video rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/20 flex flex-col items-center justify-center cursor-pointer group hover:bg-blue-50/20 hover:border-blue-100 transition-all overflow-hidden"
+                    className="relative aspect-video rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/20 flex flex-col items-center justify-center cursor-pointer group hover:bg-blue-50/20 hover:border-blue-100 transition-all overflow-hidden shadow-inner"
                   >
                     {pendingImage || featuredImage ? (
                       <Image 
