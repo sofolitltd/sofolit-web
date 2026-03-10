@@ -1,11 +1,15 @@
-
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is not defined');
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  console.warn('DATABASE_URL is not defined. Database operations will fail.');
 }
 
-const sql = neon(process.env.DATABASE_URL);
+// We use a safe fallback or a known problematic placeholder check to avoid low-level crashes
+const isPlaceholder = databaseUrl?.includes('ep-cool-snowflake');
+const sql = neon(databaseUrl && !isPlaceholder ? databaseUrl : "postgres://placeholder:password@localhost:5432/db");
+
 export const db = drizzle(sql, { schema });

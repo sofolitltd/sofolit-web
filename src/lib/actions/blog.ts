@@ -26,12 +26,14 @@ export async function saveBlogPost(data: NewPost) {
 
     revalidatePath('/admin/blog');
     revalidatePath('/blog');
-    revalidatePath(`/blog/${data.slug}`);
+    if (data.slug) {
+      revalidatePath(`/blog/${data.slug}`);
+    }
     
     return { success: true };
   } catch (error: any) {
     console.error("Database Error:", error);
-    return { success: false, error: error.message };
+    return { success: false, error: error.message || "Failed to save blog post" };
   }
 }
 
@@ -43,7 +45,8 @@ export async function uploadBlogImage(base64Image: string) {
     const url = await uploadToCloudinary(base64Image, "sofolit");
     return { success: true, url };
   } catch (error: any) {
-    return { success: false, error: error.message };
+    console.error("Upload Error:", error);
+    return { success: false, error: error.message || "Failed to upload image" };
   }
 }
 
@@ -69,7 +72,7 @@ export async function getPublicPosts() {
       .where(eq(posts.isPublished, true))
       .orderBy(desc(posts.createdAt));
   } catch (error) {
-    console.error("Fetch Error:", error);
+    console.error("Fetch Public Posts Error:", error);
     return [];
   }
 }
@@ -78,6 +81,7 @@ export async function getPublicPosts() {
  * Fetch a single published post by slug.
  */
 export async function getPostBySlug(slug: string) {
+  if (!slug) return null;
   try {
     const results = await db.select()
       .from(posts)
@@ -85,7 +89,7 @@ export async function getPostBySlug(slug: string) {
       .limit(1);
     return results[0] || null;
   } catch (error) {
-    console.error("Fetch Error:", error);
+    console.error("Fetch Post By Slug Error:", error);
     return null;
   }
 }
@@ -123,6 +127,6 @@ export async function deletePost(id: number) {
     return { success: true };
   } catch (error: any) {
     console.error("Delete Error:", error);
-    return { success: false, error: error.message };
+    return { success: false, error: error.message || "Failed to delete post" };
   }
 }

@@ -21,11 +21,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const allPosts = await getPublicPosts();
   const allCategories = await getCategories();
-  const relatedPosts = allPosts.filter(p => p.slug !== slug).slice(0, 3);
+  const relatedPosts = (allPosts || []).filter(p => p.slug !== slug).slice(0, 3);
 
-  const calculateReadTime = (content: string) => {
+  const calculateReadTime = (content?: string | null) => {
+    if (!content) return 0;
     const wordsPerMinute = 200;
-    const words = content.split(/\s+/).length;
+    const words = content.trim().split(/\s+/).length;
     return Math.ceil(words / wordsPerMinute);
   };
 
@@ -41,12 +42,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     year: 'numeric' 
   }) : 'Recent';
 
-  const htmlContent = marked.parse(post.content || "");
+  const htmlContent = await marked.parse(post.content || "");
   
   // Handle dynamic categories from categoriesData
-  const categoryIds = post.categoriesData as number[] || [];
+  const categoryIds = Array.isArray(post.categoriesData) ? post.categoriesData as number[] : [];
   const activeCategories = allCategories.filter(c => categoryIds.includes(c.id));
-  const tags = post.tags as string[] || [];
+  const tags = Array.isArray(post.tags) ? post.tags as string[] : [];
 
   return (
     <main className="min-h-screen bg-background pt-32">
@@ -70,7 +71,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             )}
             <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
             <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-              <User className="w-3 h-3" /> {post.author}
+              <User className="w-3 h-3" /> {post.author || "Md Asifuzzaman Reyad"}
             </div>
           </div>
           
@@ -92,7 +93,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         <div className="relative aspect-[21/9] rounded-3xl overflow-hidden mb-16 border border-border shadow-2xl">
           <Image 
-            src={postImg.imageUrl} 
+            src={postImg.imageUrl || "https://picsum.photos/seed/post/1200/630"} 
             alt={post.title} 
             fill 
             className="object-cover"
@@ -144,7 +145,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   >
                     <div className="relative aspect-video rounded-2xl overflow-hidden border border-border">
                       <Image 
-                        src={relImg.imageUrl} 
+                        src={relImg.imageUrl || "https://picsum.photos/seed/related/800/600"} 
                         alt={related.title} 
                         fill 
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
