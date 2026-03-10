@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
@@ -11,11 +10,10 @@ import {
   Trash2, 
   Eye, 
   FileText,
-  Filter,
-  ArrowUpDown,
   CheckCircle2,
   Clock,
-  Loader2
+  Loader2,
+  Tag
 } from "lucide-react";
 import { 
   DropdownMenu, 
@@ -24,22 +22,29 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { getAdminPosts, deletePost } from "@/lib/actions/blog";
+import { getCategories } from "@/lib/actions/categories";
 import { useToast } from "@/hooks/use-toast";
-import type { Post } from "@/lib/db/schema";
+import type { Post, Category } from "@/lib/db/schema";
+import { Badge } from "@/components/ui/badge";
 
 export default function ManageBlogPage() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [dbCategories, setDbCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDeleting, startDelete] = useTransition();
   const { toast } = useToast();
 
   useEffect(() => {
-    async function loadPosts() {
-      const data = await getAdminPosts();
-      setPosts(data);
+    async function loadData() {
+      const [postsData, catsData] = await Promise.all([
+        getAdminPosts(),
+        getCategories()
+      ]);
+      setPosts(postsData);
+      setDbCategories(catsData);
       setLoading(false);
     }
-    loadPosts();
+    loadData();
   }, []);
 
   const handleDelete = async (id: number) => {
@@ -49,11 +54,21 @@ export default function ManageBlogPage() {
       const result = await deletePost(id);
       if (result.success) {
         setPosts(posts.filter(p => p.id !== id));
-        toast({ title: "Deleted", description: "Post has been removed from database." });
+        toast({ title: "Deleted", description: "Post and its assets have been removed." });
       } else {
         toast({ variant: "destructive", title: "Error", description: result.error });
       }
     });
+  };
+
+  const getCategoryNames = (postCategories: any) => {
+    const ids = Array.isArray(postCategories) ? postCategories : [];
+    if (ids.length === 0) return "Uncategorized";
+    
+    return dbCategories
+      .filter(c => ids.includes(c.id))
+      .map(c => c.name)
+      .join(", ");
   };
 
   return (
@@ -88,8 +103,8 @@ export default function ManageBlogPage() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-slate-100 text-[10px] uppercase font-black tracking-widest text-slate-400 bg-white">
-                <th className="px-8 py-4">Title</th>
-                <th className="px-8 py-4">Category</th>
+                <th className="px-8 py-4">Article</th>
+                <th className="px-8 py-4">Categories</th>
                 <th className="px-8 py-4">Status</th>
                 <th className="px-8 py-4">Date</th>
                 <th className="px-8 py-4 text-right">Actions</th>
@@ -113,28 +128,30 @@ export default function ManageBlogPage() {
                 <tr key={post.id} className="hover:bg-blue-50/30 transition-colors group">
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                      <div className="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors shrink-0">
                         <FileText className="w-5 h-5" />
                       </div>
-                      <div>
-                        <p className="font-bold text-sm text-slate-900">{post.title}</p>
+                      <div className="min-w-0">
+                        <p className="font-bold text-sm text-slate-900 truncate">{post.title}</p>
                         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{post.author}</span>
                       </div>
                     </div>
                   </td>
                   <td className="px-8 py-5">
-                    <span className="px-2 py-1 bg-slate-50 border border-slate-200 rounded text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                      {post.category}
-                    </span>
+                    <div className="flex flex-wrap gap-1 max-w-[200px]">
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate max-w-full">
+                        {getCategoryNames(post.categoriesData)}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-2">
                       {post.isPublished ? (
-                        <div className="flex items-center gap-1.5 text-green-600 font-bold text-xs">
+                        <div className="flex items-center gap-1.5 text-green-600 font-bold text-[10px] uppercase tracking-wider">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Published
                         </div>
                       ) : (
-                        <div className="flex items-center gap-1.5 text-amber-600 font-bold text-xs">
+                        <div className="flex items-center gap-1.5 text-amber-600 font-bold text-[10px] uppercase tracking-wider">
                           <Clock className="w-3.5 h-3.5" /> Draft
                         </div>
                       )}
@@ -161,8 +178,10 @@ export default function ManageBlogPage() {
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="bg-white border border-slate-200 shadow-xl p-1 min-w-[160px]">
-                          <DropdownMenuItem className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs">
-                            <Eye className="w-3.5 h-3.5" /> View Public
+                          <DropdownMenuItem asChild>
+                            <Link href={`/blog/${post.slug}`} target="_blank" className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs">
+                              <Eye className="w-3.5 h-3.5" /> View Public
+                            </Link>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
