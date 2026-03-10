@@ -1,59 +1,23 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
-import { Calendar, Clock, ChevronLeft, Share2, Bookmark, ArrowRight, User, Loader2 } from "lucide-react";
+import { Calendar, Clock, ChevronLeft, Share2, Bookmark, ArrowRight, User } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPostBySlug, getPublicPosts } from "@/lib/actions/blog";
-import type { Post } from "@/lib/db/schema";
+import { notFound } from "next/navigation";
 
-export default function BlogPostPage() {
-  const { slug } = useParams();
-  const [post, setPost] = useState<Post | null>(null);
-  const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadData() {
-      if (typeof slug !== 'string') return;
-      
-      const [postData, allPosts] = await Promise.all([
-        getPostBySlug(slug),
-        getPublicPosts()
-      ]);
-
-      setPost(postData);
-      setRelatedPosts(allPosts.filter(p => p.slug !== slug).slice(0, 3));
-      setLoading(false);
-    }
-    loadData();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <main className="min-h-screen flex flex-col items-center justify-center p-4">
-        <Loader2 className="w-10 h-10 animate-spin text-primary/30" />
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mt-4">Retrieving Insight...</p>
-      </main>
-    );
-  }
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  
+  const post = await getPostBySlug(slug);
 
   if (!post) {
-    return (
-      <main className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center space-y-6">
-          <h1 className="text-4xl font-black">Article Not Found</h1>
-          <p className="text-muted-foreground">The post you are looking for doesn't exist or has been moved.</p>
-          <Link href="/blog" className="inline-flex items-center gap-2 text-primary font-bold">
-            <ChevronLeft className="w-4 h-4" /> Back to Blog
-          </Link>
-        </div>
-      </main>
-    );
+    notFound();
   }
+
+  const allPosts = await getPublicPosts();
+  const relatedPosts = allPosts.filter(p => p.slug !== slug).slice(0, 3);
 
   const calculateReadTime = (content: string) => {
     const wordsPerMinute = 200;
@@ -73,7 +37,7 @@ export default function BlogPostPage() {
     <main className="min-h-screen bg-background pt-32">
       <div className="container px-4 mx-auto max-w-4xl">
         <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors mb-12 group">
-          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Journal
+          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Handbook
         </Link>
 
         <div className="space-y-8 mb-16">
@@ -127,7 +91,7 @@ export default function BlogPostPage() {
         {relatedPosts.length > 0 && (
           <div className="pt-24 border-t border-border mb-32">
             <div className="flex items-center justify-between mb-12">
-              <h2 className="text-3xl font-black tracking-tight">More from the Journal</h2>
+              <h2 className="text-3xl font-black tracking-tight">More from the Handbook</h2>
               <Link href="/blog" className="text-sm font-bold text-primary flex items-center gap-2 hover:underline">
                 View All <ArrowRight className="w-4 h-4" />
               </Link>

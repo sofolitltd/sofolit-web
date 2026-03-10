@@ -1,26 +1,13 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
-import { Calendar, Clock, ArrowRight, Loader2 } from "lucide-react";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPublicPosts } from "@/lib/actions/blog";
-import type { Post } from "@/lib/db/schema";
 
-export default function BlogPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadPosts() {
-      const data = await getPublicPosts();
-      setPosts(data);
-      setLoading(false);
-    }
-    loadPosts();
-  }, []);
+export default async function BlogPage() {
+  const posts = await getPublicPosts();
 
   const calculateReadTime = (content: string) => {
     const wordsPerMinute = 200;
@@ -43,12 +30,7 @@ export default function BlogPage() {
       </div>
 
       <section className="container px-4 mx-auto mb-32">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 animate-spin text-primary/30" />
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground mt-4">Consulting Database...</p>
-          </div>
-        ) : posts.length === 0 ? (
+        {posts.length === 0 ? (
           <div className="text-center py-20 border-2 border-dashed border-border rounded-[3rem]">
             <p className="text-muted-foreground font-bold uppercase tracking-widest mb-4">No articles found in the journal yet.</p>
             <Link href="/admin/login" className="text-xs text-primary font-bold hover:underline">
