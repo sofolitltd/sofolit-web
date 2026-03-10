@@ -4,43 +4,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const projects = [
-  {
-    title: "Apex Fintech",
-    category: "Web Application",
-    image: "https://picsum.photos/seed/sofol2/800/600",
-    hint: "dashboard ui",
-    slug: "apex-fintech",
-  },
-  {
-    title: "Nova Mobile",
-    category: "Mobile App",
-    image: "https://picsum.photos/seed/sofol3/800/600",
-    hint: "mobile app",
-    slug: "nova-health",
-  },
-  {
-    title: "Nexus SaaS",
-    category: "Desktop Platform",
-    image: "https://picsum.photos/seed/sofol4/800/600",
-    hint: "saas web",
-    slug: "nexus-saas",
-  },
-  {
-    title: "Community Connect",
-    category: "Social Platform",
-    image: "https://picsum.photos/seed/sofol5/800/600",
-    hint: "community app",
-    slug: "community-connect",
-  },
-];
+import { projectsData } from "@/lib/projects-data";
 
 export const Portfolio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  
+  // Display top 4 projects for the home page 2x2 grid
+  const homeProjects = projectsData.slice(0, 4);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -75,7 +48,7 @@ export const Portfolio = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, idx) => (
+          {homeProjects.map((project, idx) => (
             <Link 
               key={idx}
               href={`/projects/${project.slug}`}
@@ -86,11 +59,11 @@ export const Portfolio = () => {
               style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
             >
               <Image 
-                src={project.image}
+                src={project.imageUrl}
                 alt={project.title}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
-                data-ai-hint={project.hint}
+                data-ai-hint={project.imageHint}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-100 transition-opacity" />
               

@@ -43,7 +43,7 @@ export const FounderStory = () => {
                     fill
                     className="object-cover"
                   />
-                  {/* Premium Glass Overlay */}
+                  {/* Premium Identity Overlay */}
                   <div className="absolute bottom-6 left-6 right-6 p-6 glass-card bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
                     <h4 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Md Asifuzzaman Reyad</h4>
                     <p className="text-primary font-bold text-xs uppercase tracking-widest mt-1">Founder, Sofol IT</p>
@@ -58,7 +58,7 @@ export const FounderStory = () => {
               isVisible && "animate-slide-in-right"
             )} style={{ animationDelay: '0.2s' }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20">
-                Our Story
+                Founder Story
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-tight">
                 Built on a <br />
@@ -70,7 +70,7 @@ export const FounderStory = () => {
                   Sofol IT started with a simple observation: too many great ideas were dying in the gap between a vision and a working product.
                 </p>
                 <p>
-                  We don't just write code; we partner with founders to refine their vision, build with technical excellence, and scale their brands in a digital-first world.
+                  I don't just write code; I partner with founders to refine their vision, build with technical excellence, and scale their brands in a digital-first world.
                 </p>
               </div>
 
