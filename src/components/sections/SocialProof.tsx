@@ -1,38 +1,58 @@
-
 "use client";
 
 import React from "react";
 import { Star, Quote } from "lucide-react";
-
-const techStack = [
-  "Flutter", "Firebase", "AdMob", "Play Console", "FCM Notification", 
-  "Riverpod", "Next.js", "Vercel", "Docker", "VPS", "Go", 
-  "E-commerce", "Health App", "HRM", "Community App"
-];
-
-const testimonials = [
-  {
-    name: "James Chen",
-    role: "CTO @ Nexus",
-    content: "Sofol IT transformed our vision into a scalable reality. Their attention to detail in UI/UX and backend performance is unmatched.",
-    stars: 5,
-  },
-  {
-    name: "Sarah Miller",
-    role: "Founder @ NovaHealth",
-    content: "Working with them was the best decision for our startup. The process was transparent, and the results exceeded expectations.",
-    stars: 5,
-  },
-];
+import { projectsData } from "@/lib/projects-data";
 
 export const SocialProof = () => {
+  const techStack = projectsData.map(p => p.title);
+
+  const testimonials = [
+    {
+      name: "Afjal Hossain Hrody",
+      role: "Wellbeing Clinic",
+      content: "The mental health and wellbeing platform transformed how we manage clinic psychology support. The cross-platform accessibility is outstanding.",
+      stars: 5,
+    },
+    {
+      name: "Abdullah Al Mamun",
+      role: "Blood Finder App",
+      content: "A life-saving application that connects donors with those in need instantly. The real-time notification system is perfectly implemented.",
+      stars: 5,
+    },
+    {
+      name: "Abdullah Omer Himel",
+      role: "The Forge",
+      content: "Our new portfolio site is stunning. The performance and CMS integration make updating our work a breeze. Highly professional result.",
+      stars: 5,
+    },
+    {
+      name: "Ashikur Rahman Ashik",
+      role: "Petelements BD",
+      content: "The e-commerce experience is seamless. Our pet supply business saw immediate growth after launching the custom web shop.",
+      stars: 5,
+    },
+    {
+      name: "Arif Rahman",
+      role: "Abrar Shop",
+      content: "Robust single-vendor e-commerce with flawless bKash integration. The state management and performance are top-tier.",
+      stars: 5,
+    },
+    {
+      name: "Shahriar Rahman",
+      role: "Priyo Banskhali",
+      content: "The community app has brought residents together. Local news, events, and business directories are all managed perfectly.",
+      stars: 5,
+    },
+  ];
+
   return (
     <section className="py-24 bg-background overflow-hidden">
       <div className="mb-24 border-y border-border py-12 bg-muted/10 relative">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
         
-        <div className="marquee-content flex whitespace-nowrap">
+        <div className="marquee-content-reverse flex whitespace-nowrap">
           {[...techStack, ...techStack, ...techStack].map((tech, idx) => (
             <span 
               key={idx}
@@ -48,11 +68,11 @@ export const SocialProof = () => {
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Trusted by Innovators</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Don't just take our word for it. Here is what our partners have to say about working with Sofol IT.
+            Real feedback from partners we've helped launch and scale.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((t, idx) => (
             <div 
               key={idx}
@@ -64,12 +84,12 @@ export const SocialProof = () => {
                 ))}
               </div>
               <Quote className="w-16 h-16 text-primary/5 absolute top-8 right-8 group-hover:text-primary/10 transition-colors" />
-              <p className="text-xl md:text-2xl font-medium mb-8 leading-relaxed italic relative z-10">
+              <p className="text-xl font-medium mb-8 leading-relaxed italic relative z-10">
                 "{t.content}"
               </p>
               <div>
                 <h4 className="font-bold text-lg">{t.name}</h4>
-                <p className="text-muted-foreground text-sm font-medium">{t.role}</p>
+                <p className="text-muted-foreground text-sm font-black uppercase tracking-widest">{t.role}</p>
               </div>
             </div>
           ))}
