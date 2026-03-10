@@ -26,7 +26,7 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {projectsData.map((item, idx) => (
             <Link key={idx} href={`/projects/${item.slug}`} className="group space-y-6 block outline-none">
-              <div className="relative aspect-[16/10] rounded-3xl overflow-hidden glass-card border-white/5 shadow-2xl">
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden glass-card border-white/5 shadow-2xl">
                 <Image 
                   src={item.imageUrl} 
                   alt={item.title} 

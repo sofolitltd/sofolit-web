@@ -53,7 +53,7 @@ export const Portfolio = () => {
               key={idx}
               href={`/projects/${project.slug}`}
               className={cn(
-                "group relative rounded-[3rem] overflow-hidden aspect-video glass-card opacity-0 block border border-border/50 shadow-2xl",
+                "group relative rounded-[3rem] overflow-hidden aspect-[4/3] glass-card opacity-0 block border border-border/50 shadow-2xl",
                 isVisible && "animate-fade-in-up"
               )}
               style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
