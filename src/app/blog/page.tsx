@@ -37,7 +37,7 @@ export default function BlogPage() {
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
           The <span className="text-gradient">Founder's</span> Handbook
         </h1>
-        <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
+        <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
           Actionable strategies on **MVP development**, **SaaS scaling**, and **premium product strategy** tailored for the modern solo entrepreneur.
         </p>
       </div>
@@ -58,7 +58,6 @@ export default function BlogPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => {
-              // Fallback to placeholder if featuredImage id not found
               const postImg = PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
               const readTime = calculateReadTime(post.content);
               
@@ -78,7 +77,7 @@ export default function BlogPage() {
                     />
                     <div className="absolute top-4 left-4">
                       <span className="px-3 py-1 rounded-full bg-background/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest border border-border">
-                        {post.category || "Uncategorized"}
+                        {post.category || "Strategy"}
                       </span>
                     </div>
                   </div>

@@ -4,6 +4,7 @@ import { Services } from "@/components/sections/Services";
 import { Portfolio } from "@/components/sections/Portfolio";
 import { FounderStory } from "@/components/sections/FounderStory";
 import { SocialProof } from "@/components/sections/SocialProof";
+import { LatestBlog } from "@/components/sections/LatestBlog";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
 
@@ -16,6 +17,7 @@ export default function Home() {
       <FounderStory />
       <Portfolio />
       <SocialProof />
+      <LatestBlog />
       <Contact />
       <Footer />
     </main>
