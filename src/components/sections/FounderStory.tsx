@@ -26,29 +26,34 @@ export const FounderStory = () => {
   return (
     <section id="story" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
       <div className="container px-4 mx-auto">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             {/* Image Column */}
             <div className={cn(
-              "lg:col-span-4 flex justify-center lg:justify-end opacity-0",
+              "lg:col-span-5 flex justify-center lg:justify-start opacity-0",
               isVisible && "animate-slide-in-left"
             )}>
-              <div className="relative">
-                <div className="absolute -inset-4 bg-primary/5 blur-2xl rounded-full" />
-                <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-[2.5rem] overflow-hidden bg-white border-8 border-white shadow-2xl">
+              <div className="relative group w-full max-w-md">
+                <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full opacity-50" />
+                <div className="relative aspect-[4/5] w-full rounded-[3rem] overflow-hidden bg-white border-8 border-white shadow-2xl">
                   <Image
                     src="/images/md-asifuzzaman-reyad.png"
                     alt="Md Asifuzzaman Reyad - Founder of Sofol IT"
                     fill
                     className="object-cover"
                   />
+                  {/* Premium Overlay */}
+                  <div className="absolute bottom-6 left-6 right-6 p-6 glass-card bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
+                    <h4 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Md Asifuzzaman Reyad</h4>
+                    <p className="text-primary font-bold text-xs uppercase tracking-widest mt-1">Founder, Sofol IT</p>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Content Column */}
             <div className={cn(
-              "lg:col-span-8 space-y-8 text-center lg:text-left opacity-0",
+              "lg:col-span-7 space-y-8 text-center lg:text-left opacity-0",
               isVisible && "animate-slide-in-right"
             )} style={{ animationDelay: '0.2s' }}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20">
@@ -64,7 +69,7 @@ export const FounderStory = () => {
                   Sofol IT started with a simple observation: too many great ideas were dying in the gap between a vision and a working product.
                 </p>
                 <p>
-                  I founded this agency to be the bridge. We don't just write code; we partner with founders to refine their vision, build with technical excellence, and scale their brands in a digital-first world.
+                  We don't just write code; we partner with founders to refine their vision, build with technical excellence, and scale their brands in a digital-first world.
                 </p>
               </div>
 
@@ -73,10 +78,6 @@ export const FounderStory = () => {
                 <p className="text-xl md:text-2xl font-medium text-foreground leading-relaxed">
                   "Our mission is to empower the next generation of brands by making high-fidelity product development accessible and efficient."
                 </p>
-                <div className="mt-8 not-italic">
-                  <h4 className="text-xl font-black tracking-tight">Md Asifuzzaman Reyad</h4>
-                  <p className="text-primary font-bold text-sm uppercase tracking-widest mt-1">Founder, Sofol IT</p>
-                </div>
               </div>
             </div>
           </div>
