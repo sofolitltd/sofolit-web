@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useTransition } from "react";
-import { Plus, Trash2, Edit2, ChevronRight, FolderTree, Loader2, Save } from "lucide-react";
+import { Plus, Trash2, Edit2, ChevronRight, FolderTree, Loader2, Save, X } from "lucide-react";
 import { getCategories, saveCategory, deleteCategory } from "@/lib/actions/categories";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

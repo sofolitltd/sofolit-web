@@ -8,7 +8,6 @@ import {
   ImageIcon, 
   Loader2,
   Minus,
-  Type,
   Bold,
   Italic,
   Heading1,

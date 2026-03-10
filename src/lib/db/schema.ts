@@ -9,7 +9,7 @@ export const posts = pgTable("posts", {
   featuredImage: text("featured_image"),
   isPublished: boolean("is_published").default(false),
   categoryIds: jsonb("category_ids").default([]), // Array of category IDs
-  author: varchar("author", { length: 100 }).default("Admin"),
+  author: varchar("author", { length: 100 }).default("Md Asifuzzaman Reyad"),
   tags: jsonb("tags").default([]),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -20,7 +20,7 @@ export const categories = pgTable("categories", {
   name: varchar("name", { length: 100 }).notNull(),
   slug: varchar("slug", { length: 100 }).notNull().unique(),
   description: text("description"),
-  parentId: integer("parent_id"), // For subcategories
+  parentId: integer("parent_id"), // For WordPress-style subcategories
   createdAt: timestamp("created_at").defaultNow(),
 });
 
