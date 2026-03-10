@@ -50,7 +50,10 @@ export default function BlogPage() {
           </div>
         ) : posts.length === 0 ? (
           <div className="text-center py-20 border-2 border-dashed border-border rounded-[3rem]">
-            <p className="text-muted-foreground font-bold uppercase tracking-widest">No articles found in the journal yet.</p>
+            <p className="text-muted-foreground font-bold uppercase tracking-widest mb-4">No articles found in the journal yet.</p>
+            <Link href="/admin/login" className="text-xs text-primary font-bold hover:underline">
+              Go to Admin to add your first article →
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
