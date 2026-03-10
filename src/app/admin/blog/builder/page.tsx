@@ -18,7 +18,8 @@ import {
   Code,
   Quote,
   List,
-  Link as LinkIcon
+  Link as LinkIcon,
+  X
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -46,6 +47,7 @@ export default function BlogBuilderPage() {
   const [content, setContent] = useState("");
   const [isPublished, setIsPublished] = useState(false);
   const [featuredImage, setFeaturedImage] = useState("");
+  const [pendingImage, setPendingImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
   const [categories, setCategories] = useState([
@@ -53,7 +55,6 @@ export default function BlogBuilderPage() {
     { id: "2", name: "Engineering", checked: false },
     { id: "3", name: "Growth", checked: false },
   ]);
-  const [newCategory, setNewCategory] = useState("");
 
   useEffect(() => {
     const generatedSlug = title
@@ -84,22 +85,13 @@ export default function BlogBuilderPage() {
     }, 0);
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIsUploading(true);
     const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64 = reader.result as string;
-      const result = await uploadBlogImage(base64);
-      if (result.success && result.url) {
-        setFeaturedImage(result.url);
-        toast({ title: "Image Uploaded", description: "Your featured image is ready." });
-      } else {
-        toast({ variant: "destructive", title: "Upload Failed", description: result.error });
-      }
-      setIsUploading(false);
+    reader.onloadend = () => {
+      setPendingImage(reader.result as string);
     };
     reader.readAsDataURL(file);
   };
@@ -117,31 +109,40 @@ export default function BlogBuilderPage() {
     const selectedCategory = categories.find(c => c.checked)?.name || "Uncategorized";
 
     startTransition(async () => {
+      let finalImageUrl = featuredImage;
+
+      // Enterprise Approach: Upload only on Save to avoid storage bloat
+      if (pendingImage) {
+        setIsUploading(true);
+        const uploadResult = await uploadBlogImage(pendingImage);
+        if (uploadResult.success && uploadResult.url) {
+          finalImageUrl = uploadResult.url;
+        } else {
+          toast({ variant: "destructive", title: "Upload Failed", description: uploadResult.error });
+          setIsUploading(false);
+          return;
+        }
+        setIsUploading(false);
+      }
+
       const result = await saveBlogPost({
         title,
         slug,
         excerpt,
         content,
         isPublished,
-        featuredImage,
+        featuredImage: finalImageUrl,
         category: selectedCategory,
         author: "Md Asifuzzaman Reyad",
       });
 
       if (result.success) {
-        toast({ title: "Article Saved", description: "Your changes have been synced to the database." });
+        toast({ title: "Article Saved", description: "Content and media have been synchronized." });
         router.push("/admin/blog");
       } else {
         toast({ variant: "destructive", title: "Persistence Error", description: result.error });
       }
     });
-  };
-
-  const handleAddCategory = () => {
-    if (newCategory.trim()) {
-      setCategories([...categories, { id: Math.random().toString(), name: newCategory.trim(), checked: false }]);
-      setNewCategory("");
-    }
   };
 
   const toggleCategory = (id: string) => {
@@ -190,8 +191,8 @@ export default function BlogBuilderPage() {
             disabled={isPending || isUploading}
             className="bg-slate-900 text-white hover:bg-black font-black text-xs px-8 h-10 gap-2 rounded-full shadow-lg transition-all active:scale-95"
           >
-            {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
-            {isPending ? "Syncing..." : "Save Changes"}
+            {isPending || isUploading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
+            {isUploading ? "Uploading Assets..." : isPending ? "Syncing DB..." : "Save Changes"}
           </Button>
         </div>
       </div>
@@ -304,25 +305,50 @@ export default function BlogBuilderPage() {
                   ref={fileInputRef} 
                   className="hidden" 
                   accept="image/*"
-                  onChange={handleImageUpload}
+                  onChange={handleFileSelect}
                 />
-                <div 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="relative aspect-video rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/20 flex flex-col items-center justify-center cursor-pointer group hover:bg-blue-50/20 hover:border-blue-100 transition-all overflow-hidden"
-                >
-                  {featuredImage ? (
-                    <Image src={featuredImage} alt="Preview" fill className="object-cover" />
-                  ) : (
-                    <>
-                      <div className="p-4 rounded-full bg-white shadow-sm mb-3 group-hover:scale-110 transition-transform">
-                        {isUploading ? <Loader2 className="w-5 h-5 animate-spin text-blue-600" /> : <ImageIcon className="w-5 h-5 text-slate-300 group-hover:text-blue-600" />}
-                      </div>
-                      <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest">
-                        {isUploading ? "Uploading to Cloudinary..." : "Select Featured Image"}
-                      </p>
-                    </>
+                <div className="relative">
+                  <div 
+                    onClick={() => fileInputRef.current?.click()}
+                    className="relative aspect-video rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/20 flex flex-col items-center justify-center cursor-pointer group hover:bg-blue-50/20 hover:border-blue-100 transition-all overflow-hidden"
+                  >
+                    {pendingImage || featuredImage ? (
+                      <Image 
+                        src={pendingImage || featuredImage} 
+                        alt="Preview" 
+                        fill 
+                        className="object-cover" 
+                        unoptimized={!!pendingImage}
+                      />
+                    ) : (
+                      <>
+                        <div className="p-4 rounded-full bg-white shadow-sm mb-3 group-hover:scale-110 transition-transform">
+                          <ImageIcon className="w-5 h-5 text-slate-300 group-hover:text-blue-600" />
+                        </div>
+                        <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest text-center px-4">
+                          Select Featured Image
+                        </p>
+                      </>
+                    )}
+                  </div>
+                  {(pendingImage || featuredImage) && (
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPendingImage(null);
+                        setFeaturedImage("");
+                      }}
+                      className="absolute -top-2 -right-2 p-1.5 bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 transition-colors z-10"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
                   )}
                 </div>
+                {(pendingImage) && (
+                  <p className="mt-3 text-[9px] text-blue-600 font-bold uppercase text-center animate-pulse">
+                    Image selected. Will upload on save.
+                  </p>
+                )}
               </CardContent>
             </Card>
           </div>
