@@ -1,3 +1,4 @@
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,6 +7,7 @@ import { Calendar, Clock, ChevronLeft, Share2, Bookmark, ArrowRight, User } from
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPostBySlug, getPublicPosts } from "@/lib/actions/blog";
 import { notFound } from "next/navigation";
+import { marked } from "marked";
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -32,6 +34,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     day: 'numeric', 
     year: 'numeric' 
   }) : 'Recent';
+
+  // Convert Markdown to HTML
+  const htmlContent = marked.parse(post.content || "");
 
   return (
     <main className="min-h-screen bg-background pt-32">
@@ -84,7 +89,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
           prose-pre:bg-slate-900 prose-pre:rounded-2xl prose-pre:p-6 prose-pre:border prose-pre:border-white/10
           prose-code:text-primary prose-code:bg-primary/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
         {/* Discovery Section - Related Posts */}
