@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Quote } from "lucide-react";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { cn } from "@/lib/utils";
 
 export const FounderStory = () => {
@@ -24,49 +23,39 @@ export const FounderStory = () => {
     return () => observer.disconnect();
   }, []);
 
-  const founderImg = PlaceHolderImages.find(img => img.id === "founder-portrait");
-
   return (
     <section id="story" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
       <div className="container px-4 mx-auto">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-5xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             <div className={cn(
-              "relative group opacity-0",
+              "relative flex-shrink-0 opacity-0",
               isVisible && "animate-slide-in-left"
             )}>
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary to-secondary opacity-20 blur-2xl group-hover:opacity-30 transition-opacity" />
-              <div className="relative rounded-3xl overflow-hidden aspect-[3/4] glass-card border-white/10">
-                {founderImg && (
-                  <Image
-                    src={founderImg.imageUrl}
-                    alt="Md Asifuzzaman Reyad - Founder of Sofol IT"
-                    fill
-                    className="object-cover"
-                    data-ai-hint={founderImg.imageHint}
-                  />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-                <div className="absolute bottom-8 left-8">
-                  <h4 className="text-2xl font-bold">Md Asifuzzaman Reyad</h4>
-                  <p className="text-primary font-medium">Founder</p>
-                </div>
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-secondary/20 blur-3xl rounded-full" />
+              <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden bg-white border-[8px] border-background shadow-2xl">
+                <Image
+                  src="/images/md-asifuzzaman-reyad.png"
+                  alt="Md Asifuzzaman Reyad - Founder of Sofol IT"
+                  fill
+                  className="object-cover"
+                />
               </div>
             </div>
 
             <div className={cn(
-              "space-y-8 opacity-0",
+              "flex-1 space-y-8 text-center lg:text-left opacity-0",
               isVisible && "animate-slide-in-right"
             )}>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-xs font-bold uppercase tracking-widest text-primary border-primary/20">
                 Our Story
               </div>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-tight">
                 Built on a <br />
                 <span className="text-gradient">Passion for Quality.</span>
               </h2>
               
-              <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
+              <div className="space-y-6 text-muted-foreground text-lg leading-relaxed max-w-2xl">
                 <p>
                   Sofol IT started with a simple observation: too many great ideas were dying in the gap between a slide deck and a working product.
                 </p>
@@ -75,22 +64,14 @@ export const FounderStory = () => {
                 </p>
               </div>
 
-              <div className="p-8 rounded-2xl bg-muted/30 border border-white/5 relative italic">
+              <div className="p-8 rounded-2xl bg-muted/30 border border-white/5 relative italic max-w-2xl mx-auto lg:mx-0">
                 <Quote className="absolute -top-4 -left-4 w-10 h-10 text-primary opacity-20" />
                 <p className="text-xl font-medium text-foreground">
                   "Our mission is to empower the next generation of brands by making high-fidelity product development accessible and efficient."
                 </p>
-              </div>
-              
-              <div className="flex items-center gap-8 pt-4">
-                <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '0.8s' }}>
-                  <p className="text-3xl font-black text-primary">15+</p>
-                  <p className="text-sm font-bold uppercase text-muted-foreground">Projects Launched</p>
-                </div>
-                <div className="w-px h-12 bg-border" />
-                <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '1s' }}>
-                  <p className="text-3xl font-black text-secondary">3+</p>
-                  <p className="text-sm font-bold uppercase text-muted-foreground">Years Experience</p>
+                <div className="mt-6 not-italic">
+                  <h4 className="text-lg font-bold">Md Asifuzzaman Reyad</h4>
+                  <p className="text-primary font-medium text-sm">Founder, Sofol IT</p>
                 </div>
               </div>
             </div>

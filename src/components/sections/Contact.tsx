@@ -81,7 +81,7 @@ export const Contact = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground uppercase font-bold tracking-widest">Email</p>
-                  <p className="text-lg font-semibold">hello@sofol.it</p>
+                  <p className="text-lg font-semibold">sofolitltd@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center gap-6">
@@ -90,7 +90,7 @@ export const Contact = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground uppercase font-bold tracking-widest">Call</p>
-                  <p className="text-lg font-semibold">+1 (555) 012-3456</p>
+                  <p className="text-lg font-semibold">+880 1704340860</p>
                 </div>
               </div>
             </div>

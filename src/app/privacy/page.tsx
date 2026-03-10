@@ -43,7 +43,7 @@ export default function PrivacyPolicy() {
 
             <h2 className="text-2xl font-bold text-foreground">5. Your Rights</h2>
             <p>
-              You have the right to access, update, or request the deletion of your personal information. To exercise these rights, please contact us at privacy@sofol.it.
+              You have the right to access, update, or request the deletion of your personal information. To exercise these rights, please contact us at sofolitltd@gmail.com.
             </p>
 
             <h2 className="text-2xl font-bold text-foreground">6. Third-Party Links</h2>
