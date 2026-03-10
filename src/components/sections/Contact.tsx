@@ -108,13 +108,11 @@ export const Contact = () => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormItem>
-                          <FormLabel>Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="John Doe" {...field} className="bg-background border-border" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="John Doe" {...field} className="bg-background border-border" />
+                        </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
