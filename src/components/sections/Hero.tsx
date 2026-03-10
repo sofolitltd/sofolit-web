@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -29,7 +28,7 @@ export const Hero = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern pt-24 pb-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern pt-32 pb-20"
     >
       <div className="absolute top-0 left-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-primary/10 to-transparent" />
       <div className="absolute top-0 right-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-secondary/10 to-transparent" />
@@ -49,8 +48,8 @@ export const Hero = () => {
           "space-y-2 opacity-0",
           isVisible && "animate-fade-in-up"
         )} style={{ animationDelay: '0.3s' }}>
-          <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-black tracking-tight leading-[0.9]">
-            <span className="block text-muted-foreground/30 text-3xl md:text-5xl lg:text-6xl mb-2">From Concept to</span>
+          <h1 className="text-4xl md:text-6xl lg:text-[7rem] font-black tracking-tight leading-[0.9]">
+            <span className="block text-muted-foreground/30 text-2xl md:text-4xl lg:text-5xl mb-2">From Concept to</span>
             <span className="block text-gradient">Market Reality</span>
           </h1>
         </div>

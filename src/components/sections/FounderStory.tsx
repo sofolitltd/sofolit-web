@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -41,7 +40,7 @@ export const FounderStory = () => {
                 {founderImg && (
                   <Image
                     src={founderImg.imageUrl}
-                    alt="Founder of Sofol IT"
+                    alt="Md Asifuzzaman Reyad - Founder of Sofol IT"
                     fill
                     className="object-cover"
                     data-ai-hint={founderImg.imageHint}
