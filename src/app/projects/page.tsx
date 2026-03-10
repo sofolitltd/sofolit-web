@@ -1,10 +1,11 @@
+
 "use client";
 
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
-import { ExternalLink, ArrowRight, Star, Calendar } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import { projectsData } from "@/lib/projects-data";
 
 export default function ProjectsPage() {
