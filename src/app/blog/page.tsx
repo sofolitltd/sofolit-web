@@ -13,13 +13,13 @@ export default function BlogPage() {
     <main className="min-h-screen bg-background pt-32">
       <div className="container px-4 mx-auto text-center mb-20">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 mb-6">
-          Founder Insights & Engineering Strategy
+          Vision, Growth & Strategy
         </div>
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
-          The <span className="text-gradient">Innovator's</span> Journal
+          The <span className="text-gradient">Founder's</span> Handbook
         </h1>
         <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
-          Actionable strategies on **MVP development**, **SaaS scaling**, and **premium software engineering** tailored for the modern solo entrepreneur.
+          A collection of insights and proven frameworks for building, launching, and scaling successful digital businesses as a solo entrepreneur.
         </p>
       </div>
 
