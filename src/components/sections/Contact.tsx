@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Send, Mail, Phone } from "lucide-react";
+import { Send, Mail, Phone, MessageCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -76,22 +76,44 @@ export const Contact = () => {
             </div>
 
             <div className="space-y-8">
-              <div className="flex items-center gap-6">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
+              <div className="flex items-center gap-6 group">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 transition-colors group-hover:bg-primary/20">
                   <Mail className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase font-black tracking-widest">Email</p>
-                  <p className="text-xl font-bold">sofolitltd@gmail.com</p>
+                  <p className="text-xs text-muted-foreground uppercase font-black tracking-widest mb-1">Email</p>
+                  <a href="mailto:sofolitltd@gmail.com" className="text-xl font-bold no-underline hover:text-primary transition-colors">
+                    sofolitltd@gmail.com
+                  </a>
                 </div>
               </div>
-              <div className="flex items-center gap-6">
-                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
+
+              <div className="flex items-center gap-6 group">
+                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center border border-secondary/20 transition-colors group-hover:bg-secondary/20">
                   <Phone className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground uppercase font-black tracking-widest">Call</p>
-                  <p className="text-xl font-bold">+880 1704340860</p>
+                  <p className="text-xs text-muted-foreground uppercase font-black tracking-widest mb-1">Call</p>
+                  <a href="tel:+8801704340860" className="text-xl font-bold no-underline hover:text-primary transition-colors">
+                    +880 1704340860
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6 group">
+                <div className="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center border border-green-500/20 transition-colors group-hover:bg-green-500/20">
+                  <MessageCircle className="w-6 h-6 text-green-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase font-black tracking-widest mb-1">WhatsApp</p>
+                  <a 
+                    href="https://wa.me/8801704340860" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-xl font-bold no-underline hover:text-green-500 transition-colors"
+                  >
+                    +880 1704340860
+                  </a>
                 </div>
               </div>
             </div>
