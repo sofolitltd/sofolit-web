@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -42,8 +43,8 @@ export const FounderStory = () => {
                     fill
                     className="object-cover"
                   />
-                  {/* Premium Overlay */}
-                  <div className="absolute bottom-6 left-6 right-6 p-6 glass-card bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
+                  {/* Premium Glass Overlay */}
+                  <div className="absolute bottom-6 left-6 right-6 p-6 glass-card bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
                     <h4 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Md Asifuzzaman Reyad</h4>
                     <p className="text-primary font-bold text-xs uppercase tracking-widest mt-1">Founder, Sofol IT</p>
                   </div>
