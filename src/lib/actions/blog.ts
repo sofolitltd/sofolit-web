@@ -1,9 +1,11 @@
+
 'use server';
 
 import { db } from "@/lib/db";
 import { posts, type NewPost } from "@/lib/db/schema";
 import { eq, desc, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 /**
  * Enterprise-level Server Action for creating/updating a blog post.
@@ -30,6 +32,18 @@ export async function saveBlogPost(data: NewPost) {
     return { success: true };
   } catch (error: any) {
     console.error("Database Error:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Upload an image to Cloudinary (Server Action)
+ */
+export async function uploadBlogImage(base64Image: string) {
+  try {
+    const url = await uploadToCloudinary(base64Image, "sofolit");
+    return { success: true, url };
+  } catch (error: any) {
     return { success: false, error: error.message };
   }
 }

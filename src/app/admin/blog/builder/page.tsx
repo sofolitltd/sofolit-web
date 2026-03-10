@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useTransition, useRef } from "react";
@@ -7,28 +8,28 @@ import {
   Eye, 
   Plus, 
   ImageIcon, 
-  Link as LinkIcon,
+  Loader2,
+  Minus,
+  Type,
   Bold,
   Italic,
-  Quote,
-  List,
   Heading1,
   Heading2,
   Code,
-  Loader2,
-  Minus,
-  Type
+  Quote,
+  List,
+  Link as LinkIcon
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { saveBlogPost } from "@/lib/actions/blog";
+import { saveBlogPost, uploadBlogImage } from "@/lib/actions/blog";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -37,12 +38,16 @@ export default function BlogBuilderPage() {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [isPublished, setIsPublished] = useState(false);
+  const [featuredImage, setFeaturedImage] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+
   const [categories, setCategories] = useState([
     { id: "1", name: "Strategy", checked: false },
     { id: "2", name: "Engineering", checked: false },
@@ -72,12 +77,31 @@ export default function BlogBuilderPage() {
     const newContent = `${before}${prefix}${selected}${suffix}${after}`;
     setContent(newContent);
 
-    // Re-focus and set cursor position after render
     setTimeout(() => {
       textarea.focus();
       const newCursorPos = start + prefix.length + selected.length + suffix.length;
       textarea.setSelectionRange(newCursorPos, newCursorPos);
     }, 0);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64 = reader.result as string;
+      const result = await uploadBlogImage(base64);
+      if (result.success && result.url) {
+        setFeaturedImage(result.url);
+        toast({ title: "Image Uploaded", description: "Your featured image is ready." });
+      } else {
+        toast({ variant: "destructive", title: "Upload Failed", description: result.error });
+      }
+      setIsUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleSave = async () => {
@@ -99,33 +123,23 @@ export default function BlogBuilderPage() {
         excerpt,
         content,
         isPublished,
+        featuredImage,
         category: selectedCategory,
         author: "Md Asifuzzaman Reyad",
       });
 
       if (result.success) {
-        toast({
-          title: "Article Saved",
-          description: "Your changes have been synced to the database.",
-        });
+        toast({ title: "Article Saved", description: "Your changes have been synced to the database." });
         router.push("/admin/blog");
       } else {
-        toast({
-          variant: "destructive",
-          title: "Persistence Error",
-          description: result.error || "We couldn't reach the database.",
-        });
+        toast({ variant: "destructive", title: "Persistence Error", description: result.error });
       }
     });
   };
 
   const handleAddCategory = () => {
     if (newCategory.trim()) {
-      setCategories([...categories, { 
-        id: Math.random().toString(), 
-        name: newCategory.trim(), 
-        checked: false 
-      }]);
+      setCategories([...categories, { id: Math.random().toString(), name: newCategory.trim(), checked: false }]);
       setNewCategory("");
     }
   };
@@ -150,7 +164,6 @@ export default function BlogBuilderPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] pb-20">
-      {/* Enterprise Top Bar - Fixed and Polished */}
       <div className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 px-8 py-4 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-6">
           <Link href="/admin/blog" className="p-2 hover:bg-slate-50 rounded-full transition-colors group">
@@ -174,8 +187,8 @@ export default function BlogBuilderPage() {
           <div className="w-px h-6 bg-slate-200 mx-1" />
           <Button 
             onClick={handleSave} 
-            disabled={isPending}
-            className="bg-slate-900 text-white hover:bg-black font-black text-xs px-8 h-10 gap-2 rounded-full shadow-lg shadow-slate-900/10 transition-all active:scale-95"
+            disabled={isPending || isUploading}
+            className="bg-slate-900 text-white hover:bg-black font-black text-xs px-8 h-10 gap-2 rounded-full shadow-lg transition-all active:scale-95"
           >
             {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
             {isPending ? "Syncing..." : "Save Changes"}
@@ -185,7 +198,6 @@ export default function BlogBuilderPage() {
 
       <div className="max-w-7xl mx-auto px-8 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-          {/* Editor Area */}
           <div className="lg:col-span-8 space-y-8">
             <div className="space-y-6">
               <div className="space-y-2">
@@ -194,7 +206,7 @@ export default function BlogBuilderPage() {
                   placeholder="The Future of Product Strategy..." 
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="h-16 bg-white border-slate-200 focus:border-blue-500/30 text-2xl font-black placeholder:text-slate-200 transition-all rounded-xl"
+                  className="h-16 bg-white border-slate-200 focus:border-blue-500/30 text-2xl font-black rounded-xl"
                 />
               </div>
 
@@ -205,10 +217,7 @@ export default function BlogBuilderPage() {
                     {toolbarItems.map((tool, i) => (
                       <button 
                         key={i} 
-                        onClick={(e) => {
-                          e.preventDefault();
-                          tool.action();
-                        }}
+                        onClick={(e) => { e.preventDefault(); tool.action(); }}
                         type="button"
                         className="p-2.5 hover:bg-white hover:shadow-sm rounded-lg transition-all text-slate-400 hover:text-blue-600"
                         title={tool.label}
@@ -231,7 +240,7 @@ export default function BlogBuilderPage() {
                 <Label className="text-[11px] font-black uppercase tracking-widest text-slate-400">Brief Excerpt</Label>
                 <Textarea 
                   placeholder="A short summary for search results and social sharing." 
-                  className="min-h-[120px] bg-white border-slate-200 focus:border-blue-500/30 text-sm leading-relaxed rounded-xl p-5"
+                  className="min-h-[120px] bg-white border-slate-200 text-sm rounded-xl p-5"
                   value={excerpt}
                   onChange={(e) => setExcerpt(e.target.value)}
                 />
@@ -239,7 +248,6 @@ export default function BlogBuilderPage() {
             </div>
           </div>
 
-          {/* Sidebar Inspector */}
           <div className="lg:col-span-4 space-y-8">
             <Card className="border-slate-200 shadow-sm rounded-2xl overflow-hidden">
               <CardContent className="p-6 flex items-center justify-between bg-slate-50/30">
@@ -247,11 +255,7 @@ export default function BlogBuilderPage() {
                   <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-900">Visibility</h4>
                   <p className="text-[10px] text-slate-400 font-bold uppercase">Online Status</p>
                 </div>
-                <Switch 
-                  checked={isPublished} 
-                  onCheckedChange={setIsPublished} 
-                  className="data-[state=checked]:bg-blue-600"
-                />
+                <Switch checked={isPublished} onCheckedChange={setIsPublished} className="data-[state=checked]:bg-blue-600" />
               </CardContent>
             </Card>
 
@@ -277,30 +281,14 @@ export default function BlogBuilderPage() {
                         key={cat.id} 
                         onClick={() => toggleCategory(cat.id)}
                         className={cn(
-                          "flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer group",
-                          cat.checked ? "bg-blue-50 border-blue-100 text-blue-600" : "bg-white border-slate-100 text-slate-500 hover:border-slate-200"
+                          "flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer",
+                          cat.checked ? "bg-blue-50 border-blue-100 text-blue-600" : "bg-white border-slate-100 text-slate-500"
                         )}
                       >
                         <span className="text-[10px] font-black uppercase tracking-widest">{cat.name}</span>
                         {cat.checked && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
                       </div>
                     ))}
-                  </div>
-                  <div className="flex items-center gap-2 pt-2">
-                    <Input 
-                      placeholder="Add..." 
-                      className="h-9 text-[10px] font-black uppercase tracking-widest bg-slate-50/50 border-slate-100 rounded-lg"
-                      value={newCategory}
-                      onChange={(e) => setNewCategory(e.target.value)}
-                    />
-                    <Button 
-                      size="icon" 
-                      variant="ghost"
-                      className="h-9 w-9 shrink-0 hover:bg-slate-100 rounded-lg"
-                      onClick={handleAddCategory}
-                    >
-                      <Plus className="w-4 h-4 text-slate-400" />
-                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -311,11 +299,29 @@ export default function BlogBuilderPage() {
                 <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">Media Assets</CardTitle>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="aspect-[4/3] rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/20 flex flex-col items-center justify-center cursor-pointer group hover:bg-blue-50/20 hover:border-blue-100 transition-all">
-                  <div className="p-4 rounded-full bg-white shadow-sm mb-3 group-hover:scale-110 transition-transform">
-                    <Type className="w-5 h-5 text-slate-300 group-hover:text-blue-600" />
-                  </div>
-                  <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest">Select Featured Image</p>
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  className="hidden" 
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                />
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="relative aspect-video rounded-2xl border-2 border-dashed border-slate-100 bg-slate-50/20 flex flex-col items-center justify-center cursor-pointer group hover:bg-blue-50/20 hover:border-blue-100 transition-all overflow-hidden"
+                >
+                  {featuredImage ? (
+                    <Image src={featuredImage} alt="Preview" fill className="object-cover" />
+                  ) : (
+                    <>
+                      <div className="p-4 rounded-full bg-white shadow-sm mb-3 group-hover:scale-110 transition-transform">
+                        {isUploading ? <Loader2 className="w-5 h-5 animate-spin text-blue-600" /> : <ImageIcon className="w-5 h-5 text-slate-300 group-hover:text-blue-600" />}
+                      </div>
+                      <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest">
+                        {isUploading ? "Uploading to Cloudinary..." : "Select Featured Image"}
+                      </p>
+                    </>
+                  )}
                 </div>
               </CardContent>
             </Card>

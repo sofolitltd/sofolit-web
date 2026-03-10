@@ -27,7 +27,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     return Math.ceil(words / wordsPerMinute);
   };
 
-  const postImg = PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
+  const isExternalUrl = post.featuredImage?.startsWith('http');
+  const postImg = isExternalUrl 
+    ? { imageUrl: post.featuredImage! } 
+    : PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
+
   const readTime = calculateReadTime(post.content);
   const publishDate = post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { 
     month: 'long', 
@@ -35,7 +39,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     year: 'numeric' 
   }) : 'Recent';
 
-  // Convert Markdown to HTML
   const htmlContent = marked.parse(post.content || "");
 
   return (
@@ -77,7 +80,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             alt={post.title} 
             fill 
             className="object-cover"
-            data-ai-hint={postImg.imageHint}
           />
         </div>
 
@@ -92,7 +94,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
-        {/* Discovery Section - Related Posts */}
         {relatedPosts.length > 0 && (
           <div className="pt-24 border-t border-border mb-32">
             <div className="flex items-center justify-between mb-12">
@@ -104,7 +105,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedPosts.map((related) => {
-                const relImg = PlaceHolderImages.find(img => img.id === related.featuredImage) || PlaceHolderImages[10];
+                const relIsExternal = related.featuredImage?.startsWith('http');
+                const relImg = relIsExternal 
+                  ? { imageUrl: related.featuredImage! } 
+                  : PlaceHolderImages.find(img => img.id === related.featuredImage) || PlaceHolderImages[10];
                 return (
                   <Link 
                     key={related.id} 
@@ -117,7 +121,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         alt={related.title} 
                         fill 
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        data-ai-hint={relImg.imageHint}
                       />
                     </div>
                     <div className="space-y-2">

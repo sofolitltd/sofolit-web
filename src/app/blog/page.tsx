@@ -1,3 +1,4 @@
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +26,7 @@ export default async function BlogPage() {
           The <span className="text-gradient">Founder's</span> Handbook
         </h1>
         <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
-        nsights for the next generation of digital entrepreneurs.
+          Actionable strategies on **MVP development**, **SaaS scaling**, and **premium product strategy** tailored for the modern solo entrepreneur.
         </p>
       </div>
 
@@ -40,7 +41,10 @@ export default async function BlogPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => {
-              const postImg = PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
+              const isExternal = post.featuredImage?.startsWith('http');
+              const postImg = isExternal 
+                ? { imageUrl: post.featuredImage! } 
+                : PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
               const readTime = calculateReadTime(post.content);
               
               return (
@@ -55,7 +59,6 @@ export default async function BlogPage() {
                       alt={post.title} 
                       fill 
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      data-ai-hint={postImg.imageHint}
                     />
                     <div className="absolute top-4 left-4">
                       <span className="px-3 py-1 rounded-full bg-background/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest border border-border">
