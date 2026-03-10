@@ -12,7 +12,6 @@ export const Portfolio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   
-  // Display top 4 projects for the home page 2x2 grid (on lg+)
   const homeProjects = projectsData.slice(0, 4);
 
   useEffect(() => {
@@ -47,7 +46,7 @@ export const Portfolio = () => {
           </Link>
         </div>
 
-        {/* Grid is 1 column for sm/md, and 2 columns for lg and above */}
+        {/* 1 column on mobile/tablet (sm/md), 2 columns on lg+ */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {homeProjects.map((project, idx) => (
             <Link 

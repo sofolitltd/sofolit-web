@@ -166,7 +166,7 @@ export const Contact = () => {
                       <FormItem>
                         <FormLabel className="font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} className="bg-background border-border h-12 rounded-xl no-underline" />
+                          <Input placeholder="John Doe" {...field} className="bg-background border-border h-12 rounded-xl" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -179,7 +179,7 @@ export const Contact = () => {
                       <FormItem>
                         <FormLabel className="font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="john@example.com" {...field} className="bg-background border-border h-12 rounded-xl no-underline" />
+                          <Input placeholder="john@example.com" {...field} className="bg-background border-border h-12 rounded-xl" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -219,7 +219,7 @@ export const Contact = () => {
                         <Textarea 
                           placeholder="Tell us about your goals, timelines, and requirements..." 
                           {...field} 
-                          className="bg-background border-border h-32 resize-none rounded-xl p-4 no-underline"
+                          className="bg-background border-border h-32 resize-none rounded-xl p-4"
                         />
                       </FormControl>
                       <FormMessage />

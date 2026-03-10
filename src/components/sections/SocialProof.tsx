@@ -16,31 +16,31 @@ export const SocialProof = () => {
     {
       name: "Abdullah Al Mamun",
       role: "Blood Finder App",
-      content: "The team delivered an exceptional product for the Blood Finder project. They were incredibly focused on customer satisfaction, iterating on the real-time notification system until it was flawless. Their technical work was excellent, and they were always proactive in making sure the app truly served our community's needs.",
+      content: "The team delivered an exceptional product for the Blood Finder project. They were incredibly focused on customer satisfaction—always making sure the job was done exactly the way we wanted. Their work was excellent, and they were an absolute pleasure to collaborate with.",
       stars: 5,
     },
     {
       name: "Abdullah Omer Himel",
       role: "The Forge",
-      content: "Working with Sofol IT to build The Forge's portfolio site was a great experience. They didn't just build a website; they helped us craft a digital identity that's both stunning and high-performance. They were always making sure the job was done exactly the way we wanted, and their attention to detail was top-tier.",
+      content: "Working with Sofol IT to build The Forge's digital identity was a great experience. They didn't just build a website; they crafted a visual identity that is both stunning and high-performance. They were proactive in ensuring every detail aligned with our brand, and the technical execution was flawless.",
       stars: 5,
     },
     {
       name: "Ashikur Rahman Ashik",
       role: "Petelements BD",
-      content: "We've been incredibly happy with the e-commerce platform Sofol IT built for Petelements BD. They really understood our business goals and delivered a clean, efficient shopping experience that our customers love. They were professional, responsive, and a pleasure to collaborate with throughout the entire process.",
+      content: "We've been incredibly happy with the e-commerce platform Sofol IT built for Petelements BD. They really understood our business goals and delivered a clean, efficient shopping experience that our customers love. They were professional, responsive, and truly felt like a partner throughout the process.",
       stars: 5,
     },
     {
       name: "Arif Rahman",
       role: "Abrar Shop",
-      content: "The custom e-commerce app for Abrar Shop has been a huge success for us. Sofol IT's work on the bKash integration and overall performance was excellent. They were incredibly focused on making sure every feature worked exactly as we envisioned. I highly recommend them for any serious development project.",
+      content: "The custom e-commerce app for Abrar Shop has been a huge success. Sofol IT's work on the bKash integration and overall performance was excellent. They were always focused on making sure the job was done exactly the way we envisioned, ensuring a smooth experience for our shoppers.",
       stars: 5,
     },
     {
       name: "Shahriar Rahman",
       role: "Priyo Banskhali",
-      content: "The Priyo Banskhali app has transformed how our community connects, and that's thanks to Sofol IT. They were incredibly patient and focused on ensuring the app met the unique needs of our local residents. Their work was excellent, and the whole collaboration felt like a true partnership.",
+      content: "The Priyo Banskhali app has transformed how our community connects. Sofol IT was incredibly patient and focused on ensuring the app met the unique needs of our local residents. Their technical work was top-tier, and the whole collaboration felt human and supportive.",
       stars: 5,
     },
   ];
@@ -49,7 +49,7 @@ export const SocialProof = () => {
 
   return (
     <section className="py-24 bg-background overflow-hidden">
-      {/* Project Names Marquee (Social Proof Strip) */}
+      {/* Project Names Marquee */}
       <div className="border-y border-border/50 py-10 mb-24 bg-muted/20 relative">
         <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
@@ -76,7 +76,7 @@ export const SocialProof = () => {
         </p>
       </div>
       
-      {/* Testimonials Marquee */}
+      {/* Testimonials Marquee - Very Slow Right to Left */}
       <div className="relative group">
         <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />

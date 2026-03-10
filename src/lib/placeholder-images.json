@@ -9,49 +9,49 @@
     {
       "id": "project-1-screenshot",
       "description": "Campus Assistant App",
-      "imageUrl": "https://picsum.photos/seed/campus1/800/600",
+      "imageUrl": "/images/campus-assistant.png",
       "imageHint": "education app"
     },
     {
       "id": "project-2-screenshot",
       "description": "The Forge Portfolio",
-      "imageUrl": "https://picsum.photos/seed/forge1/800/600",
+      "imageUrl": "/images/the-forge.png",
       "imageHint": "modern website"
     },
     {
       "id": "project-3-screenshot",
       "description": "Petelements BD Shop",
-      "imageUrl": "https://picsum.photos/seed/pet1/800/600",
+      "imageUrl": "/images/petelements-bd.png",
       "imageHint": "pet shop"
     },
     {
       "id": "project-4-screenshot",
       "description": "Wellbeing Clinic App",
-      "imageUrl": "https://picsum.photos/seed/well1/800/600",
+      "imageUrl": "/images/wellbeing-clinic.png",
       "imageHint": "health app"
     },
     {
       "id": "project-5-screenshot",
       "description": "Blood Finder App",
-      "imageUrl": "https://picsum.photos/seed/blood1/800/600",
+      "imageUrl": "/images/blood-finder.png",
       "imageHint": "medical app"
     },
     {
       "id": "project-6-screenshot",
       "description": "Certificate Generator",
-      "imageUrl": "https://picsum.photos/seed/cert1/800/600",
+      "imageUrl": "/images/certificate-generator.png",
       "imageHint": "utility tool"
     },
     {
       "id": "project-7-screenshot",
       "description": "Priyo Banskhali Community",
-      "imageUrl": "https://picsum.photos/seed/priyo1/800/600",
+      "imageUrl": "/images/priyo-banskhali.png",
       "imageHint": "community app"
     },
     {
       "id": "project-8-screenshot",
       "description": "Abrar Shop",
-      "imageUrl": "https://picsum.photos/seed/abrar1/800/600",
+      "imageUrl": "/images/abrar-shop.png",
       "imageHint": "ecommerce app"
     },
     {
