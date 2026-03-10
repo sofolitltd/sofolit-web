@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { posts, type NewPost } from "@/lib/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -58,6 +58,22 @@ export async function getPublicPosts() {
   } catch (error) {
     console.error("Fetch Error:", error);
     return [];
+  }
+}
+
+/**
+ * Fetch a single published post by slug.
+ */
+export async function getPostBySlug(slug: string) {
+  try {
+    const results = await db.select()
+      .from(posts)
+      .where(and(eq(posts.slug, slug), eq(posts.isPublished, true)))
+      .limit(1);
+    return results[0] || null;
+  } catch (error) {
+    console.error("Fetch Error:", error);
+    return null;
   }
 }
 
