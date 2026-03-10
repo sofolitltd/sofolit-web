@@ -5,7 +5,6 @@ import {
   ChevronLeft, 
   Save, 
   Eye, 
-  Plus, 
   ImageIcon, 
   Loader2,
   Minus,
@@ -20,7 +19,8 @@ import {
   Link as LinkIcon,
   X,
   Info,
-  Tag as TagIcon
+  Tag as TagIcon,
+  Plus
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,9 +33,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { saveBlogPost, uploadBlogImage } from "@/lib/actions/blog";
+import { getCategories } from "@/lib/actions/categories";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import type { Category } from "@/lib/db/schema";
 
 export default function BlogBuilderPage() {
   const router = useRouter();
@@ -53,14 +55,18 @@ export default function BlogBuilderPage() {
   const [pendingImage, setPendingImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   
-  // Multiple Categories & Tags
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [dbCategories, setDbCategories] = useState<Category[]>([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
-  const availableCategories = [
-    "Strategy", "Engineering", "Growth", "Product", "UI/UX", "MVP", "SaaS"
-  ];
+  useEffect(() => {
+    async function load() {
+      const cats = await getCategories();
+      setDbCategories(cats);
+    }
+    load();
+  }, []);
 
   useEffect(() => {
     const generatedSlug = title
@@ -144,7 +150,7 @@ export default function BlogBuilderPage() {
         content,
         isPublished,
         featuredImage: finalImageUrl,
-        category: selectedCategories.length > 0 ? selectedCategories : ["Uncategorized"],
+        categoryIds: selectedCategoryIds,
         tags: tags,
         author: "Md Asifuzzaman Reyad",
       });
@@ -158,9 +164,9 @@ export default function BlogBuilderPage() {
     });
   };
 
-  const toggleCategory = (cat: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+  const toggleCategory = (id: number) => {
+    setSelectedCategoryIds(prev => 
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
     );
   };
 
@@ -288,26 +294,31 @@ export default function BlogBuilderPage() {
             </Card>
 
             <Card className="border-slate-200 shadow-sm rounded-2xl">
-              <CardHeader className="p-6 pb-2">
+              <CardHeader className="p-6 pb-2 flex items-center justify-between">
                 <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">Taxonomy</CardTitle>
+                <Link href="/admin/blog/categories" className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-1">
+                  <Plus className="w-3 h-3" /> Manage
+                </Link>
               </CardHeader>
               <CardContent className="p-6 space-y-8">
                 <div className="space-y-3">
                   <Label className="text-[10px] font-black text-slate-500 flex items-center gap-2">
                     <List className="w-3 h-3" /> CATEGORIES
                   </Label>
-                  <div className="grid grid-cols-1 gap-2">
-                    {availableCategories.map((cat) => (
+                  <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                    {dbCategories.length === 0 ? (
+                      <p className="text-[10px] text-slate-400 font-bold uppercase text-center py-4 border border-dashed rounded-xl">No categories found</p>
+                    ) : dbCategories.map((cat) => (
                       <div 
-                        key={cat} 
-                        onClick={() => toggleCategory(cat)}
+                        key={cat.id} 
+                        onClick={() => toggleCategory(cat.id)}
                         className={cn(
                           "flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer",
-                          selectedCategories.includes(cat) ? "bg-blue-50 border-blue-100 text-blue-600" : "bg-white border-slate-100 text-slate-500"
+                          selectedCategoryIds.includes(cat.id) ? "bg-blue-50 border-blue-100 text-blue-600" : "bg-white border-slate-100 text-slate-500"
                         )}
                       >
-                        <span className="text-[10px] font-black uppercase tracking-widest">{cat}</span>
-                        {selectedCategories.includes(cat) && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
+                        <span className="text-[10px] font-black uppercase tracking-widest">{cat.name}</span>
+                        {selectedCategoryIds.includes(cat.id) && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
                       </div>
                     ))}
                   </div>

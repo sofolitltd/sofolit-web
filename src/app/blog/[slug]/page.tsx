@@ -5,6 +5,7 @@ import { Footer } from "@/components/sections/Footer";
 import { Calendar, Clock, ChevronLeft, Share2, Bookmark, ArrowRight, User, Tag } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPostBySlug, getPublicPosts } from "@/lib/actions/blog";
+import { getCategories } from "@/lib/actions/categories";
 import { notFound } from "next/navigation";
 import { marked } from "marked";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +20,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   const allPosts = await getPublicPosts();
+  const allCategories = await getCategories();
   const relatedPosts = allPosts.filter(p => p.slug !== slug).slice(0, 3);
 
   const calculateReadTime = (content: string) => {
@@ -41,9 +43,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const htmlContent = marked.parse(post.content || "");
   
-  // Handle multiple categories and tags
-  const categories = Array.isArray(post.category) ? post.category : [post.category || "General"];
-  const tags = Array.isArray(post.tags) ? post.tags : [];
+  // Handle dynamic categories
+  const categoryIds = post.categoryIds as number[] || [];
+  const activeCategories = allCategories.filter(c => categoryIds.includes(c.id));
+  const tags = post.tags as string[] || [];
 
   return (
     <main className="min-h-screen bg-background pt-32">
@@ -54,11 +57,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         <div className="space-y-8 mb-16">
           <div className="flex flex-wrap items-center gap-3">
-            {categories.map((cat, i) => (
-              <Badge key={i} className="bg-primary/10 text-primary border-primary/20 text-[10px] font-black uppercase tracking-widest hover:bg-primary/20">
-                {cat}
+            {activeCategories.length > 0 ? (
+              activeCategories.map((cat) => (
+                <Badge key={cat.id} className="bg-primary/10 text-primary border-primary/20 text-[10px] font-black uppercase tracking-widest hover:bg-primary/20">
+                  {cat.name}
+                </Badge>
+              ))
+            ) : (
+              <Badge className="bg-muted text-muted-foreground border-border text-[10px] font-black uppercase tracking-widest">
+                Uncategorized
               </Badge>
-            ))}
+            )}
             <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
             <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
               <User className="w-3 h-3" /> {post.author}
@@ -127,7 +136,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 const relImg = relIsExternal 
                   ? { imageUrl: related.featuredImage! } 
                   : PlaceHolderImages.find(img => img.id === related.featuredImage) || PlaceHolderImages[10];
-                const relCategories = Array.isArray(related.category) ? related.category : [related.category || "General"];
                 return (
                   <Link 
                     key={related.id} 
@@ -143,7 +151,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       />
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[10px] font-black text-primary uppercase tracking-widest">{relCategories[0]}</span>
                       <h3 className="text-lg font-black group-hover:text-primary transition-colors leading-tight line-clamp-2">
                         {related.title}
                       </h3>

@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar, timestamp, boolean, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, varchar, timestamp, boolean, jsonb, integer } from "drizzle-orm/pg-core";
 
 export const posts = pgTable("posts", {
   id: serial("id").primaryKey(),
@@ -8,11 +8,20 @@ export const posts = pgTable("posts", {
   content: text("content").notNull(),
   featuredImage: text("featured_image"),
   isPublished: boolean("is_published").default(false),
-  category: jsonb("category").default([]), // Changed to jsonb for multiple categories
+  categoryIds: jsonb("category_ids").default([]), // Array of category IDs
   author: varchar("author", { length: 100 }).default("Admin"),
   tags: jsonb("tags").default([]),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const categories = pgTable("categories", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
+  description: text("description"),
+  parentId: integer("parent_id"), // For subcategories
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const inquiries = pgTable("inquiries", {
@@ -27,5 +36,7 @@ export const inquiries = pgTable("inquiries", {
 
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
+export type Category = typeof categories.$inferSelect;
+export type NewCategory = typeof categories.$inferInsert;
 export type Inquiry = typeof inquiries.$inferSelect;
 export type NewInquiry = typeof inquiries.$inferInsert;

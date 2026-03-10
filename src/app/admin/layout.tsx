@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -12,7 +11,8 @@ import {
   ChevronRight,
   Menu,
   X,
-  Rocket
+  Rocket,
+  FolderTree
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -46,6 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: "Dashboard", href: "/admin/dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
     { name: "Manage Blog", href: "/admin/blog", icon: <FileText className="w-5 h-5" /> },
+    { name: "Categories", href: "/admin/blog/categories", icon: <FolderTree className="w-5 h-5" /> },
     { name: "Settings", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },
   ];
 

@@ -5,10 +5,12 @@ import { Footer } from "@/components/sections/Footer";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPublicPosts } from "@/lib/actions/blog";
+import { getCategories } from "@/lib/actions/categories";
 import { Badge } from "@/components/ui/badge";
 
 export default async function BlogPage() {
   const posts = await getPublicPosts();
+  const allCategories = await getCategories();
 
   const calculateReadTime = (content: string) => {
     const wordsPerMinute = 200;
@@ -47,8 +49,9 @@ export default async function BlogPage() {
                 : PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
               const readTime = calculateReadTime(post.content);
               
-              // Handle multiple categories
-              const categories = Array.isArray(post.category) ? post.category : [post.category || "Strategy"];
+              // Map dynamic category IDs to names
+              const categoryIds = post.categoryIds as number[] || [];
+              const activeCats = allCategories.filter(c => categoryIds.includes(c.id));
 
               return (
                 <Link 
@@ -64,11 +67,17 @@ export default async function BlogPage() {
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                      {categories.map((cat, i) => (
-                        <Badge key={i} className="bg-background/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest border border-border text-foreground hover:bg-background">
-                          {cat}
+                      {activeCats.length > 0 ? (
+                        activeCats.slice(0, 2).map((cat) => (
+                          <Badge key={cat.id} className="bg-background/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest border border-border text-foreground hover:bg-background">
+                            {cat.name}
+                          </Badge>
+                        ))
+                      ) : (
+                        <Badge className="bg-background/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest border border-border text-foreground hover:bg-background">
+                          General
                         </Badge>
-                      ))}
+                      )}
                     </div>
                   </div>
                   
