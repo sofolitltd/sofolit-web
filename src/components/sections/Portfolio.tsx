@@ -56,12 +56,12 @@ export const Portfolio = () => {
           isVisible && "animate-fade-in-up"
         )}>
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Recent Work</h2>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Recent Projects</h2>
             <p className="text-muted-foreground max-w-lg">
               Showcasing our ability to deliver high-fidelity products across various industries.
             </p>
           </div>
-          <Link href="/work" className="text-primary font-semibold flex items-center gap-2 group">
+          <Link href="/projects" className="text-primary font-semibold flex items-center gap-2 group">
             View All Projects <ExternalLink className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
@@ -70,7 +70,7 @@ export const Portfolio = () => {
           {projects.map((project, idx) => (
             <Link 
               key={idx}
-              href={`/work/${project.slug}`}
+              href={`/projects/${project.slug}`}
               className={cn(
                 "group relative rounded-3xl overflow-hidden aspect-[4/5] glass-card opacity-0 block",
                 isVisible && "animate-fade-in-up"

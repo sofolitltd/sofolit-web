@@ -70,8 +70,8 @@ export const Hero = () => {
               Book a Call <Rocket className="w-5 h-5 ml-2" />
             </MagneticButton>
           </a>
-          <Link href="/work" className="px-10 h-14 rounded-full border border-border flex items-center gap-2 font-bold hover:bg-muted transition-all">
-            Our Portfolio <ArrowRight className="w-5 h-5" />
+          <Link href="/projects" className="px-10 h-14 rounded-full border border-border flex items-center gap-2 font-bold hover:bg-muted transition-all">
+            Our Projects <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </div>

@@ -1,10 +1,10 @@
-
 "use client";
 
 import React from "react";
 import { Footer } from "@/components/sections/Footer";
 import { Smartphone, Globe, Rocket, Zap, ShieldCheck, BarChart3, Users, Code2, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function ServicesPage() {
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
@@ -121,9 +121,9 @@ export default function ServicesPage() {
             >
               <Calendar className="w-5 h-5" /> Book a Strategy Call
             </a>
-            <a href="/work" className="px-10 py-4 rounded-full border border-border bg-background font-bold hover:bg-muted transition-all">
-              View Our Portfolio
-            </a>
+            <Link href="/projects" className="px-10 py-4 rounded-full border border-border bg-background font-bold hover:bg-muted transition-all">
+              View Our Projects
+            </Link>
           </div>
         </div>
       </section>
