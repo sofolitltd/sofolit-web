@@ -8,34 +8,11 @@ import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
 import { Calendar, Clock, ChevronLeft, Share2, Bookmark, Calendar as CalendarIcon } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-
-const blogPostsData = {
-  "launching-mvp-solo-founder": {
-    title: "How to Launch Your MVP in 4 Weeks as a Solo Founder",
-    date: "March 15, 2024",
-    readTime: "6 min read",
-    category: "Strategy",
-    image: "blog-1",
-    content: `
-      <p>As a solo founder, your greatest advantage is speed. While large teams get bogged down in consensus and bureaucracy, you can move from an idea to a live product in a matter of weeks if you follow the right framework.</p>
-      
-      <h2>1. Define the 'Core Value'</h2>
-      <p>Stop thinking about features and start thinking about the single most important problem you are solving. If your app is a grocery tracker, the core value isn't 'social sharing'—it's 'accurate inventory management'. Strip everything else away.</p>
-      
-      <h2>2. Choose a 'Boring' Tech Stack</h2>
-      <p>Now is not the time to learn a niche language. Use technologies that are robust, well-documented, and fast to deploy. We recommend Next.js paired with Firebase for most solo-led MVPs. It handles auth, database, and hosting with minimal setup.</p>
-      
-      <h2>3. The 'Good Enough' Design</h2>
-      <p>Don't spend weeks on custom icons. Use high-quality component libraries like Shadcn UI and Lucide Icons. Focus on user experience (UX) over visual flourish. A clean, usable interface wins over a buggy, 'artistic' one every time.</p>
-      
-      <blockquote>"Done is better than perfect. Launch early, listen to your users, and iterate fast. Your first version is just the beginning of the conversation."</blockquote>
-    `
-  }
-};
+import { blogPosts } from "@/lib/blog-data";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const post = blogPostsData[slug as keyof typeof blogPostsData];
+  const post = blogPosts.find(p => p.slug === slug);
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
   if (!post) {
