@@ -75,7 +75,9 @@ export default function BlogPostPage() {
           prose-headings:font-black prose-headings:tracking-tight
           prose-p:text-muted-foreground prose-p:leading-relaxed
           prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-8 prose-blockquote:rounded-r-2xl prose-blockquote:italic
-          prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6"
+          prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
+          prose-pre:bg-slate-900 prose-pre:rounded-2xl prose-pre:p-6 prose-pre:border prose-pre:border-white/10
+          prose-code:text-primary prose-code:bg-primary/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
         
