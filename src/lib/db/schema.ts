@@ -8,7 +8,7 @@ export const posts = pgTable("posts", {
   content: text("content").notNull(),
   featuredImage: text("featured_image"),
   isPublished: boolean("is_published").default(false),
-  categoryIds: jsonb("category_ids").default([]), // Array of category IDs
+  categoriesData: jsonb("categories_data").default([]), // Renamed to categories_data to fix cast error
   author: varchar("author", { length: 100 }).default("Md Asifuzzaman Reyad"),
   tags: jsonb("tags").default([]),
   createdAt: timestamp("created_at").defaultNow(),

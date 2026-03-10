@@ -103,13 +103,9 @@ export async function deletePost(id: number) {
       
       // 2. If it's a Cloudinary URL, attempt to delete the asset
       if (imageUrl && imageUrl.includes('res.cloudinary.com')) {
-        // Extract public ID from URL: .../upload/v12345/folder/public_id.jpg
-        // We use a regex to capture everything after /upload/ and before the extension, excluding the version (v12345)
         const parts = imageUrl.split('/upload/');
         if (parts.length > 1) {
-          // Remove version if present (v followed by numbers)
           const pathAfterUpload = parts[1].replace(/^v\d+\//, '');
-          // Remove file extension
           const publicId = pathAfterUpload.split('.')[0];
           
           if (publicId) {

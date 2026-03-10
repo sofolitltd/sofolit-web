@@ -49,8 +49,8 @@ export default async function BlogPage() {
                 : PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
               const readTime = calculateReadTime(post.content);
               
-              // Map dynamic category IDs to names
-              const categoryIds = post.categoryIds as number[] || [];
+              // Map dynamic category IDs to names from categoriesData
+              const categoryIds = post.categoriesData as number[] || [];
               const activeCats = allCategories.filter(c => categoryIds.includes(c.id));
 
               return (

@@ -43,8 +43,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const htmlContent = marked.parse(post.content || "");
   
-  // Handle dynamic categories
-  const categoryIds = post.categoryIds as number[] || [];
+  // Handle dynamic categories from categoriesData
+  const categoryIds = post.categoriesData as number[] || [];
   const activeCategories = allCategories.filter(c => categoryIds.includes(c.id));
   const tags = post.tags as string[] || [];
 

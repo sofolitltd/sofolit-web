@@ -149,7 +149,7 @@ export default function BlogBuilderPage() {
         content,
         isPublished,
         featuredImage: finalImageUrl,
-        categoryIds: selectedCategoryIds,
+        categoriesData: selectedCategoryIds, // Updated property name
         tags: tags,
         author: "Md Asifuzzaman Reyad",
       });
