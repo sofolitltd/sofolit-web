@@ -12,7 +12,7 @@ export const Portfolio = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   
-  // Display top 4 projects for the home page 2x2 grid
+  // Display top 4 projects for the home page 2x2 grid (on lg+)
   const homeProjects = projectsData.slice(0, 4);
 
   useEffect(() => {
@@ -47,13 +47,14 @@ export const Portfolio = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        {/* Grid is 1 column for sm/md, and 2 columns for lg and above */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {homeProjects.map((project, idx) => (
             <Link 
               key={idx}
               href={`/projects/${project.slug}`}
               className={cn(
-                "group relative rounded-[3rem] overflow-hidden aspect-video glass-card opacity-0 block border border-border/50",
+                "group relative rounded-[3rem] overflow-hidden aspect-video glass-card opacity-0 block border border-border/50 shadow-2xl",
                 isVisible && "animate-fade-in-up"
               )}
               style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
@@ -68,7 +69,7 @@ export const Portfolio = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-100 transition-opacity" />
               
               <div className="absolute bottom-0 left-0 p-10 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                <p className="text-sm font-black text-primary uppercase tracking-[0.2em] mb-3">{project.category}</p>
+                <p className="text-sm font-black text-primary uppercase tracking-[0.2em] mb-3">{project.category === 'app' ? 'Mobile App' : 'Web Platform'}</p>
                 <h3 className="text-4xl font-black tracking-tight">{project.title}</h3>
                 <div className="flex items-center gap-2 mt-4 text-white/50 group-hover:text-primary transition-colors font-bold text-sm">
                   Explore Case Study <ArrowRight className="w-4 h-4" />
