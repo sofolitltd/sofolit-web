@@ -1,4 +1,3 @@
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,6 +5,7 @@ import { Footer } from "@/components/sections/Footer";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPublicPosts } from "@/lib/actions/blog";
+import { Badge } from "@/components/ui/badge";
 
 export default async function BlogPage() {
   const posts = await getPublicPosts();
@@ -47,6 +47,9 @@ export default async function BlogPage() {
                 : PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
               const readTime = calculateReadTime(post.content);
               
+              // Handle multiple categories
+              const categories = Array.isArray(post.category) ? post.category : [post.category || "Strategy"];
+
               return (
                 <Link 
                   key={post.id} 
@@ -60,10 +63,12 @@ export default async function BlogPage() {
                       fill 
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-full bg-background/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest border border-border">
-                        {post.category || "Strategy"}
-                      </span>
+                    <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                      {categories.map((cat, i) => (
+                        <Badge key={i} className="bg-background/80 backdrop-blur-md text-[10px] font-bold uppercase tracking-widest border border-border text-foreground hover:bg-background">
+                          {cat}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
                   

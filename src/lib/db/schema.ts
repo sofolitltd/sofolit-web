@@ -8,7 +8,7 @@ export const posts = pgTable("posts", {
   content: text("content").notNull(),
   featuredImage: text("featured_image"),
   isPublished: boolean("is_published").default(false),
-  category: varchar("category", { length: 100 }),
+  category: jsonb("category").default([]), // Changed to jsonb for multiple categories
   author: varchar("author", { length: 100 }).default("Admin"),
   tags: jsonb("tags").default([]),
   createdAt: timestamp("created_at").defaultNow(),

@@ -1,13 +1,13 @@
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
-import { Calendar, Clock, ChevronLeft, Share2, Bookmark, ArrowRight, User } from "lucide-react";
+import { Calendar, Clock, ChevronLeft, Share2, Bookmark, ArrowRight, User, Tag } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPostBySlug, getPublicPosts } from "@/lib/actions/blog";
 import { notFound } from "next/navigation";
 import { marked } from "marked";
+import { Badge } from "@/components/ui/badge";
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -40,6 +40,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }) : 'Recent';
 
   const htmlContent = marked.parse(post.content || "");
+  
+  // Handle multiple categories and tags
+  const categories = Array.isArray(post.category) ? post.category : [post.category || "General"];
+  const tags = Array.isArray(post.tags) ? post.tags : [];
 
   return (
     <main className="min-h-screen bg-background pt-32">
@@ -49,10 +53,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </Link>
 
         <div className="space-y-8 mb-16">
-          <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-[10px] font-black uppercase tracking-widest text-primary border border-primary/20">
-              {post.category || "Uncategorized"}
-            </div>
+          <div className="flex flex-wrap items-center gap-3">
+            {categories.map((cat, i) => (
+              <Badge key={i} className="bg-primary/10 text-primary border-primary/20 text-[10px] font-black uppercase tracking-widest hover:bg-primary/20">
+                {cat}
+              </Badge>
+            ))}
+            <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
             <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
               <User className="w-3 h-3" /> {post.author}
             </div>
@@ -84,7 +91,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
 
         <article 
-          className="prose prose-lg dark:prose-invert max-w-none mb-24
+          className="prose prose-lg dark:prose-invert max-w-none mb-16
           prose-headings:font-black prose-headings:tracking-tight
           prose-p:text-muted-foreground prose-p:leading-relaxed
           prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-8 prose-blockquote:rounded-r-2xl prose-blockquote:italic
@@ -93,6 +100,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           prose-code:text-primary prose-code:bg-primary/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
+
+        {tags.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 mb-24 pb-12 border-b border-border">
+            <Tag className="w-4 h-4 text-muted-foreground mr-2" />
+            {tags.map((tag, i) => (
+              <span key={i} className="text-[10px] font-black uppercase tracking-widest text-muted-foreground bg-muted px-3 py-1 rounded-full border border-border">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
 
         {relatedPosts.length > 0 && (
           <div className="pt-24 border-t border-border mb-32">
@@ -109,6 +127,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 const relImg = relIsExternal 
                   ? { imageUrl: related.featuredImage! } 
                   : PlaceHolderImages.find(img => img.id === related.featuredImage) || PlaceHolderImages[10];
+                const relCategories = Array.isArray(related.category) ? related.category : [related.category || "General"];
                 return (
                   <Link 
                     key={related.id} 
@@ -124,7 +143,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                       />
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[10px] font-black text-primary uppercase tracking-widest">{related.category || "General"}</span>
+                      <span className="text-[10px] font-black text-primary uppercase tracking-widest">{relCategories[0]}</span>
                       <h3 className="text-lg font-black group-hover:text-primary transition-colors leading-tight line-clamp-2">
                         {related.title}
                       </h3>

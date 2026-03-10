@@ -19,7 +19,8 @@ import {
   List,
   Link as LinkIcon,
   X,
-  Info
+  Info,
+  Tag as TagIcon
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,6 +31,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { saveBlogPost, uploadBlogImage } from "@/lib/actions/blog";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -50,12 +52,15 @@ export default function BlogBuilderPage() {
   const [featuredImage, setFeaturedImage] = useState("");
   const [pendingImage, setPendingImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  
+  // Multiple Categories & Tags
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
 
-  const [categories, setCategories] = useState([
-    { id: "1", name: "Strategy", checked: false },
-    { id: "2", name: "Engineering", checked: false },
-    { id: "3", name: "Growth", checked: false },
-  ]);
+  const availableCategories = [
+    "Strategy", "Engineering", "Growth", "Product", "UI/UX", "MVP", "SaaS"
+  ];
 
   useEffect(() => {
     const generatedSlug = title
@@ -90,7 +95,6 @@ export default function BlogBuilderPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (limit to 5MB for enterprise standard)
     if (file.size > 5 * 1024 * 1024) {
       toast({
         variant: "destructive",
@@ -117,8 +121,6 @@ export default function BlogBuilderPage() {
       return;
     }
 
-    const selectedCategory = categories.find(c => c.checked)?.name || "Uncategorized";
-
     startTransition(async () => {
       let finalImageUrl = featuredImage;
 
@@ -142,7 +144,8 @@ export default function BlogBuilderPage() {
         content,
         isPublished,
         featuredImage: finalImageUrl,
-        category: selectedCategory,
+        category: selectedCategories.length > 0 ? selectedCategories : ["Uncategorized"],
+        tags: tags,
         author: "Md Asifuzzaman Reyad",
       });
 
@@ -155,10 +158,24 @@ export default function BlogBuilderPage() {
     });
   };
 
-  const toggleCategory = (id: string) => {
-    setCategories(categories.map(cat => 
-      cat.id === id ? { ...cat, checked: !cat.checked } : { ...cat, checked: false }
-    ));
+  const toggleCategory = (cat: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    );
+  };
+
+  const addTag = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && tagInput.trim()) {
+      e.preventDefault();
+      if (!tags.includes(tagInput.trim())) {
+        setTags([...tags, tagInput.trim()]);
+      }
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter(t => t !== tagToRemove));
   };
 
   const toolbarItems = [
@@ -272,9 +289,67 @@ export default function BlogBuilderPage() {
 
             <Card className="border-slate-200 shadow-sm rounded-2xl">
               <CardHeader className="p-6 pb-2">
-                <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">Metadata</CardTitle>
+                <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">Taxonomy</CardTitle>
               </CardHeader>
-              <CardContent className="p-6 space-y-6">
+              <CardContent className="p-6 space-y-8">
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-black text-slate-500 flex items-center gap-2">
+                    <List className="w-3 h-3" /> CATEGORIES
+                  </Label>
+                  <div className="grid grid-cols-1 gap-2">
+                    {availableCategories.map((cat) => (
+                      <div 
+                        key={cat} 
+                        onClick={() => toggleCategory(cat)}
+                        className={cn(
+                          "flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer",
+                          selectedCategories.includes(cat) ? "bg-blue-50 border-blue-100 text-blue-600" : "bg-white border-slate-100 text-slate-500"
+                        )}
+                      >
+                        <span className="text-[10px] font-black uppercase tracking-widest">{cat}</span>
+                        {selectedCategories.includes(cat) && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-[10px] font-black text-slate-500 flex items-center gap-2">
+                    <TagIcon className="w-3 h-3" /> TAGS
+                  </Label>
+                  <div className="space-y-4">
+                    <Input 
+                      placeholder="Type and press Enter..." 
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={addTag}
+                      className="h-10 bg-slate-50/50 border-slate-100 text-xs rounded-lg"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <Badge 
+                          key={tag} 
+                          variant="secondary"
+                          className="bg-slate-100 text-slate-600 hover:bg-slate-200 px-3 py-1 rounded-full text-[10px] font-bold gap-2 cursor-default group"
+                        >
+                          {tag}
+                          <X 
+                            className="w-3 h-3 cursor-pointer text-slate-400 hover:text-red-500" 
+                            onClick={() => removeTag(tag)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-slate-200 shadow-sm rounded-2xl">
+              <CardHeader className="p-6 pb-2">
+                <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">SEO Meta</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-4">
                 <div className="space-y-2">
                   <Label className="text-[10px] font-black text-slate-500">URL SLUG</Label>
                   <Input 
@@ -282,25 +357,6 @@ export default function BlogBuilderPage() {
                     onChange={(e) => setSlug(e.target.value)}
                     className="h-10 bg-slate-50/50 border-slate-100 text-xs font-mono text-slate-500 rounded-lg"
                   />
-                </div>
-                
-                <div className="space-y-3 pt-2">
-                  <Label className="text-[10px] font-black text-slate-500">CATEGORY</Label>
-                  <div className="space-y-2">
-                    {categories.map((cat) => (
-                      <div 
-                        key={cat.id} 
-                        onClick={() => toggleCategory(cat.id)}
-                        className={cn(
-                          "flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer",
-                          cat.checked ? "bg-blue-50 border-blue-100 text-blue-600" : "bg-white border-slate-100 text-slate-500"
-                        )}
-                      >
-                        <span className="text-[10px] font-black uppercase tracking-widest">{cat.name}</span>
-                        {cat.checked && <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />}
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -371,9 +427,6 @@ export default function BlogBuilderPage() {
                     Image selected. Will upload on save.
                   </p>
                 )}
-                <p className="mt-4 text-[8px] text-slate-400 font-bold uppercase text-center">
-                  Recommended: 1200x630px
-                </p>
               </CardContent>
             </Card>
           </div>
