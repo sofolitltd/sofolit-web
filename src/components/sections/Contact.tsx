@@ -70,48 +70,48 @@ export const Contact = () => {
                 Let's Build <br />
                 <span className="text-gradient">Something Iconic.</span>
               </h2>
-              <p className="text-muted-foreground text-lg max-w-md">
+              <p className="text-muted-foreground text-lg md:text-xl max-w-md">
                 Ready to transform your idea into a market-leading product? Reach out and start the conversation.
               </p>
             </div>
 
             <div className="space-y-8">
               <div className="flex items-center gap-6">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
                   <Mail className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground uppercase font-bold tracking-widest">Email</p>
-                  <p className="text-lg font-semibold">sofolitltd@gmail.com</p>
+                  <p className="text-xs text-muted-foreground uppercase font-black tracking-widest">Email</p>
+                  <p className="text-xl font-bold">sofolitltd@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center gap-6">
-                <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
+                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center border border-secondary/20">
                   <Phone className="w-6 h-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground uppercase font-bold tracking-widest">Call</p>
-                  <p className="text-lg font-semibold">+880 1704340860</p>
+                  <p className="text-xs text-muted-foreground uppercase font-black tracking-widest">Call</p>
+                  <p className="text-xl font-bold">+880 1704340860</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className={cn(
-            "glass-card p-10 rounded-3xl border-border bg-card relative opacity-0",
+            "glass-card p-10 md:p-12 rounded-[3rem] border-border bg-card relative opacity-0",
             isVisible && "animate-slide-in-right"
           )} style={{ animationDelay: '0.2s' }}>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Name</FormLabel>
+                        <FormLabel className="font-bold text-xs uppercase tracking-widest">Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} className="bg-background border-border" />
+                          <Input placeholder="John Doe" {...field} className="bg-background border-border h-12" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -122,9 +122,9 @@ export const Contact = () => {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email</FormLabel>
+                        <FormLabel className="font-bold text-xs uppercase tracking-widest">Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="john@example.com" {...field} className="bg-background border-border" />
+                          <Input placeholder="john@example.com" {...field} className="bg-background border-border h-12" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -136,9 +136,9 @@ export const Contact = () => {
                   name="company"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Company (Optional)</FormLabel>
+                      <FormLabel className="font-bold text-xs uppercase tracking-widest">Company (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="Acme Inc." {...field} className="bg-background border-border" />
+                        <Input placeholder="Acme Inc." {...field} className="bg-background border-border h-12" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -149,12 +149,12 @@ export const Contact = () => {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Project Details</FormLabel>
+                      <FormLabel className="font-bold text-xs uppercase tracking-widest">Project Details</FormLabel>
                       <FormControl>
                         <Textarea 
                           placeholder="Tell us about your goals..." 
                           {...field} 
-                          className="bg-background border-border h-32"
+                          className="bg-background border-border h-40 resize-none"
                         />
                       </FormControl>
                       <FormMessage />
@@ -163,9 +163,9 @@ export const Contact = () => {
                 />
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-bold flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all"
+                  className="w-full py-5 rounded-2xl bg-primary text-primary-foreground font-black text-lg flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all active:scale-[0.98]"
                 >
-                  Send Inquiry <Send className="w-4 h-4" />
+                  Send Inquiry <Send className="w-5 h-5" />
                 </button>
               </form>
             </Form>

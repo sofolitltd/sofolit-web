@@ -10,37 +10,37 @@ export const SocialProof = () => {
     {
       name: "Afjal Hossain Hrody",
       role: "Wellbeing Clinic",
-      content: "The mental health and wellbeing platform transformed how we manage clinic psychology support. The cross-platform accessibility is outstanding.",
+      content: "Sofol IT helped us bring the Wellbeing Clinic platform to life, and the result was better than we could have hoped for. They were incredibly focused on our mission, ensuring the sensitive nature of our work was reflected in a secure and intuitive user experience. It was an absolute pleasure to collaborate with a team so dedicated to quality.",
       stars: 5,
     },
     {
       name: "Abdullah Al Mamun",
       role: "Blood Finder App",
-      content: "A life-saving application that connects donors with those in need instantly. The real-time notification system is perfectly implemented.",
+      content: "The team delivered an exceptional product for the Blood Finder project. They were incredibly focused on customer satisfaction, iterating on the real-time notification system until it was flawless. Their technical work was excellent, and they were always proactive in making sure the app truly served our community's needs.",
       stars: 5,
     },
     {
       name: "Abdullah Omer Himel",
       role: "The Forge",
-      content: "Our new portfolio site is stunning. The performance and CMS integration make updating our work a breeze. Highly professional result.",
+      content: "Working with Sofol IT to build The Forge's portfolio site was a great experience. They didn't just build a website; they helped us craft a digital identity that's both stunning and high-performance. They were always making sure the job was done exactly the way we wanted, and their attention to detail was top-tier.",
       stars: 5,
     },
     {
       name: "Ashikur Rahman Ashik",
       role: "Petelements BD",
-      content: "The e-commerce experience is seamless. Our pet supply business saw immediate growth after launching the custom web shop.",
+      content: "We've been incredibly happy with the e-commerce platform Sofol IT built for Petelements BD. They really understood our business goals and delivered a clean, efficient shopping experience that our customers love. They were professional, responsive, and a pleasure to collaborate with throughout the entire process.",
       stars: 5,
     },
     {
       name: "Arif Rahman",
       role: "Abrar Shop",
-      content: "Robust single-vendor e-commerce with flawless bKash integration. The state management and performance are top-tier.",
+      content: "The custom e-commerce app for Abrar Shop has been a huge success for us. Sofol IT's work on the bKash integration and overall performance was excellent. They were incredibly focused on making sure every feature worked exactly as we envisioned. I highly recommend them for any serious development project.",
       stars: 5,
     },
     {
       name: "Shahriar Rahman",
       role: "Priyo Banskhali",
-      content: "The community app has brought residents together. Local news, events, and business directories are all managed perfectly.",
+      content: "The Priyo Banskhali app has transformed how our community connects, and that's thanks to Sofol IT. They were incredibly patient and focused on ensuring the app met the unique needs of our local residents. Their work was excellent, and the whole collaboration felt like a true partnership.",
       stars: 5,
     },
   ];
@@ -85,7 +85,7 @@ export const SocialProof = () => {
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div 
               key={idx}
-              className="w-[400px] md:w-[500px] flex-shrink-0 relative p-10 rounded-[2.5rem] glass-card animate-border-trace bg-card group hover:bg-card/60 transition-colors shadow-2xl"
+              className="w-[450px] md:w-[600px] flex-shrink-0 relative p-10 rounded-[2.5rem] glass-card animate-border-trace bg-card group hover:bg-card/60 transition-colors shadow-2xl"
             >
               <div className="flex gap-1 mb-8">
                 {[...Array(t.stars)].map((_, i) => (
@@ -93,7 +93,7 @@ export const SocialProof = () => {
                 ))}
               </div>
               <Quote className="w-20 h-20 text-primary/5 absolute top-10 right-10 group-hover:text-primary/10 transition-colors" />
-              <p className="text-xl font-medium mb-10 leading-relaxed italic relative z-10 text-foreground/90">
+              <p className="text-lg md:text-xl font-medium mb-10 leading-relaxed italic relative z-10 text-foreground/90">
                 "{t.content}"
               </p>
               <div className="pt-8 border-t border-border/50">
