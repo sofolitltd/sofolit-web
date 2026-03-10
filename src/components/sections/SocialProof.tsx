@@ -49,12 +49,12 @@ export const SocialProof = () => {
 
   return (
     <section className="py-24 bg-background overflow-hidden">
-      {/* Slow Horizontal Marquee */}
+      {/* Slow Horizontal Marquee (Right to Left) */}
       <div className="mb-24 border-y border-border py-12 bg-muted/10 relative">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
         
-        <div className="marquee-content-reverse flex whitespace-nowrap">
+        <div className="marquee-content flex whitespace-nowrap" style={{ animationDuration: '80s' }}>
           {/* Duplicate content for seamless loop */}
           {[...projectTitles, ...projectTitles, ...projectTitles, ...projectTitles].map((title, idx) => (
             <span 
@@ -74,7 +74,7 @@ export const SocialProof = () => {
           </div>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Trusted by Innovators</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Real feedback from partners we've helped launch and scale across the globe.
+            Real feedback from partners we've helped launch and scale.
           </p>
         </div>
         
