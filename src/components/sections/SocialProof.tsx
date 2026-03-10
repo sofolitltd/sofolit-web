@@ -1,13 +1,10 @@
+
 "use client";
 
 import React from "react";
 import { Star, Quote } from "lucide-react";
-import { projectsData } from "@/lib/projects-data";
 
 export const SocialProof = () => {
-  // Use actual project titles for the marquee
-  const projectTitles = projectsData.map(p => p.title);
-
   const testimonials = [
     {
       name: "Afjal Hossain Hrody",
@@ -49,53 +46,40 @@ export const SocialProof = () => {
 
   return (
     <section className="py-24 bg-background overflow-hidden">
-      {/* Slow Horizontal Marquee (Right to Left) */}
-      <div className="mb-24 border-y border-border py-12 bg-muted/10 relative">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
-        
-        <div className="marquee-content flex whitespace-nowrap" style={{ animationDuration: '80s' }}>
-          {/* Duplicate content for seamless loop */}
-          {[...projectTitles, ...projectTitles, ...projectTitles, ...projectTitles].map((title, idx) => (
-            <span 
-              key={idx}
-              className="text-2xl md:text-5xl font-black mx-12 text-muted-foreground/30 hover:text-primary transition-all duration-500 cursor-default select-none tracking-tighter uppercase"
-            >
-              {title}
-            </span>
-          ))}
+      <div className="container px-4 mx-auto mb-20 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 mb-6">
+          Client Success
         </div>
+        <h2 className="text-5xl md:text-7xl font-black tracking-tight mb-6">Trusted by Innovators</h2>
+        <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
+          Real feedback from partners we've helped launch and scale.
+        </p>
       </div>
+      
+      <div className="relative group">
+        {/* Gradient Overlays for smooth fading edges */}
+        <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-      <div className="container px-4 mx-auto">
-        <div className="text-center mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 mb-4">
-            Testimonials
-          </div>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Trusted by Innovators</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Real feedback from partners we've helped launch and scale.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((t, idx) => (
+        <div className="marquee-content flex gap-8 py-10" style={{ animationDuration: '100s' }}>
+          {/* We render the list twice for a seamless infinite scroll loop */}
+          {[...testimonials, ...testimonials].map((t, idx) => (
             <div 
               key={idx}
-              className="relative p-10 rounded-3xl glass-card animate-border-trace bg-card group hover:bg-card/60 transition-colors"
+              className="w-[400px] md:w-[500px] flex-shrink-0 relative p-10 rounded-[2.5rem] glass-card animate-border-trace bg-card group hover:bg-card/60 transition-colors shadow-2xl"
             >
-              <div className="flex gap-1 mb-6">
+              <div className="flex gap-1 mb-8">
                 {[...Array(t.stars)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-primary text-primary" />
                 ))}
               </div>
-              <Quote className="w-16 h-16 text-primary/5 absolute top-8 right-8 group-hover:text-primary/10 transition-colors" />
-              <p className="text-lg font-medium mb-8 leading-relaxed italic relative z-10">
+              <Quote className="w-20 h-20 text-primary/5 absolute top-10 right-10 group-hover:text-primary/10 transition-colors" />
+              <p className="text-xl font-medium mb-10 leading-relaxed italic relative z-10 text-foreground/90">
                 "{t.content}"
               </p>
-              <div>
-                <h4 className="font-bold text-lg">{t.name}</h4>
-                <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest">{t.role}</p>
+              <div className="pt-8 border-t border-border/50">
+                <h4 className="font-black text-xl text-foreground">{t.name}</h4>
+                <p className="text-primary font-black text-[10px] uppercase tracking-[0.2em] mt-1">{t.role}</p>
               </div>
             </div>
           ))}
