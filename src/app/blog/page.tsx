@@ -19,7 +19,7 @@ export default function BlogPage() {
           The <span className="text-gradient">Founder's</span> Handbook
         </h1>
         <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
-          A collection of insights and proven frameworks for building, launching, and scaling successful digital businesses as a solo entrepreneur.
+          Actionable strategies on **MVP development**, **SaaS scaling**, and **premium product strategy** tailored for the modern solo entrepreneur.
         </p>
       </div>
 

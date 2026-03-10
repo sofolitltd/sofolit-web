@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from "react";
@@ -28,8 +27,10 @@ export default function BlogPostPage() {
     );
   }
 
+  // Improved related content logic for small sets
   const relatedPosts = blogPosts
-    .filter(p => p.slug !== slug && (p.category === post.category || Math.random() > 0.5))
+    .filter(p => p.slug !== slug)
+    .sort(() => Math.random() - 0.5)
     .slice(0, 3);
 
   const postImg = PlaceHolderImages.find(img => img.id === post.image);
@@ -38,7 +39,7 @@ export default function BlogPostPage() {
     <main className="min-h-screen bg-background pt-32">
       <div className="container px-4 mx-auto max-w-4xl">
         <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors mb-12 group">
-          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Blog
+          <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Journal
         </Link>
 
         <div className="space-y-8 mb-16">
@@ -93,7 +94,7 @@ export default function BlogPostPage() {
         {/* Discovery Section - Related Posts */}
         <div className="pt-24 border-t border-border mb-32">
           <div className="flex items-center justify-between mb-12">
-            <h2 className="text-3xl font-black tracking-tight">Discover More Insights</h2>
+            <h2 className="text-3xl font-black tracking-tight">More from the Journal</h2>
             <Link href="/blog" className="text-sm font-bold text-primary flex items-center gap-2 hover:underline">
               View All <ArrowRight className="w-4 h-4" />
             </Link>
