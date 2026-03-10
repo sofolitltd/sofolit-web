@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useTransition, useRef } from "react";
@@ -101,7 +100,7 @@ export default function BlogBuilderPage() {
         content,
         isPublished,
         category: selectedCategory,
-        author: "Alex Sofol",
+        author: "Md Asifuzzaman Reyad",
       });
 
       if (result.success) {

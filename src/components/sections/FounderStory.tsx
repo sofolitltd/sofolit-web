@@ -48,8 +48,8 @@ export const FounderStory = () => {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                 <div className="absolute bottom-8 left-8">
-                  <h4 className="text-2xl font-bold">Alex Sofol</h4>
-                  <p className="text-primary font-medium">Founder & Head of Product</p>
+                  <h4 className="text-2xl font-bold">Md Asifuzzaman Reyad</h4>
+                  <p className="text-primary font-medium">Founder</p>
                 </div>
               </div>
             </div>
@@ -85,7 +85,7 @@ export const FounderStory = () => {
               <div className="flex items-center gap-8 pt-4">
                 <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '0.8s' }}>
                   <p className="text-3xl font-black text-primary">15+</p>
-                  <p className="text-sm font-bold uppercase text-muted-foreground">Products Launched</p>
+                  <p className="text-sm font-bold uppercase text-muted-foreground">Projects Launched</p>
                 </div>
                 <div className="w-px h-12 bg-border" />
                 <div className={cn("opacity-0", isVisible && "animate-fade-in")} style={{ animationDelay: '1s' }}>
