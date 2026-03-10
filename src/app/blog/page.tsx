@@ -26,7 +26,7 @@ export default async function BlogPage() {
           The <span className="text-gradient">Founder's</span> Handbook
         </h1>
         <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
-          Actionable strategies for modern solo entrepreneur.
+          Actionable strategies on **MVP development**, **SaaS scaling**, and **premium product strategy** tailored for the modern solo entrepreneur.
         </p>
       </div>
 
