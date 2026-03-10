@@ -12,7 +12,8 @@ import {
   Menu,
   X,
   Rocket,
-  FolderTree
+  FolderTree,
+  MessageSquare
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { name: "Dashboard", href: "/admin/dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
+    { name: "Leads", href: "/admin/inquiries", icon: <MessageSquare className="w-5 h-5" /> },
     { name: "Manage Blog", href: "/admin/blog", icon: <FileText className="w-5 h-5" /> },
     { name: "Categories", href: "/admin/blog/categories", icon: <FolderTree className="w-5 h-5" /> },
     { name: "Settings", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },

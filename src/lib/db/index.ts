@@ -4,12 +4,16 @@ import * as schema from './schema';
 
 const databaseUrl = process.env.DATABASE_URL;
 
-if (!databaseUrl) {
-  console.warn('DATABASE_URL is not defined. Database operations will fail.');
-}
+/**
+ * Defensive Database Initialization.
+ * Prevents the application from crashing at the top level if the connection string
+ * is missing or a placeholder. 
+ */
+const isPlaceholder = !databaseUrl || databaseUrl.includes('ep-cool-snowflake');
+const connectionString = isPlaceholder 
+  ? "https://placeholder.neon.tech" 
+  : databaseUrl;
 
-// We use a safe fallback or a known problematic placeholder check to avoid low-level crashes
-const isPlaceholder = databaseUrl?.includes('ep-cool-snowflake');
-const sql = neon(databaseUrl && !isPlaceholder ? databaseUrl : "postgres://placeholder:password@localhost:5432/db");
+const sql = neon(connectionString);
 
 export const db = drizzle(sql, { schema });

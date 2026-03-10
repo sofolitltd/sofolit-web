@@ -9,6 +9,7 @@ import { getCategories } from "@/lib/actions/categories";
 import { Badge } from "@/components/ui/badge";
 
 export default async function BlogPage() {
+  // Defensive fetching to prevent 500 errors on connection failure
   const posts = await getPublicPosts();
   const allCategories = await getCategories();
 
@@ -50,7 +51,7 @@ export default async function BlogPage() {
                 : PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
               const readTime = calculateReadTime(post.content);
               
-              // Map dynamic category IDs to names from categoriesData
+              // Safely map dynamic category IDs to names
               const categoryIds = Array.isArray(post.categoriesData) ? post.categoriesData as number[] : [];
               const activeCats = allCategories.filter(c => categoryIds.includes(c.id));
 

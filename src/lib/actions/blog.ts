@@ -8,6 +8,7 @@ import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
 
 /**
  * Enterprise-level Server Action for creating/updating a blog post.
+ * Synchronizes metadata including multiple categories and dynamic tags.
  */
 export async function saveBlogPost(data: NewPost) {
   try {
@@ -51,7 +52,7 @@ export async function uploadBlogImage(base64Image: string) {
 }
 
 /**
- * Fetch all posts for admin view.
+ * Fetch all posts for admin view with robust error handling.
  */
 export async function getAdminPosts() {
   try {
@@ -63,7 +64,8 @@ export async function getAdminPosts() {
 }
 
 /**
- * Fetch published posts for public view.
+ * Fetch published posts for public view. 
+ * Defensively returns empty array on connection failure.
  */
 export async function getPublicPosts() {
   try {
@@ -96,6 +98,7 @@ export async function getPostBySlug(slug: string) {
 
 /**
  * Delete a post and its associated Cloudinary image.
+ * Synchronized cleanup to maintain a clean media library.
  */
 export async function deletePost(id: number) {
   try {
@@ -105,10 +108,11 @@ export async function deletePost(id: number) {
     if (postToDelete.length > 0) {
       const imageUrl = postToDelete[0].featuredImage;
       
-      // 2. If it's a Cloudinary URL, attempt to delete the asset
+      // 2. If it's a Cloudinary URL, identify public ID and delete asset
       if (imageUrl && imageUrl.includes('res.cloudinary.com')) {
         const parts = imageUrl.split('/upload/');
         if (parts.length > 1) {
+          // Extract public ID including folders (e.g. sofolit/xyz)
           const pathAfterUpload = parts[1].replace(/^v\d+\//, '');
           const publicId = pathAfterUpload.split('.')[0];
           
