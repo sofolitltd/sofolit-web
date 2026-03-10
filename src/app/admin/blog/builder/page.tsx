@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useTransition, useRef } from "react";
@@ -19,7 +18,8 @@ import {
   Quote,
   List,
   Link as LinkIcon,
-  X
+  X,
+  Info
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -33,6 +33,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { saveBlogPost, uploadBlogImage } from "@/lib/actions/blog";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function BlogBuilderPage() {
   const router = useRouter();
@@ -89,6 +90,16 @@ export default function BlogBuilderPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Check file size (limit to 5MB for enterprise standard)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        variant: "destructive",
+        title: "File Too Large",
+        description: "Please select an image smaller than 5MB.",
+      });
+      return;
+    }
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setPendingImage(reader.result as string);
@@ -111,7 +122,6 @@ export default function BlogBuilderPage() {
     startTransition(async () => {
       let finalImageUrl = featuredImage;
 
-      // Enterprise Approach: Upload only on Save to avoid storage bloat
       if (pendingImage) {
         setIsUploading(true);
         const uploadResult = await uploadBlogImage(pendingImage);
@@ -296,8 +306,20 @@ export default function BlogBuilderPage() {
             </Card>
 
             <Card className="border-slate-200 shadow-sm rounded-2xl">
-              <CardHeader className="p-6 pb-2">
+              <CardHeader className="p-6 pb-2 flex flex-row items-center justify-between">
                 <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">Media Assets</CardTitle>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="text-slate-300 hover:text-blue-500 transition-colors">
+                        <Info className="w-3.5 h-3.5" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-slate-900 text-white text-[10px] font-bold border-none p-3 max-w-[200px]">
+                      Recommended: 1200 x 630 pixels. (1.91:1 ratio) for optimal SEO and social sharing.
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </CardHeader>
               <CardContent className="p-6">
                 <input 
@@ -349,6 +371,9 @@ export default function BlogBuilderPage() {
                     Image selected. Will upload on save.
                   </p>
                 )}
+                <p className="mt-4 text-[8px] text-slate-400 font-bold uppercase text-center">
+                  Recommended: 1200x630px
+                </p>
               </CardContent>
             </Card>
           </div>
