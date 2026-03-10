@@ -5,7 +5,8 @@ import { Star, Quote } from "lucide-react";
 import { projectsData } from "@/lib/projects-data";
 
 export const SocialProof = () => {
-  const techStack = projectsData.map(p => p.title);
+  // Use actual project titles for the marquee
+  const projectTitles = projectsData.map(p => p.title);
 
   const testimonials = [
     {
@@ -48,17 +49,19 @@ export const SocialProof = () => {
 
   return (
     <section className="py-24 bg-background overflow-hidden">
+      {/* Slow Horizontal Marquee */}
       <div className="mb-24 border-y border-border py-12 bg-muted/10 relative">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
         
         <div className="marquee-content-reverse flex whitespace-nowrap">
-          {[...techStack, ...techStack, ...techStack].map((tech, idx) => (
+          {/* Duplicate content for seamless loop */}
+          {[...projectTitles, ...projectTitles, ...projectTitles, ...projectTitles].map((title, idx) => (
             <span 
               key={idx}
               className="text-2xl md:text-5xl font-black mx-12 text-muted-foreground/30 hover:text-primary transition-all duration-500 cursor-default select-none tracking-tighter uppercase"
             >
-              {tech}
+              {title}
             </span>
           ))}
         </div>
@@ -66,9 +69,12 @@ export const SocialProof = () => {
 
       <div className="container px-4 mx-auto">
         <div className="text-center mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 mb-4">
+            Testimonials
+          </div>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Trusted by Innovators</h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Real feedback from partners we've helped launch and scale.
+            Real feedback from partners we've helped launch and scale across the globe.
           </p>
         </div>
         
@@ -84,12 +90,12 @@ export const SocialProof = () => {
                 ))}
               </div>
               <Quote className="w-16 h-16 text-primary/5 absolute top-8 right-8 group-hover:text-primary/10 transition-colors" />
-              <p className="text-xl font-medium mb-8 leading-relaxed italic relative z-10">
+              <p className="text-lg font-medium mb-8 leading-relaxed italic relative z-10">
                 "{t.content}"
               </p>
               <div>
                 <h4 className="font-bold text-lg">{t.name}</h4>
-                <p className="text-muted-foreground text-sm font-black uppercase tracking-widest">{t.role}</p>
+                <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest">{t.role}</p>
               </div>
             </div>
           ))}

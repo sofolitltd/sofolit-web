@@ -93,13 +93,6 @@
   animation: border-trace 4s linear infinite;
 }
 
-.beam {
-  @apply absolute pointer-events-none opacity-50;
-  background: linear-gradient(to bottom, transparent, hsl(var(--primary)), transparent);
-  width: 1px;
-  height: 100%;
-}
-
 @keyframes infinite-marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
