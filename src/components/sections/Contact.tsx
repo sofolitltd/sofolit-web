@@ -166,7 +166,7 @@ export const Contact = () => {
                       <FormItem>
                         <FormLabel className="font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} className="bg-background border-border h-12 rounded-xl" />
+                          <Input placeholder="John Doe" {...field} className="bg-background border-border h-12 rounded-xl no-underline" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -179,7 +179,7 @@ export const Contact = () => {
                       <FormItem>
                         <FormLabel className="font-bold text-[10px] uppercase tracking-widest text-muted-foreground">Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="john@example.com" {...field} className="bg-background border-border h-12 rounded-xl" />
+                          <Input placeholder="john@example.com" {...field} className="bg-background border-border h-12 rounded-xl no-underline" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -201,7 +201,7 @@ export const Contact = () => {
                         </FormControl>
                         <SelectContent className="bg-white border-border rounded-xl">
                           <SelectItem value="mobile-app">Custom Mobile App Development</SelectItem>
-                          <SelectItem value="web-platform">High-Performance Web Platform</SelectItem>
+                          <SelectItem value="web-platform">High-Performance Web Development</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -219,7 +219,7 @@ export const Contact = () => {
                         <Textarea 
                           placeholder="Tell us about your goals, timelines, and requirements..." 
                           {...field} 
-                          className="bg-background border-border h-32 resize-none rounded-xl p-4"
+                          className="bg-background border-border h-32 resize-none rounded-xl p-4 no-underline"
                         />
                       </FormControl>
                       <FormMessage />
