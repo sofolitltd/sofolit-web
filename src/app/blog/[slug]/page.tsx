@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from "react";
@@ -6,14 +5,13 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
-import { Calendar, Clock, ChevronLeft, Share2, Bookmark, Calendar as CalendarIcon } from "lucide-react";
+import { Calendar, Clock, ChevronLeft, Share2, Bookmark } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { blogPosts } from "@/lib/blog-data";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
   const post = blogPosts.find(p => p.slug === slug);
-  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
   if (!post) {
     return (
@@ -80,21 +78,6 @@ export default function BlogPostPage() {
           prose-code:text-primary prose-code:bg-primary/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
-        
-        <div className="p-12 rounded-[3rem] glass-card border-primary/20 bg-primary/5 text-center space-y-6 mb-32">
-          <h3 className="text-3xl font-black">Ready to build your own MVP?</h3>
-          <p className="text-muted-foreground text-lg">We help solo founders transform their vision into high-fidelity products in weeks, not months.</p>
-          <div className="pt-4">
-            <a 
-              href={CALENDLY_URL} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-xl transition-all inline-flex items-center gap-2"
-            >
-              <CalendarIcon className="w-5 h-5" /> Book a Call
-            </a>
-          </div>
-        </div>
       </div>
       <Footer />
     </main>
