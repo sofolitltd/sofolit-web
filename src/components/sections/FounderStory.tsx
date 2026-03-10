@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -44,9 +43,9 @@ export const FounderStory = () => {
                     className="object-cover"
                   />
                   {/* Premium Identity Overlay */}
-                  <div className="absolute bottom-6 left-6 right-6 p-8 glass-card bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl transition-transform duration-500 group-hover:scale-[1.02]">
-                    <h4 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Md Asifuzzaman Reyad</h4>
-                    <p className="text-primary font-bold text-xs uppercase tracking-[0.2em] mt-2">Founder, Sofol IT</p>
+                  <div className="absolute bottom-6 left-6 p-8 glass-card bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-xl transition-transform duration-500 group-hover:scale-[1.02] max-w-[280px]">
+                    <h4 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Md Asifuzzaman Reyad</h4>
+                    <p className="text-primary font-bold text-[10px] uppercase tracking-[0.2em] mt-2">Founder, Sofol IT</p>
                   </div>
                 </div>
               </div>
@@ -76,7 +75,7 @@ export const FounderStory = () => {
 
               <div className="p-8 md:p-12 rounded-[3rem] bg-muted/30 border border-border/50 relative italic max-w-2xl mx-auto lg:mx-0">
                 <Quote className="absolute -top-4 -left-4 w-12 h-12 text-primary opacity-20" />
-                <p className="text-xl md:text-3xl font-medium text-foreground leading-relaxed">
+                <p className="text-xl md:text-2xl font-medium text-foreground leading-relaxed">
                   "Our mission is to empower the next generation of brands by making high-fidelity product development accessible and efficient."
                 </p>
               </div>
