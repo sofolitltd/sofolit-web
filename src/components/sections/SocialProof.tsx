@@ -3,6 +3,7 @@
 
 import React from "react";
 import { Star, Quote } from "lucide-react";
+import { projectsData } from "@/lib/projects-data";
 
 export const SocialProof = () => {
   const testimonials = [
@@ -44,8 +45,27 @@ export const SocialProof = () => {
     },
   ];
 
+  const projectNames = projectsData.map(p => p.title);
+
   return (
     <section className="py-24 bg-background overflow-hidden">
+      {/* Project Names Marquee (Social Proof Strip) */}
+      <div className="border-y border-border/50 py-10 mb-24 bg-muted/20 relative">
+        <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        
+        <div className="marquee-content flex gap-12 items-center">
+          {[...projectNames, ...projectNames, ...projectNames].map((name, idx) => (
+            <span 
+              key={idx} 
+              className="text-2xl md:text-4xl font-black text-muted-foreground/30 whitespace-nowrap uppercase tracking-widest hover:text-primary transition-colors cursor-default"
+            >
+              {name}
+            </span>
+          ))}
+        </div>
+      </div>
+
       <div className="container px-4 mx-auto mb-20 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 mb-6">
           Client Success
@@ -56,13 +76,12 @@ export const SocialProof = () => {
         </p>
       </div>
       
+      {/* Testimonials Marquee */}
       <div className="relative group">
-        {/* Gradient Overlays for smooth fading edges */}
         <div className="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-        <div className="marquee-content flex gap-8 py-10" style={{ animationDuration: '100s' }}>
-          {/* We render the list twice for a seamless infinite scroll loop */}
+        <div className="marquee-content-reverse flex gap-8 py-10" style={{ animationDuration: '80s' }}>
           {[...testimonials, ...testimonials].map((t, idx) => (
             <div 
               key={idx}
