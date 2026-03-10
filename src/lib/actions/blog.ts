@@ -1,11 +1,10 @@
-
 'use server';
 
 import { db } from "@/lib/db";
 import { posts, type NewPost } from "@/lib/db/schema";
 import { eq, desc, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { uploadToCloudinary } from "@/lib/cloudinary";
+import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
 
 /**
  * Enterprise-level Server Action for creating/updating a blog post.
@@ -92,15 +91,42 @@ export async function getPostBySlug(slug: string) {
 }
 
 /**
- * Delete a post.
+ * Delete a post and its associated Cloudinary image.
  */
 export async function deletePost(id: number) {
   try {
+    // 1. Fetch the post to get the image URL
+    const postToDelete = await db.select().from(posts).where(eq(posts.id, id)).limit(1);
+    
+    if (postToDelete.length > 0) {
+      const imageUrl = postToDelete[0].featuredImage;
+      
+      // 2. If it's a Cloudinary URL, attempt to delete the asset
+      if (imageUrl && imageUrl.includes('res.cloudinary.com')) {
+        // Extract public ID from URL: .../upload/v12345/folder/public_id.jpg
+        // We use a regex to capture everything after /upload/ and before the extension, excluding the version (v12345)
+        const parts = imageUrl.split('/upload/');
+        if (parts.length > 1) {
+          // Remove version if present (v followed by numbers)
+          const pathAfterUpload = parts[1].replace(/^v\d+\//, '');
+          // Remove file extension
+          const publicId = pathAfterUpload.split('.')[0];
+          
+          if (publicId) {
+            await deleteFromCloudinary(publicId);
+          }
+        }
+      }
+    }
+
+    // 3. Delete from Database
     await db.delete(posts).where(eq(posts.id, id));
+    
     revalidatePath('/admin/blog');
     revalidatePath('/blog');
     return { success: true };
   } catch (error: any) {
+    console.error("Delete Error:", error);
     return { success: false, error: error.message };
   }
 }
