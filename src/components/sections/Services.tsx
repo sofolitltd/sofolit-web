@@ -8,29 +8,29 @@ import { cn } from "@/lib/utils";
 
 const services = [
   {
-    title: "The Solo-Founder App",
-    subtitle: "Launch Fast, Scale Smoothly",
-    description: "You have a vision; we have the tools. We build high-performance mobile apps that turn your concept into a market-ready product. We focus on getting your first 1,000 users without the technical overhead.",
+    title: "Custom Mobile App Development",
+    subtitle: "Native-Feel Experiences",
+    description: "Launch your vision on iOS and Android with a high-performance, single codebase. We specialize in building engaging mobile apps that turn your concept into a market-ready product, focusing on your first 1,000 users.",
     icon: <Smartphone className="w-10 h-10 text-primary" />,
     benefits: [
       { icon: <Zap className="w-4 h-4" />, text: "Quick to Market" },
       { icon: <Heart className="w-4 h-4" />, text: "User-First Design" },
       { icon: <Target className="w-4 h-4" />, text: "Founder-Centric" }
     ],
-    features: ["MVP Development", "Cross-Platform (Flutter)", "Easy App Store Launch", "Scalable for Growth"],
+    features: ["Flutter Expert Dev", "Secure Firebase Backend", "App Store Publishing", "Push Notifications"],
     animation: "animate-slide-in-left"
   },
   {
-    title: "High-Conversion Web",
-    subtitle: "Your Digital Storefront & Office",
-    description: "Stop losing customers to generic templates. We craft professional web platforms that turn visitors into loyal users. Optimized for performance, search engines, and your specific business goals.",
+    title: "High-Performance Web Development",
+    subtitle: "Your Scalable Digital Storefront",
+    description: "Convert visitors into loyal customers with lightning-fast, SEO-optimized web platforms. We build everything from custom SaaS dashboards to high-converting landing pages tailored to your business goals.",
     icon: <Globe className="w-10 h-10 text-secondary" />,
     benefits: [
       { icon: <MousePointer2 className="w-4 h-4" />, text: "Built to Sell" },
       { icon: <Layout className="w-4 h-4" />, text: "Super Fast" },
       { icon: <Rocket className="w-4 h-4" />, text: "SEO Ready" }
     ],
-    features: ["SEO Optimized Performance", "Custom SaaS Dashboards", "Secure Stripe Integration", "Robust Analytics"],
+    features: ["Next.js Architectures", "Secure Stripe Payments", "Custom Admin Panels", "Robust Analytics"],
     animation: "animate-slide-in-right"
   }
 ];

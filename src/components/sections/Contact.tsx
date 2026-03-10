@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useRef, useState, useTransition } from "react";
@@ -201,9 +202,6 @@ export const Contact = () => {
                         <SelectContent className="bg-white border-border rounded-xl">
                           <SelectItem value="mobile-app">Custom Mobile App Development</SelectItem>
                           <SelectItem value="web-platform">High-Performance Web Platform</SelectItem>
-                          <SelectItem value="saas-dashboard">SaaS & Dashboard Solutions</SelectItem>
-                          <SelectItem value="ai-integration">GenAI & AI Integration</SelectItem>
-                          <SelectItem value="ui-ux">UI/UX Strategic Design</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
