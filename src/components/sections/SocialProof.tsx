@@ -28,7 +28,6 @@ const testimonials = [
 export const SocialProof = () => {
   return (
     <section className="py-24 bg-background overflow-hidden">
-      {/* Tech Stack & Expertise Marquee */}
       <div className="mb-24 border-y border-border py-12 bg-muted/10 relative">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />

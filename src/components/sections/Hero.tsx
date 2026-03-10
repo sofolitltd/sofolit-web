@@ -1,8 +1,10 @@
+
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import { Sparkles, Rocket } from "lucide-react";
+import { Sparkles, Rocket, ArrowRight } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 export const Hero = () => {
@@ -27,13 +29,11 @@ export const Hero = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern pt-20 pb-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden grid-pattern pt-24 pb-20"
     >
-      {/* Luminous Beams */}
       <div className="absolute top-0 left-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-primary/10 to-transparent" />
       <div className="absolute top-0 right-1/4 h-full w-[1px] bg-gradient-to-b from-transparent via-secondary/10 to-transparent" />
       
-      {/* Atmospheric Mesh Gradient */}
       <div className="absolute inset-0 mesh-gradient opacity-20" />
 
       <div className="container relative z-10 px-4 mx-auto text-center space-y-8">
@@ -45,19 +45,21 @@ export const Hero = () => {
           <span>Transforming Vision into Value</span>
         </div>
         
-        <h1 className={cn(
-          "text-5xl md:text-6xl lg:text-[7.5rem] font-black tracking-tight leading-[0.9] opacity-0",
+        <div className={cn(
+          "space-y-2 opacity-0",
           isVisible && "animate-fade-in-up"
         )} style={{ animationDelay: '0.3s' }}>
-          <span className="block text-muted-foreground/30 mb-2 text-3xl md:text-5xl lg:text-7xl">From Concept to</span>
-          <span className="block text-gradient">Market Reality</span>
-        </h1>
+          <h1 className="text-5xl md:text-7xl lg:text-[7rem] font-black tracking-tight leading-[0.9]">
+            <span className="block text-muted-foreground/30 text-3xl md:text-5xl lg:text-6xl mb-2">From Concept to</span>
+            <span className="block text-gradient">Market Reality</span>
+          </h1>
+        </div>
         
         <p className={cn(
           "max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground opacity-0",
           isVisible && "animate-fade-in-up"
         )} style={{ animationDelay: '0.5s' }}>
-          Elite software engineering for founders who demand excellence. We bridge the gap between imagination and reality with premium software craftsmanship and AI-driven strategies.
+          We bridge the gap between imagination and reality with premium software craftsmanship and AI-driven strategies. Enterprise-level technical excellence designed for solo founders.
         </p>
 
         <div className={cn(
@@ -69,11 +71,13 @@ export const Hero = () => {
               Book a Call <Rocket className="w-5 h-5 ml-2" />
             </MagneticButton>
           </a>
+          <Link href="/work" className="px-10 h-14 rounded-full border border-border flex items-center gap-2 font-bold hover:bg-muted transition-all">
+            Our Portfolio <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
       </div>
 
-      {/* Radial Gradient Mask */}
-      <div className="absolute inset-0 pointer-events-none bg-radial-gradient from-transparent to-background" 
+      <div className="absolute inset-0 pointer-events-none" 
            style={{ background: 'radial-gradient(circle at center, transparent 0%, hsl(var(--background)) 100%)' }} />
     </section>
   );
