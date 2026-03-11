@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
 import { ArrowRight, Calendar } from "lucide-react";
 import { projectsData } from "@/lib/projects-data";
+import { Badge } from "@/components/ui/badge";
 
 export default function ProjectsPage() {
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
@@ -25,8 +26,12 @@ export default function ProjectsPage() {
       <section className="container px-4 mx-auto mb-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {projectsData.map((item, idx) => (
-            <Link key={idx} href={`/projects/${item.slug}`} className="group space-y-6 block outline-none">
-              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden glass-card border-white/5 shadow-2xl">
+            <Link 
+              key={idx} 
+              href={`/projects/${item.slug}`} 
+              className="group flex flex-col bg-card/30 backdrop-blur-md rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:translate-y-[-8px]"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted/20">
                 <Image 
                   src={item.imageUrl} 
                   alt={item.title} 
@@ -34,30 +39,36 @@ export default function ProjectsPage() {
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   data-ai-hint={item.imageHint}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
-                  <div className="flex items-center gap-2 text-white font-bold bg-primary px-6 py-3 rounded-full hover:bg-primary/90 transition-colors">
-                    View Project Details <ArrowRight className="w-4 h-4" />
-                  </div>
+                <div className="absolute top-6 left-6">
+                  <Badge variant="secondary" className="bg-background/90 backdrop-blur-md border-border/50 text-[10px] font-black uppercase tracking-widest px-4 py-1.5">
+                    {item.category === 'app' ? 'Mobile App' : 'Web Platform'}
+                  </Badge>
                 </div>
               </div>
               
-              <div className="space-y-4 px-2">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-primary font-bold uppercase tracking-widest text-xs mb-1">{item.category}</p>
-                    <h2 className="text-3xl font-black tracking-tight group-hover:text-primary transition-colors">{item.title}</h2>
-                  </div>
-                  <div className="flex gap-2">
-                    {item.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="px-3 py-1 rounded-full bg-muted text-[10px] font-bold uppercase border border-border">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+              <div className="p-10 flex-1 flex flex-col">
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {item.tags.slice(0, 4).map(tag => (
+                    <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-primary/70 bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-                <p className="text-muted-foreground leading-relaxed">
-                  {item.description}
-                </p>
+
+                <div className="space-y-4 mb-8">
+                  <h2 className="text-3xl font-black tracking-tight group-hover:text-primary transition-colors">
+                    {item.title}
+                  </h2>
+                  <p className="text-muted-foreground leading-relaxed line-clamp-3">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="mt-auto pt-8 border-t border-border/30 flex items-center justify-between">
+                  <span className="text-sm font-bold flex items-center gap-2 text-primary group-hover:gap-4 transition-all">
+                    Project Details <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
               </div>
             </Link>
           ))}

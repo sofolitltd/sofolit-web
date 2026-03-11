@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, ArrowRight, BadgeCheck } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { projectsData } from "@/lib/projects-data";
 import { Badge } from "@/components/ui/badge";
@@ -65,13 +65,13 @@ export const Portfolio = () => {
               key={idx}
               href={`/projects/${project.slug}`}
               className={cn(
-                "group flex flex-col gap-8 opacity-0",
+                "group flex flex-col bg-card/30 backdrop-blur-md rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:translate-y-[-8px] opacity-0",
                 isVisible && "animate-fade-in-up"
               )}
               style={{ animationDelay: `${0.2 + idx * 0.15}s` }}
             >
               {/* Image Container */}
-              <div className="relative aspect-video rounded-[2.5rem] overflow-hidden border border-border/50 shadow-2xl bg-muted/20">
+              <div className="relative aspect-video overflow-hidden bg-muted/20">
                 <Image 
                   src={project.imageUrl}
                   alt={project.title}
@@ -79,28 +79,27 @@ export const Portfolio = () => {
                   className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   data-ai-hint={project.imageHint}
                 />
-                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
                 
                 {/* Category Badge on Image */}
                 <div className="absolute top-6 left-6">
-                  <Badge variant="secondary" className="bg-background/80 backdrop-blur-md border-border/50 text-[10px] font-black uppercase tracking-widest px-4 py-1.5">
+                  <Badge variant="secondary" className="bg-background/90 backdrop-blur-md border-border/50 text-[10px] font-black uppercase tracking-widest px-4 py-1.5">
                     {project.category === 'app' ? 'Mobile App' : 'Web Platform'}
                   </Badge>
                 </div>
               </div>
 
               {/* Content Area */}
-              <div className="space-y-6 px-4">
+              <div className="p-10 space-y-6">
                 <div className="flex flex-wrap gap-2">
                   {project.tags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border/50 pb-1">
+                    <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-primary/70 bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
                       {tag}
                     </span>
                   ))}
                 </div>
                 
-                <div className="space-y-3">
-                  <h3 className="text-3xl md:text-4xl font-black tracking-tight group-hover:text-primary transition-colors">
+                <div className="space-y-4">
+                  <h3 className="text-3xl font-black tracking-tight group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
                   <p className="text-muted-foreground text-lg leading-relaxed line-clamp-2">
@@ -108,8 +107,10 @@ export const Portfolio = () => {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-4 transition-all">
-                  View Detailed Case Study <ArrowRight className="w-4 h-4" />
+                <div className="pt-6 border-t border-border/30 flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-4 transition-all">
+                    View Case Study <ArrowRight className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
             </Link>
