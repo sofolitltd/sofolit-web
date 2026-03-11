@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -100,7 +101,99 @@ export default {
         'slide-in-right': 'slide-in-right 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         'zoom-in': 'zoom-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       },
+      typography: (theme: any) => ({
+        DEFAULT: {
+          css: {
+            color: theme('colors.foreground'),
+            '[class~="lead"]': {
+              color: theme('colors.muted.foreground'),
+            },
+            a: {
+              color: theme('colors.primary.DEFAULT'),
+              '&:hover': {
+                color: theme('colors.primary.DEFAULT'),
+                textDecoration: 'underline',
+              },
+            },
+            strong: {
+              color: theme('colors.foreground'),
+              fontWeight: '700',
+            },
+            'ol > li::marker': {
+              fontWeight: '600',
+              color: theme('colors.primary.DEFAULT'),
+            },
+            'ul > li::marker': {
+              color: theme('colors.primary.DEFAULT'),
+            },
+            hr: {
+              borderColor: theme('colors.border'),
+            },
+            blockquote: {
+              fontWeight: '500',
+              fontStyle: 'italic',
+              color: theme('colors.foreground'),
+              borderLeftColor: theme('colors.primary.DEFAULT'),
+              backgroundColor: theme('colors.primary.DEFAULT / 0.05'),
+              padding: theme('spacing.6'),
+              borderRadius: theme('borderRadius.xl'),
+            },
+            h1: {
+              color: theme('colors.foreground'),
+              fontWeight: '900',
+              letterSpacing: theme('letterSpacing.tight'),
+            },
+            h2: {
+              color: theme('colors.foreground'),
+              fontWeight: '900',
+              letterSpacing: theme('letterSpacing.tight'),
+              marginTop: theme('spacing.12'),
+              marginBottom: theme('spacing.6'),
+            },
+            h3: {
+              color: theme('colors.foreground'),
+              fontWeight: '800',
+              letterSpacing: theme('letterSpacing.tight'),
+            },
+            h4: {
+              color: theme('colors.foreground'),
+              fontWeight: '700',
+            },
+            code: {
+              color: theme('colors.primary.DEFAULT'),
+              backgroundColor: theme('colors.primary.DEFAULT / 0.1'),
+              paddingLeft: theme('spacing.1'),
+              paddingRight: theme('spacing.1'),
+              paddingTop: theme('spacing[0.5]'),
+              paddingBottom: theme('spacing[0.5]'),
+              borderRadius: theme('borderRadius.md'),
+              fontWeight: '600',
+            },
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
+            pre: {
+              color: theme('colors.slate.100'),
+              backgroundColor: theme('colors.slate.900'),
+              borderRadius: theme('borderRadius.2xl'),
+              padding: theme('spacing.8'),
+              border: `1px solid ${theme('colors.white / 0.1')}`,
+              boxShadow: theme('boxShadow.2xl'),
+            },
+            thead: {
+              color: theme('colors.foreground'),
+              borderBottomColor: theme('colors.border'),
+            },
+            'tbody tr': {
+              borderBottomColor: theme('colors.border'),
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 } satisfies Config;

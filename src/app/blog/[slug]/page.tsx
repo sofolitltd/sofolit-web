@@ -1,3 +1,4 @@
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,6 +43,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     year: 'numeric' 
   }) : 'Recent';
 
+  // Configure marked for safe and high-fidelity parsing
   const htmlContent = await marked.parse(post.content || "");
   
   // Handle dynamic categories from categoriesData
@@ -91,7 +93,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         </div>
 
-        <div className="relative aspect-[21/9] rounded-3xl overflow-hidden mb-16 border border-border shadow-2xl">
+        <div className="relative aspect-[21/9] rounded-[2rem] overflow-hidden mb-16 border border-border shadow-2xl">
           <Image 
             src={postImg.imageUrl || "https://picsum.photos/seed/post/1200/630"} 
             alt={post.title} 
@@ -101,13 +103,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
 
         <article 
-          className="prose prose-lg dark:prose-invert max-w-none mb-16
-          prose-headings:font-black prose-headings:tracking-tight
-          prose-p:text-muted-foreground prose-p:leading-relaxed
-          prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:p-8 prose-blockquote:rounded-r-2xl prose-blockquote:italic
-          prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
-          prose-pre:bg-slate-900 prose-pre:rounded-2xl prose-pre:p-6 prose-pre:border prose-pre:border-white/10
-          prose-code:text-primary prose-code:bg-primary/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none"
+          className="prose prose-lg dark:prose-invert max-w-none mb-24
+          prose-headings:text-foreground prose-p:text-muted-foreground/90 prose-p:leading-relaxed prose-p:text-lg
+          prose-a:no-underline prose-a:border-b-2 prose-a:border-primary/30 hover:prose-a:border-primary transition-all
+          prose-blockquote:not-italic prose-blockquote:font-medium prose-blockquote:bg-muted/30 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:rounded-r-2xl prose-blockquote:px-8 prose-blockquote:py-6
+          prose-pre:shadow-2xl prose-pre:border prose-pre:border-white/10
+          prose-img:rounded-[2rem] prose-img:border prose-img:border-border
+          prose-ul:list-disc prose-ol:list-decimal"
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
