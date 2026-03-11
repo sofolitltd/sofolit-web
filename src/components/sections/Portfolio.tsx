@@ -4,9 +4,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, ArrowRight } from "lucide-react";
+import { ExternalLink, ArrowRight, BadgeCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { projectsData } from "@/lib/projects-data";
+import { Badge } from "@/components/ui/badge";
 
 export const Portfolio = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -22,56 +23,93 @@ export const Portfolio = () => {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section id="portfolio" ref={sectionRef} className="py-24 bg-background">
-      <div className="container px-4 mx-auto">
+    <section id="portfolio" ref={sectionRef} className="py-32 bg-background relative overflow-hidden">
+      {/* Decorative background element */}
+      <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+      
+      <div className="container px-4 mx-auto relative z-10">
         <div className={cn(
-          "flex flex-col md:flex-row justify-between items-end mb-16 gap-6 opacity-0",
+          "flex flex-col md:flex-row justify-between items-end mb-20 gap-8 opacity-0",
           isVisible && "animate-fade-in-up"
         )}>
-          <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight">Recent Projects</h2>
-            <p className="text-muted-foreground max-w-lg text-lg">
-              Showcasing our ability to deliver high-fidelity products across various industries.
+          <div className="space-y-6 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-[10px] font-black uppercase tracking-widest text-primary border border-primary/20">
+              Selected Works
+            </div>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
+              Case Studies of <br />
+              <span className="text-gradient">Strategic Engineering.</span>
+            </h2>
+            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+              We don't just build apps; we architect digital solutions that drive real-world business value for solo founders.
             </p>
           </div>
-          <Link href="/projects" className="text-primary font-bold flex items-center gap-2 group text-lg">
-            View All Projects <ExternalLink className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          <Link href="/projects" className="group flex items-center gap-3 text-lg font-bold text-primary hover:text-primary/80 transition-all">
+            Explore All Projects 
+            <div className="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+              <ExternalLink className="w-4 h-4" />
+            </div>
           </Link>
         </div>
 
-        {/* 1 column on mobile/tablet (sm/md), 2 columns on lg+ */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {homeProjects.map((project, idx) => (
             <Link 
               key={idx}
               href={`/projects/${project.slug}`}
               className={cn(
-                "group relative rounded-[3rem] overflow-hidden aspect-[4/3] glass-card opacity-0 block border border-border/50 shadow-2xl",
+                "group flex flex-col gap-8 opacity-0",
                 isVisible && "animate-fade-in-up"
               )}
-              style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
+              style={{ animationDelay: `${0.2 + idx * 0.15}s` }}
             >
-              <Image 
-                src={project.imageUrl}
-                alt={project.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
-                data-ai-hint={project.imageHint}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-100 transition-opacity" />
-              
-              <div className="absolute bottom-0 left-0 p-10 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                <p className="text-sm font-black text-primary uppercase tracking-[0.2em] mb-3">{project.category === 'app' ? 'Mobile App' : 'Web Platform'}</p>
-                <h3 className="text-4xl font-black tracking-tight">{project.title}</h3>
-                <div className="flex items-center gap-2 mt-4 text-white/50 group-hover:text-primary transition-colors font-bold text-sm">
-                  Explore Case Study <ArrowRight className="w-4 h-4" />
+              {/* Image Container */}
+              <div className="relative aspect-video rounded-[2.5rem] overflow-hidden border border-border/50 shadow-2xl bg-muted/20">
+                <Image 
+                  src={project.imageUrl}
+                  alt={project.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  data-ai-hint={project.imageHint}
+                />
+                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500" />
+                
+                {/* Category Badge on Image */}
+                <div className="absolute top-6 left-6">
+                  <Badge variant="secondary" className="bg-background/80 backdrop-blur-md border-border/50 text-[10px] font-black uppercase tracking-widest px-4 py-1.5">
+                    {project.category === 'app' ? 'Mobile App' : 'Web Platform'}
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Content Area */}
+              <div className="space-y-6 px-4">
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.slice(0, 3).map((tag) => (
+                    <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border/50 pb-1">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                
+                <div className="space-y-3">
+                  <h3 className="text-3xl md:text-4xl font-black tracking-tight group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-muted-foreground text-lg leading-relaxed line-clamp-2">
+                    {project.description}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-4 transition-all">
+                  View Detailed Case Study <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </Link>
