@@ -1,7 +1,6 @@
-
 "use client";
 
-import React, { useState, useEffect, useTransition, useRef } from "react";
+import React, { useState, useEffect, useTransition, useRef, Suspense } from "react";
 import { 
   ChevronLeft, 
   Save, 
@@ -25,7 +24,7 @@ import {
   Check
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,15 +33,17 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { saveBlogPost, uploadBlogImage } from "@/lib/actions/blog";
+import { saveBlogPost, uploadBlogImage, getAdminPostById } from "@/lib/actions/blog";
 import { getCategories } from "@/lib/actions/categories";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Category } from "@/lib/db/schema";
 
-export default function BlogBuilderPage() {
+function BlogBuilderForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const editingId = searchParams.get("id");
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -56,6 +57,7 @@ export default function BlogBuilderPage() {
   const [featuredImage, setFeaturedImage] = useState("");
   const [pendingImage, setPendingImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoadingPost, setIsLoadingPost] = useState(!!editingId);
   
   const [dbCategories, setDbCategories] = useState<Category[]>([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
@@ -66,17 +68,33 @@ export default function BlogBuilderPage() {
     async function load() {
       const cats = await getCategories();
       setDbCategories(cats);
+
+      if (editingId) {
+        const post = await getAdminPostById(parseInt(editingId));
+        if (post) {
+          setTitle(post.title);
+          setSlug(post.slug);
+          setExcerpt(post.excerpt || "");
+          setContent(post.content);
+          setIsPublished(post.isPublished || false);
+          setFeaturedImage(post.featuredImage || "");
+          setSelectedCategoryIds(post.categoriesData as number[] || []);
+          setTags(post.tags as string[] || []);
+        }
+        setIsLoadingPost(false);
+      }
     }
     load();
-  }, []);
+  }, [editingId]);
 
   useEffect(() => {
+    if (editingId) return; // Don't auto-generate slug when editing
     const generatedSlug = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)+/g, "");
     setSlug(generatedSlug);
-  }, [title]);
+  }, [title, editingId]);
 
   const insertMarkdown = (prefix: string, suffix: string = "") => {
     const textarea = textareaRef.current;
@@ -146,6 +164,7 @@ export default function BlogBuilderPage() {
       }
 
       const result = await saveBlogPost({
+        id: editingId ? parseInt(editingId) : undefined,
         title,
         slug,
         excerpt,
@@ -230,6 +249,14 @@ export default function BlogBuilderPage() {
     { icon: <Minus className="w-4 h-4" />, action: () => insertMarkdown("\n---\n", ""), label: "Divider" },
   ];
 
+  if (isLoadingPost) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#FDFDFD] pb-20">
       <div className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 px-8 py-4 flex items-center justify-between shadow-sm">
@@ -244,7 +271,7 @@ export default function BlogBuilderPage() {
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{isPublished ? "Public" : "Draft Mode"}</span>
             </div>
             <h1 className="text-sm font-black text-slate-900 truncate max-w-[300px]">
-              {title || "Drafting New Article..."}
+              {editingId ? "Edit Article" : title || "Drafting New Article..."}
             </h1>
           </div>
         </div>
@@ -275,6 +302,16 @@ export default function BlogBuilderPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   className="h-16 bg-white border-slate-200 focus:border-blue-500/30 text-2xl font-black rounded-xl shadow-sm"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[11px] font-black uppercase tracking-widest text-slate-400">Slug (URL)</Label>
+                <Input 
+                  placeholder="article-slug-here" 
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  className="h-10 bg-white border-slate-200 text-sm font-mono rounded-xl shadow-sm"
                 />
               </div>
 
@@ -451,5 +488,13 @@ export default function BlogBuilderPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BlogBuilderPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><Loader2 className="w-8 h-8 animate-spin text-blue-600" /></div>}>
+      <BlogBuilderForm />
+    </Suspense>
   );
 }

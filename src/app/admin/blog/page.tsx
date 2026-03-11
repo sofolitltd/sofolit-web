@@ -179,6 +179,11 @@ export default function ManageBlogPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="bg-white border border-slate-200 shadow-xl p-1 min-w-[160px]">
                           <DropdownMenuItem asChild>
+                            <Link href={`/admin/blog/builder?id=${post.id}`} className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs">
+                              <Edit2 className="w-3.5 h-3.5" /> Edit Article
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
                             <Link href={`/blog/${post.slug}`} target="_blank" className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs">
                               <Eye className="w-3.5 h-3.5" /> View Public
                             </Link>

@@ -1,4 +1,3 @@
-
 'use server';
 
 import { db, isDbConfigured } from "@/lib/db";
@@ -66,6 +65,20 @@ export async function getAdminPosts() {
   } catch (error) {
     console.error("Fetch Error:", error);
     return [];
+  }
+}
+
+/**
+ * Fetch a single post by ID for admin editing.
+ */
+export async function getAdminPostById(id: number) {
+  if (!isDbConfigured()) return null;
+  try {
+    const results = await db.select().from(posts).where(eq(posts.id, id)).limit(1);
+    return results[0] || null;
+  } catch (error) {
+    console.error("Fetch Post By ID Error:", error);
+    return null;
   }
 }
 
