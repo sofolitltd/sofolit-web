@@ -12,20 +12,31 @@ import {
   FileText,
   CheckCircle2,
   Clock,
-  Loader2,
-  Tag
+  Loader2
 } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
-  DropdownMenuTrigger 
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { getAdminPosts, deletePost } from "@/lib/actions/blog";
 import { getCategories } from "@/lib/actions/categories";
 import { useToast } from "@/hooks/use-toast";
 import type { Post, Category } from "@/lib/db/schema";
-import { Badge } from "@/components/ui/badge";
 
 export default function ManageBlogPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -33,6 +44,7 @@ export default function ManageBlogPage() {
   const [loading, setLoading] = useState(true);
   const [isDeleting, startDelete] = useTransition();
   const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     async function loadData() {
@@ -71,133 +83,138 @@ export default function ManageBlogPage() {
       .join(", ");
   };
 
+  const filteredPosts = posts.filter(post => 
+    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    post.author?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="max-w-7xl mx-auto py-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="max-w-7xl mx-auto space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-2">
+          <div className="flex items-center gap-2 text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">
             <FileText className="w-3 h-3" /> Content Management
           </div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">Blog Articles</h1>
+          <p className="text-sm text-slate-500">Manage your stories, insights, and industry updates.</p>
         </div>
-        <Link 
-          href="/admin/blog/builder" 
-          className="px-5 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-all shadow-md shadow-blue-500/10"
-        >
-          <Plus className="w-4 h-4" /> Create New
-        </Link>
+        <Button asChild className="gap-2 font-bold h-11 px-6 rounded-xl">
+          <Link href="/admin/blog/builder">
+            <Plus className="w-4 h-4" /> Create New Article
+          </Link>
+        </Button>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 bg-slate-50/30">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input 
-              placeholder="Search articles..." 
-              className="w-full bg-white border border-slate-200 rounded-lg pl-10 pr-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500/10"
-            />
+      <Card className="border-slate-200 shadow-sm overflow-hidden rounded-2xl">
+        <CardHeader className="p-0 border-b border-slate-100">
+          <div className="px-6 py-4 flex items-center gap-4 bg-slate-50/30">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input 
+                placeholder="Search articles by title or author..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 h-10 bg-white border-slate-200 rounded-lg text-sm"
+              />
+            </div>
           </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-slate-100 text-[10px] uppercase font-black tracking-widest text-slate-400 bg-white">
-                <th className="px-8 py-4">Article</th>
-                <th className="px-8 py-4">Categories</th>
-                <th className="px-8 py-4">Status</th>
-                <th className="px-8 py-4">Date</th>
-                <th className="px-8 py-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader className="bg-slate-50/50">
+              <TableRow className="border-b border-slate-100 hover:bg-transparent">
+                <TableHead className="px-8 py-4 text-[10px] uppercase font-black tracking-widest text-slate-400">Article</TableHead>
+                <TableHead className="px-8 py-4 text-[10px] uppercase font-black tracking-widest text-slate-400">Categories</TableHead>
+                <TableHead className="px-8 py-4 text-[10px] uppercase font-black tracking-widest text-slate-400">Status</TableHead>
+                <TableHead className="px-8 py-4 text-[10px] uppercase font-black tracking-widest text-slate-400">Date</TableHead>
+                <TableHead className="px-8 py-4 text-[10px] uppercase font-black tracking-widest text-slate-400 text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {loading ? (
-                <tr>
-                  <td colSpan={5} className="px-8 py-20 text-center">
-                    <Loader2 className="w-8 h-8 animate-spin text-slate-300 mx-auto" />
-                    <p className="text-xs font-bold text-slate-400 mt-4 uppercase tracking-widest">Loading database...</p>
-                  </td>
-                </tr>
-              ) : posts.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-8 py-20 text-center text-slate-400 font-bold uppercase text-xs tracking-widest">
-                    No articles found in Neon DB
-                  </td>
-                </tr>
-              ) : posts.map((post) => (
-                <tr key={post.id} className="hover:bg-blue-50/30 transition-colors group">
-                  <td className="px-8 py-5">
+                <TableRow>
+                  <TableCell colSpan={5} className="py-20 text-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
+                    <p className="text-xs font-bold text-slate-400 mt-4 uppercase tracking-widest">Fetching Articles...</p>
+                  </TableCell>
+                </TableRow>
+              ) : filteredPosts.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} className="py-20 text-center text-slate-400 font-bold uppercase text-xs tracking-widest">
+                    No articles found
+                  </TableCell>
+                </TableRow>
+              ) : filteredPosts.map((post) => (
+                <TableRow key={post.id} className="hover:bg-slate-50/50 transition-colors group">
+                  <TableCell className="px-8 py-5">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-colors shrink-0">
                         <FileText className="w-5 h-5" />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-bold text-sm text-slate-900 truncate">{post.title}</p>
+                        <p className="font-bold text-sm text-slate-900 truncate max-w-[200px]">{post.title}</p>
                         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{post.author}</span>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-8 py-5">
+                  </TableCell>
+                  <TableCell className="px-8 py-5">
                     <div className="flex flex-wrap gap-1 max-w-[200px]">
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate max-w-full">
                         {getCategoryNames(post.categoriesData)}
                       </span>
                     </div>
-                  </td>
-                  <td className="px-8 py-5">
-                    <div className="flex items-center gap-2">
-                      {post.isPublished ? (
-                        <div className="flex items-center gap-1.5 text-green-600 font-bold text-[10px] uppercase tracking-wider">
-                          <CheckCircle2 className="w-3.5 h-3.5" /> Published
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1.5 text-amber-600 font-bold text-[10px] uppercase tracking-wider">
-                          <Clock className="w-3.5 h-3.5" /> Draft
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-8 py-5">
+                  </TableCell>
+                  <TableCell className="px-8 py-5">
+                    {post.isPublished ? (
+                      <Badge className="bg-green-50 text-green-700 hover:bg-green-50 border-green-100 font-bold text-[10px] uppercase tracking-wider gap-1.5">
+                        <CheckCircle2 className="w-3 h-3" /> Published
+                      </Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-100 font-bold text-[10px] uppercase tracking-wider gap-1.5">
+                        <Clock className="w-3 h-3" /> Draft
+                      </Badge>
+                    )}
+                  </TableCell>
+                  <TableCell className="px-8 py-5">
                     <p className="text-xs text-slate-500 font-medium">
                       {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'N/A'}
                     </p>
-                  </td>
-                  <td className="px-8 py-5 text-right">
-                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button 
-                        onClick={() => handleDelete(post.id)}
-                        disabled={isDeleting}
-                        className="p-2 hover:bg-white rounded border border-transparent hover:border-slate-200 text-slate-400 hover:text-red-600 transition-all"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button className="p-2 hover:bg-white rounded border border-transparent hover:border-slate-200 text-slate-400 transition-all">
-                            <MoreVertical className="w-4 h-4" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-white border border-slate-200 shadow-xl p-1 min-w-[160px]">
-                          <DropdownMenuItem asChild>
-                            <Link href={`/admin/blog/builder?id=${post.id}`} className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs">
-                              <Edit2 className="w-3.5 h-3.5" /> Edit Article
-                            </Link>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem asChild>
-                            <Link href={`/blog/${post.slug}`} target="_blank" className="flex items-center gap-3 cursor-pointer p-2 rounded text-slate-700 font-bold text-xs">
-                              <Eye className="w-3.5 h-3.5" /> View Public
-                            </Link>
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                  <TableCell className="px-8 py-5 text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-slate-900">
+                          <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48 p-1 rounded-xl shadow-xl">
+                        <DropdownMenuItem asChild>
+                          <Link href={`/admin/blog/builder?id=${post.id}`} className="flex items-center gap-3 cursor-pointer p-2 rounded-lg text-xs font-bold">
+                            <Edit2 className="w-3.5 h-3.5" /> Edit Article
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href={`/blog/${post.slug}`} target="_blank" className="flex items-center gap-3 cursor-pointer p-2 rounded-lg text-xs font-bold">
+                            <Eye className="w-3.5 h-3.5" /> View Public
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem 
+                          onClick={() => handleDelete(post.id)}
+                          disabled={isDeleting}
+                          className="flex items-center gap-3 cursor-pointer p-2 rounded-lg text-xs font-bold text-red-600 focus:text-red-600 focus:bg-red-50"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" /> Delete Post
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
