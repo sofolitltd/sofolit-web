@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState, useTransition } from "react";
@@ -199,7 +198,7 @@ export const Contact = () => {
                             <SelectValue placeholder="Select a service" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="bg-white border-border rounded-xl">
+                        <SelectContent className="rounded-xl border-border bg-popover text-popover-foreground">
                           <SelectItem value="mobile-app">Custom Mobile App Development</SelectItem>
                           <SelectItem value="web-platform">High-Performance Web Development</SelectItem>
                         </SelectContent>
