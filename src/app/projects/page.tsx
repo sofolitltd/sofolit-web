@@ -1,4 +1,3 @@
-
 "use client";
 
 import React from "react";
@@ -40,7 +39,7 @@ export default function ProjectsPage() {
                   data-ai-hint={item.imageHint}
                 />
                 <div className="absolute top-6 left-6">
-                  <Badge variant="secondary" className="bg-background/90 backdrop-blur-md border-border/50 text-[10px] font-black uppercase tracking-widest px-4 py-1.5">
+                  <Badge className="bg-background/80 backdrop-blur-md border-border/50 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 text-foreground hover:bg-background/90">
                     {item.category === 'app' ? 'Mobile App' : 'Web Platform'}
                   </Badge>
                 </div>
