@@ -1,7 +1,7 @@
 
 'use server';
 
-import { db } from "@/lib/db";
+import { db, isDbConfigured } from "@/lib/db";
 import { posts, type NewPost } from "@/lib/db/schema";
 import { eq, desc, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -12,6 +12,10 @@ import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
  * Synchronizes metadata including multiple categories and dynamic tags.
  */
 export async function saveBlogPost(data: NewPost) {
+  if (!isDbConfigured()) {
+    return { success: false, error: "Database not configured. Please add your DATABASE_URL to .env" };
+  }
+
   try {
     if (data.id) {
       // Update existing post
@@ -56,6 +60,7 @@ export async function uploadBlogImage(base64Image: string) {
  * Fetch all posts for admin view with robust error handling.
  */
 export async function getAdminPosts() {
+  if (!isDbConfigured()) return [];
   try {
     return await db.select().from(posts).orderBy(desc(posts.createdAt));
   } catch (error) {
@@ -69,6 +74,7 @@ export async function getAdminPosts() {
  * Defensively returns empty array on connection failure.
  */
 export async function getPublicPosts() {
+  if (!isDbConfigured()) return [];
   try {
     return await db.select()
       .from(posts)
@@ -84,7 +90,7 @@ export async function getPublicPosts() {
  * Fetch a single published post by slug.
  */
 export async function getPostBySlug(slug: string) {
-  if (!slug) return null;
+  if (!slug || !isDbConfigured()) return null;
   try {
     const results = await db.select()
       .from(posts)
@@ -102,6 +108,8 @@ export async function getPostBySlug(slug: string) {
  * Synchronized cleanup to maintain a clean media library.
  */
 export async function deletePost(id: number) {
+  if (!isDbConfigured()) return { success: false, error: "Database not configured." };
+  
   try {
     // 1. Fetch the post to get the image URL
     const postToDelete = await db.select().from(posts).where(eq(posts.id, id)).limit(1);
@@ -114,7 +122,6 @@ export async function deletePost(id: number) {
         const parts = imageUrl.split('/upload/');
         if (parts.length > 1) {
           // Extract public ID including folders (e.g. sofolit/xyz)
-          // URL format: .../upload/v12345/folder/public_id.jpg
           const pathAfterUpload = parts[1].replace(/^v\d+\//, '');
           const publicId = pathAfterUpload.split('.')[0];
           

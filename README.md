@@ -1,3 +1,4 @@
+
 # SOFOL IT | Enterprise-Grade Founder's Platform
 
 A premium, high-fidelity digital ecosystem designed for solo founders and startups. This platform combines a powerful WordPress-style CMS, strategic AI tools, and high-performance engineering to transform visionary concepts into market-ready products.

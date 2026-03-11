@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useTransition, useRef } from "react";
@@ -374,22 +375,6 @@ export default function BlogBuilderPage() {
                       ))}
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-slate-200 shadow-sm rounded-2xl">
-              <CardHeader className="p-6 pb-2">
-                <CardTitle className="text-[10px] font-black uppercase tracking-widest text-slate-400">SEO Meta</CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-black text-slate-500">URL SLUG</Label>
-                  <Input 
-                    value={slug}
-                    onChange={(e) => setSlug(e.target.value)}
-                    className="h-10 bg-slate-50/50 border-slate-100 text-xs font-mono text-slate-500 rounded-lg shadow-inner"
-                  />
                 </div>
               </CardContent>
             </Card>
