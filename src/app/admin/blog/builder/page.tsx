@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, useTransition, useRef, Suspense } from "react";
+import React, { useState, useEffect, useTransition, Suspense } from "react";
 import { 
   ChevronLeft, 
   Save, 
-  Eye, 
   ImageIcon, 
   Loader2,
   X,
-  Check
+  Check,
+  Eye,
+  Edit3
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -20,12 +21,13 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { saveBlogPost, uploadBlogImage, getAdminPostById } from "@/lib/actions/blog";
 import { getCategories } from "@/lib/actions/categories";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/db/schema";
+import { marked } from "marked";
 
 function BlogBuilderForm() {
   const router = useRouter();
@@ -33,8 +35,6 @@ function BlogBuilderForm() {
   const editingId = searchParams.get("id");
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -82,26 +82,6 @@ function BlogBuilderForm() {
       .replace(/(^-|-$)+/g, "");
     setSlug(generatedSlug);
   }, [title, editingId]);
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 5 * 1024 * 1024) {
-      toast({
-        variant: "destructive",
-        title: "File Too Large",
-        description: "Please select an image smaller than 5MB.",
-      });
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPendingImage(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
 
   const handleSave = async () => {
     if (!title || !content) {
@@ -178,86 +158,114 @@ function BlogBuilderForm() {
     );
   }
 
+  const renderedPreview = marked.parse(content || "");
+
   return (
-    <div className="flex flex-col gap-8 pb-20">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
             <Link href="/admin/blog"><ChevronLeft className="h-4 w-4" /></Link>
           </Button>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{editingId ? "Edit Article" : "New Article"}</h1>
-            <p className="text-muted-foreground">Draft and publish your next insight.</p>
+            <h1 className="text-2xl font-bold tracking-tight">{editingId ? "Edit Article" : "New Article"}</h1>
+            <p className="text-sm text-muted-foreground">Draft and publish your next insight.</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" asChild>
-             <Link href={editingId ? `/blog/${slug}` : "#"} target="_blank">View Preview</Link>
-          </Button>
-          <Button onClick={handleSave} disabled={isPending || isUploading}>
+          {editingId && (
+            <Button variant="outline" size="sm" asChild>
+               <Link href={`/blog/${slug}`} target="_blank">View Live</Link>
+            </Button>
+          )}
+          <Button size="sm" onClick={handleSave} disabled={isPending || isUploading}>
             {isPending || isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-            {editingId ? "Update Post" : "Publish Post"}
+            {editingId ? "Update" : "Publish"}
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2 flex flex-col gap-6">
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Content</CardTitle>
-              <CardDescription>The core details of your article.</CardDescription>
+              <CardTitle>Article Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Title</Label>
+                <Label htmlFor="title">Title</Label>
                 <Input 
-                  placeholder="Enter title..." 
+                  id="title"
+                  placeholder="Enter article title" 
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Slug (URL)</Label>
+                <Label htmlFor="slug">Slug</Label>
                 <Input 
-                  placeholder="article-slug" 
+                  id="slug"
+                  placeholder="article-url-slug" 
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
                   className="font-mono text-xs"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Excerpt</Label>
+                <Label htmlFor="excerpt">Excerpt</Label>
                 <Textarea 
-                  placeholder="A short summary..." 
-                  className="min-h-[100px]"
+                  id="excerpt"
+                  placeholder="Brief summary of the article..." 
+                  className="min-h-[80px]"
                   value={excerpt}
                   onChange={(e) => setExcerpt(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
-                <Label>Body (Markdown)</Label>
-                <Textarea 
-                  ref={textareaRef}
-                  placeholder="Write your content here..." 
-                  className="min-h-[400px] font-mono"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                />
-              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+              <CardTitle>Content Body</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="write" className="w-full">
+                <TabsList className="mb-4">
+                  <TabsTrigger value="write" className="gap-2">
+                    <Edit3 className="h-3.5 w-3.5" /> Write
+                  </TabsTrigger>
+                  <TabsTrigger value="preview" className="gap-2">
+                    <Eye className="h-3.5 w-3.5" /> Preview
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="write" className="mt-0">
+                  <Textarea 
+                    placeholder="Write your article in Markdown..." 
+                    className="min-h-[500px] font-mono text-sm leading-relaxed"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                  />
+                </TabsContent>
+                <TabsContent value="preview" className="mt-0">
+                  <div 
+                    className="min-h-[500px] p-4 border rounded-md bg-muted/30 prose prose-sm dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: renderedPreview }}
+                  />
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Status & Visibility</CardTitle>
+              <CardTitle>Publishing</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label>Published</Label>
-                <p className="text-xs text-muted-foreground">Make this post visible to everyone.</p>
+                <Label>Visibility</Label>
+                <p className="text-xs text-muted-foreground">Make public on the site.</p>
               </div>
               <Switch checked={isPublished} onCheckedChange={setIsPublished} />
             </CardContent>
@@ -266,44 +274,51 @@ function BlogBuilderForm() {
           <Card>
             <CardHeader>
               <CardTitle>Organization</CardTitle>
-              <CardDescription>Categorize and tag your post.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label>Categories</Label>
-                <div className="grid gap-2 border rounded-md p-3 max-h-[200px] overflow-auto">
+                <div className="grid gap-2 border rounded-md p-3 max-h-[180px] overflow-y-auto">
                   {dbCategories.map(cat => (
                     <div 
                       key={cat.id} 
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex items-center gap-2 cursor-pointer group"
                       onClick={() => toggleCategory(cat.id)}
                     >
                       <div className={cn(
-                        "h-4 w-4 rounded border flex items-center justify-center",
-                        selectedCategoryIds.includes(cat.id) ? "bg-primary border-primary" : "border-input"
+                        "h-4 w-4 rounded border flex items-center justify-center transition-colors",
+                        selectedCategoryIds.includes(cat.id) ? "bg-primary border-primary" : "border-input group-hover:border-primary/50"
                       )}>
                         {selectedCategoryIds.includes(cat.id) && <Check className="h-3 w-3 text-primary-foreground" />}
                       </div>
                       <span className="text-sm">{cat.name}</span>
                     </div>
                   ))}
-                  {dbCategories.length === 0 && <p className="text-xs text-muted-foreground">No categories found.</p>}
+                  {dbCategories.length === 0 && <p className="text-xs text-muted-foreground">No categories available.</p>}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label>Tags</Label>
+                <Label htmlFor="tags">Tags</Label>
                 <Input 
-                  placeholder="Press Enter to add tags..." 
+                  id="tags"
+                  placeholder="Enter tag and press Enter" 
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={addTag}
                 />
-                <div className="flex flex-wrap gap-2 pt-2">
+                <div className="flex flex-wrap gap-1.5 pt-2">
                   {tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="gap-1 px-2 py-1">
+                    <Badge key={tag} variant="secondary" className="gap-1 pl-2 pr-1 h-6">
                       {tag}
-                      <X className="h-3 w-3 cursor-pointer hover:text-destructive" onClick={() => removeTag(tag)} />
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="h-4 w-4 rounded-full p-0 hover:bg-transparent hover:text-destructive"
+                        onClick={() => removeTag(tag)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
                     </Badge>
                   ))}
                 </div>
@@ -313,46 +328,54 @@ function BlogBuilderForm() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Media</CardTitle>
-              <CardDescription>Featured image for the post.</CardDescription>
+              <CardTitle>Featured Image</CardTitle>
             </CardHeader>
             <CardContent>
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                className="hidden" 
-                accept="image/*"
-                onChange={handleFileSelect}
-              />
-              <div 
-                onClick={() => fileInputRef.current?.click()}
-                className="relative aspect-video rounded-md border-2 border-dashed flex flex-col items-center justify-center cursor-pointer hover:bg-accent transition-colors overflow-hidden"
-              >
-                {pendingImage || featuredImage ? (
-                  <Image 
-                    src={pendingImage || featuredImage} 
-                    alt="Preview" 
-                    fill 
-                    className="object-cover" 
-                    unoptimized={!!pendingImage}
+              <div className="space-y-4">
+                <div 
+                  className="relative aspect-video rounded-md border-2 border-dashed flex flex-col items-center justify-center cursor-pointer hover:bg-muted/50 transition-colors overflow-hidden"
+                  onClick={() => document.getElementById('image-upload')?.click()}
+                >
+                  <input 
+                    id="image-upload"
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => setPendingImage(reader.result as string);
+                        reader.readAsDataURL(file);
+                      }
+                    }}
                   />
-                ) : (
-                  <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                    <ImageIcon className="h-8 w-8" />
-                    <span className="text-xs font-medium">Click to upload</span>
-                  </div>
+                  {pendingImage || featuredImage ? (
+                    <Image 
+                      src={pendingImage || featuredImage} 
+                      alt="Featured image" 
+                      fill 
+                      className="object-cover" 
+                      unoptimized={!!pendingImage}
+                    />
+                  ) : (
+                    <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                      <ImageIcon className="h-8 w-8" />
+                      <span className="text-xs">Click to upload image</span>
+                    </div>
+                  )}
+                </div>
+                {(pendingImage || featuredImage) && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full text-destructive hover:text-destructive" 
+                    onClick={() => { setPendingImage(null); setFeaturedImage(""); }}
+                  >
+                    Remove Image
+                  </Button>
                 )}
               </div>
-              {(pendingImage || featuredImage) && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="w-full mt-2 text-destructive" 
-                  onClick={() => { setPendingImage(null); setFeaturedImage(""); }}
-                >
-                  Remove Image
-                </Button>
-              )}
             </CardContent>
           </Card>
         </div>
