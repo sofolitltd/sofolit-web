@@ -51,7 +51,7 @@ function BlogBuilderForm() {
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
-  const [isPublished, setIsPublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(true); // Default visibility true
   const [featuredImage, setFeaturedImage] = useState("");
   const [pendingImage, setPendingImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -74,7 +74,7 @@ function BlogBuilderForm() {
           setSlug(post.slug);
           setExcerpt(post.excerpt || "");
           setContent(post.content);
-          setIsPublished(post.isPublished || false);
+          setIsPublished(post.isPublished ?? true);
           setFeaturedImage(post.featuredImage || "");
           setSelectedCategoryIds(post.categoriesData as number[] || []);
           setTags(post.tags as string[] || []);
@@ -174,9 +174,17 @@ function BlogBuilderForm() {
   const addTag = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && tagInput.trim()) {
       e.preventDefault();
-      if (!tags.includes(tagInput.trim())) {
-        setTags([...tags, tagInput.trim()]);
-      }
+      // Split by comma and add unique tags
+      const newTags = tagInput.split(',').map(t => t.trim()).filter(t => t !== "");
+      setTags(prev => {
+        const combined = [...prev];
+        newTags.forEach(tag => {
+          if (!combined.includes(tag)) {
+            combined.push(tag);
+          }
+        });
+        return combined;
+      });
       setTagInput("");
     }
   };
@@ -376,7 +384,7 @@ function BlogBuilderForm() {
                 <Label htmlFor="tags">Tags</Label>
                 <Input 
                   id="tags"
-                  placeholder="Enter tag and press Enter" 
+                  placeholder="Enter tags (e.g. tech, news) and press Enter" 
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={addTag}
