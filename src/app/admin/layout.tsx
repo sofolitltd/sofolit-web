@@ -14,7 +14,8 @@ import {
   Rocket,
   FolderTree,
   MessageSquare,
-  User
+  User,
+  Hash
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -60,6 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Leads", href: "/admin/inquiries", icon: <MessageSquare className="w-4 h-4" /> },
     { name: "Blog Posts", href: "/admin/blog", icon: <FileText className="w-4 h-4" /> },
     { name: "Categories", href: "/admin/blog/categories", icon: <FolderTree className="w-4 h-4" /> },
+    { name: "Tags", href: "/admin/blog/tags", icon: <Hash className="w-4 h-4" /> },
     { name: "Settings", href: "/admin/settings", icon: <Settings className="w-4 h-4" /> },
   ];
 

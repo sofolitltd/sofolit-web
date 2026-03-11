@@ -18,7 +18,8 @@ import {
   Code,
   Link as LinkIcon,
   Quote,
-  SeparatorHorizontal
+  SeparatorHorizontal,
+  Search
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -32,11 +33,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { saveBlogPost, uploadBlogImage, getAdminPostById } from "@/lib/actions/blog";
 import { getCategories } from "@/lib/actions/categories";
+import { getTags, syncPostTags } from "@/lib/actions/tags";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import type { Category } from "@/lib/db/schema";
+import type { Category, Tag } from "@/lib/db/schema";
 import { marked } from "marked";
 
 function BlogBuilderForm() {
@@ -51,7 +58,7 @@ function BlogBuilderForm() {
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
-  const [isPublished, setIsPublished] = useState(true); // Default visibility true
+  const [isPublished, setIsPublished] = useState(true);
   const [featuredImage, setFeaturedImage] = useState("");
   const [pendingImage, setPendingImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -59,13 +66,20 @@ function BlogBuilderForm() {
   
   const [dbCategories, setDbCategories] = useState<Category[]>([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
+  
+  const [dbTags, setDbTags] = useState<Tag[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [showTagSuggestions, setShowTagSuggestions] = useState(false);
 
   useEffect(() => {
     async function load() {
-      const cats = await getCategories();
+      const [cats, availableTags] = await Promise.all([
+        getCategories(),
+        getTags()
+      ]);
       setDbCategories(cats);
+      setDbTags(availableTags);
 
       if (editingId) {
         const post = await getAdminPostById(parseInt(editingId));
@@ -108,7 +122,6 @@ function BlogBuilderForm() {
     const newContent = beforeText + prefix + insertedText + suffix + afterText;
     setContent(newContent);
 
-    // Re-focus and select
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(
@@ -144,6 +157,9 @@ function BlogBuilderForm() {
         setIsUploading(false);
       }
 
+      // Sync tags globally first
+      await syncPostTags(tags);
+
       const result = await saveBlogPost({
         id: editingId ? parseInt(editingId) : undefined,
         title,
@@ -171,27 +187,33 @@ function BlogBuilderForm() {
     );
   };
 
-  const addTag = (e: React.KeyboardEvent) => {
+  const addTagsFromInput = (input: string) => {
+    const newTags = input.split(',')
+      .map(t => t.trim())
+      .filter(t => t !== "" && !tags.includes(t));
+    
+    if (newTags.length > 0) {
+      setTags(prev => [...prev, ...newTags]);
+    }
+    setTagInput("");
+    setShowTagSuggestions(false);
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && tagInput.trim()) {
       e.preventDefault();
-      // Split by comma and add unique tags
-      const newTags = tagInput.split(',').map(t => t.trim()).filter(t => t !== "");
-      setTags(prev => {
-        const combined = [...prev];
-        newTags.forEach(tag => {
-          if (!combined.includes(tag)) {
-            combined.push(tag);
-          }
-        });
-        return combined;
-      });
-      setTagInput("");
+      addTagsFromInput(tagInput);
     }
   };
 
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter(t => t !== tagToRemove));
   };
+
+  const filteredTagSuggestions = dbTags.filter(t => 
+    t.name.toLowerCase().includes(tagInput.toLowerCase()) && 
+    !tags.includes(t.name)
+  );
 
   if (isLoadingPost) {
     return (
@@ -295,7 +317,6 @@ function BlogBuilderForm() {
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value="write" className="mt-0 space-y-4">
-                  {/* Markdown Toolbar */}
                   <div className="flex flex-wrap items-center gap-1 p-1 border rounded-md bg-muted/50">
                     {toolbarButtons.map((btn, idx) => (
                       btn.isSeparator ? (
@@ -382,13 +403,37 @@ function BlogBuilderForm() {
 
               <div className="space-y-2">
                 <Label htmlFor="tags">Tags</Label>
-                <Input 
-                  id="tags"
-                  placeholder="Enter tags (e.g. tech, news) and press Enter" 
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyDown={addTag}
-                />
+                <div className="relative">
+                  <Input 
+                    id="tags"
+                    placeholder="Type a tag and press Enter or comma" 
+                    value={tagInput}
+                    onChange={(e) => {
+                      setTagInput(e.target.value);
+                      setShowTagSuggestions(true);
+                    }}
+                    onKeyDown={handleTagKeyDown}
+                    className="pr-10"
+                  />
+                  <div className="absolute right-3 top-2.5 text-muted-foreground">
+                    <Search className="h-4 w-4" />
+                  </div>
+                  
+                  {showTagSuggestions && tagInput && filteredTagSuggestions.length > 0 && (
+                    <div className="absolute z-50 w-full mt-1 bg-popover border rounded-md shadow-lg p-1 max-h-[150px] overflow-y-auto">
+                      {filteredTagSuggestions.map(tag => (
+                        <div 
+                          key={tag.id}
+                          className="px-2 py-1.5 text-sm hover:bg-accent rounded-sm cursor-pointer"
+                          onClick={() => addTagsFromInput(tag.name)}
+                        >
+                          #{tag.name}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
                 <div className="flex flex-wrap gap-1.5 pt-2">
                   {tags.map((tag) => (
                     <Badge key={tag} variant="secondary" className="gap-1 pl-2 pr-1 h-6">

@@ -10,7 +10,7 @@ export const posts = pgTable("posts", {
   isPublished: boolean("is_published").default(false),
   categoriesData: jsonb("categories_data").default([]), // Stores array of category IDs
   author: varchar("author", { length: 100 }).default("Md Asifuzzaman Reyad"),
-  tags: jsonb("tags").default([]),
+  tags: jsonb("tags").default([]), // Stores array of tag names for quick access
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -21,6 +21,13 @@ export const categories = pgTable("categories", {
   slug: varchar("slug", { length: 100 }).notNull().unique(),
   description: text("description"),
   parentId: integer("parent_id"), // hierarchical support
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const tags = pgTable("tags", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 100 }).notNull().unique(),
+  slug: varchar("slug", { length: 100 }).notNull().unique(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -38,5 +45,7 @@ export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
 export type Category = typeof categories.$inferSelect;
 export type NewCategory = typeof categories.$inferInsert;
+export type Tag = typeof tags.$inferSelect;
+export type NewTag = typeof tags.$inferInsert;
 export type Inquiry = typeof inquiries.$inferSelect;
 export type NewInquiry = typeof inquiries.$inferInsert;
