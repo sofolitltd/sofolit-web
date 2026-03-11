@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useTransition, Suspense } from "react";
+import React, { useState, useEffect, useTransition, Suspense, useRef } from "react";
 import { 
   ChevronLeft, 
   Save, 
@@ -9,7 +9,16 @@ import {
   X,
   Check,
   Eye,
-  Edit3
+  Edit3,
+  Bold,
+  Italic,
+  Heading2,
+  Heading3,
+  List,
+  Code,
+  Link as LinkIcon,
+  Quote,
+  SeparatorHorizontal
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -19,9 +28,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import { saveBlogPost, uploadBlogImage, getAdminPostById } from "@/lib/actions/blog";
 import { getCategories } from "@/lib/actions/categories";
 import { useToast } from "@/hooks/use-toast";
@@ -35,6 +45,7 @@ function BlogBuilderForm() {
   const editingId = searchParams.get("id");
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
@@ -82,6 +93,30 @@ function BlogBuilderForm() {
       .replace(/(^-|-$)+/g, "");
     setSlug(generatedSlug);
   }, [title, editingId]);
+
+  const insertMarkdown = (prefix: string, suffix: string = "", placeholder: string = "text") => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end);
+    const beforeText = content.substring(0, start);
+    const afterText = content.substring(end);
+
+    const insertedText = selectedText || placeholder;
+    const newContent = beforeText + prefix + insertedText + suffix + afterText;
+    setContent(newContent);
+
+    // Re-focus and select
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + prefix.length,
+        start + prefix.length + insertedText.length
+      );
+    }, 0);
+  };
 
   const handleSave = async () => {
     if (!title || !content) {
@@ -159,6 +194,19 @@ function BlogBuilderForm() {
   }
 
   const renderedPreview = marked.parse(content || "");
+
+  const toolbarButtons = [
+    { icon: <Bold className="h-4 w-4" />, action: () => insertMarkdown("**", "**", "bold text"), tooltip: "Bold" },
+    { icon: <Italic className="h-4 w-4" />, action: () => insertMarkdown("*", "*", "italic text"), tooltip: "Italic" },
+    { icon: <Heading2 className="h-4 w-4" />, action: () => insertMarkdown("## ", "", "Heading 2"), tooltip: "H2" },
+    { icon: <Heading3 className="h-4 w-4" />, action: () => insertMarkdown("### ", "", "Heading 3"), tooltip: "H3" },
+    { icon: <Separator className="h-4 w-4" />, isSeparator: true },
+    { icon: <List className="h-4 w-4" />, action: () => insertMarkdown("- ", "", "List item"), tooltip: "Bullet List" },
+    { icon: <Quote className="h-4 w-4" />, action: () => insertMarkdown("> ", "", "Quote"), tooltip: "Blockquote" },
+    { icon: <Code className="h-4 w-4" />, action: () => insertMarkdown("`", "`", "code"), tooltip: "Inline Code" },
+    { icon: <LinkIcon className="h-4 w-4" />, action: () => insertMarkdown("[", "](url)", "link text"), tooltip: "Link" },
+    { icon: <SeparatorHorizontal className="h-4 w-4" />, action: () => insertMarkdown("\n---\n", ""), tooltip: "Horizontal Rule" },
+  ];
 
   return (
     <div className="flex flex-col gap-6">
@@ -238,17 +286,40 @@ function BlogBuilderForm() {
                     <Eye className="h-3.5 w-3.5" /> Preview
                   </TabsTrigger>
                 </TabsList>
-                <TabsContent value="write" className="mt-0">
+                <TabsContent value="write" className="mt-0 space-y-4">
+                  {/* Markdown Toolbar */}
+                  <div className="flex flex-wrap items-center gap-1 p-1 border rounded-md bg-muted/50">
+                    {toolbarButtons.map((btn, idx) => (
+                      btn.isSeparator ? (
+                        <Separator key={idx} orientation="vertical" className="h-6 mx-1" />
+                      ) : (
+                        <Button
+                          key={idx}
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                          onClick={btn.action}
+                          type="button"
+                          title={btn.tooltip}
+                        >
+                          {btn.icon}
+                        </Button>
+                      )
+                    ))}
+                  </div>
+
                   <Textarea 
+                    id="content-textarea"
+                    ref={textareaRef}
                     placeholder="Write your article in Markdown..." 
-                    className="min-h-[500px] font-mono text-sm leading-relaxed"
+                    className="min-h-[500px] font-mono text-sm leading-relaxed focus-visible:ring-1"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                   />
                 </TabsContent>
                 <TabsContent value="preview" className="mt-0">
                   <div 
-                    className="min-h-[500px] p-4 border rounded-md bg-muted/30 prose prose-sm dark:prose-invert max-w-none"
+                    className="min-h-[550px] p-6 border rounded-md bg-muted/20 prose prose-sm dark:prose-invert max-w-none"
                     dangerouslySetInnerHTML={{ __html: renderedPreview }}
                   />
                 </TabsContent>
@@ -278,7 +349,7 @@ function BlogBuilderForm() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label>Categories</Label>
-                <div className="grid gap-2 border rounded-md p-3 max-h-[180px] overflow-y-auto">
+                <div className="grid gap-2 border rounded-md p-3 max-h-[180px] overflow-y-auto bg-background">
                   {dbCategories.map(cat => (
                     <div 
                       key={cat.id} 
@@ -291,7 +362,10 @@ function BlogBuilderForm() {
                       )}>
                         {selectedCategoryIds.includes(cat.id) && <Check className="h-3 w-3 text-primary-foreground" />}
                       </div>
-                      <span className="text-sm">{cat.name}</span>
+                      <span className="text-sm">
+                        {cat.parentId ? <span className="text-muted-foreground mr-1">—</span> : null}
+                        {cat.name}
+                      </span>
                     </div>
                   ))}
                   {dbCategories.length === 0 && <p className="text-xs text-muted-foreground">No categories available.</p>}
