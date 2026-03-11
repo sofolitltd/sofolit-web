@@ -7,8 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import type { Category } from "@/lib/db/schema";
 
 export default function CategoriesPage() {
@@ -85,109 +93,106 @@ export default function CategoriesPage() {
     setParentId("0");
   };
 
-  const renderCategoryTree = (pId: number | null = null, level = 0) => {
-    return categoriesList
-      .filter((c) => c.parentId === pId)
-      .map((cat) => (
-        <React.Fragment key={cat.id}>
-          <div className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors group">
-            <div className="flex items-center gap-3" style={{ marginLeft: `${level * 24}px` }}>
-              {level > 0 && <ChevronRight className="w-4 h-4 text-slate-300" />}
-              <div>
-                <p className="font-bold text-sm text-slate-900">{cat.name}</p>
-                <p className="text-[10px] text-slate-400 font-mono uppercase tracking-widest">{cat.slug}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button variant="ghost" size="icon" onClick={() => handleEdit(cat)} className="h-8 w-8">
-                <Edit2 className="w-3.5 h-3.5" />
-              </Button>
-              <Button variant="ghost" size="icon" onClick={() => handleDelete(cat.id)} className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50">
-                <Trash2 className="w-3.5 h-3.5" />
-              </Button>
-            </div>
-          </div>
-          {renderCategoryTree(cat.id, level + 1)}
-        </React.Fragment>
-      ));
-  };
-
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="flex flex-col gap-8">
       <div>
-        <div className="flex items-center gap-2 text-[10px] font-black text-blue-600 uppercase tracking-[0.2em] mb-2">
-          <FolderTree className="w-3 h-3" /> Taxonomy Manager
-        </div>
-        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Categories</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Categories</h1>
+        <p className="text-muted-foreground">Manage article taxonomy and organization.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-4">
-          <Card className="border-slate-200 shadow-sm rounded-2xl">
-            <CardHeader>
-              <CardTitle className="text-sm font-black uppercase tracking-widest text-slate-900">
-                {editingId ? "Edit Category" : "Add New Category"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase text-slate-400">Name</Label>
-                  <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Engineering" className="h-10 rounded-lg" />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase text-slate-400">Slug (URL)</Label>
-                  <Input value={slug} onChange={(e) => setSlug(e.target.value)} className="h-10 rounded-lg bg-slate-50 font-mono text-xs" />
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-[10px] font-black uppercase text-slate-400">Parent Category</Label>
-                  <Select value={parentId} onValueChange={setParentId}>
-                    <SelectTrigger className="h-10 rounded-lg">
-                      <SelectValue placeholder="None" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="0">None (Primary)</SelectItem>
-                      {categoriesList
-                        .filter(c => c.id !== editingId)
-                        .map((c) => (
-                          <SelectItem key={c.id} value={c.id.toString()}>{c.name}</SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="pt-4 flex gap-2">
-                  <Button type="submit" disabled={isPending} className="flex-1 bg-slate-900 hover:bg-black rounded-lg h-10 font-bold text-xs gap-2">
-                    {isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <Save className="w-3 h-3" />}
-                    {editingId ? "Update" : "Add Category"}
-                  </Button>
-                  {editingId && (
-                    <Button type="button" variant="outline" onClick={resetForm} className="rounded-lg h-10 text-xs font-bold px-4">
-                      Cancel
-                    </Button>
-                  )}
-                </div>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="lg:col-span-8">
-          <div className="space-y-2">
-            {loading ? (
-              <div className="py-20 text-center">
-                <Loader2 className="w-8 h-8 animate-spin text-slate-200 mx-auto" />
-              </div>
-            ) : categoriesList.length === 0 ? (
-              <div className="py-20 text-center border-2 border-dashed border-slate-100 rounded-3xl">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">No categories created yet</p>
-              </div>
-            ) : (
+      <div className="grid gap-8 lg:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>{editingId ? "Edit Category" : "Add Category"}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                {renderCategoryTree()}
+                <Label>Name</Label>
+                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Design" />
               </div>
-            )}
-          </div>
-        </div>
+              <div className="space-y-2">
+                <Label>Slug</Label>
+                <Input value={slug} onChange={(e) => setSlug(e.target.value)} className="font-mono text-xs" />
+              </div>
+              <div className="space-y-2">
+                <Label>Parent</Label>
+                <Select value={parentId} onValueChange={setParentId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="None" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">None (Primary)</SelectItem>
+                    {categoriesList
+                      .filter(c => c.id !== editingId)
+                      .map((c) => (
+                        <SelectItem key={c.id} value={c.id.toString()}>{c.name}</SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex gap-2 pt-2">
+                <Button type="submit" className="flex-1" disabled={isPending}>
+                  {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+                  {editingId ? "Update" : "Add Category"}
+                </Button>
+                {editingId && (
+                  <Button type="button" variant="outline" onClick={resetForm}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>All Categories</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Slug</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
+                  <TableRow>
+                    <TableCell colSpan={3} className="h-24 text-center">
+                      <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                    </TableCell>
+                  </TableRow>
+                ) : categoriesList.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={3} className="h-24 text-center">No categories found.</TableCell>
+                  </TableRow>
+                ) : categoriesList.map((cat) => (
+                  <TableRow key={cat.id}>
+                    <TableCell className="font-medium">
+                      {cat.parentId ? <span className="text-muted-foreground mr-2">—</span> : null}
+                      {cat.name}
+                    </TableCell>
+                    <TableCell className="text-xs font-mono">{cat.slug}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(cat)}>
+                          <Edit2 className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(cat.id)} className="text-destructive hover:text-destructive">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
