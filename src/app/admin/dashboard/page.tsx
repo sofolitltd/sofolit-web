@@ -1,17 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { 
   FileText, 
   MousePointer2, 
   TrendingUp,
   MessageSquare,
-  Activity
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { Area, AreaChart, XAxis, YAxis, CartesianGrid } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { cn } from "@/lib/utils";
+import { getAdminPosts } from "@/lib/actions/blog";
+import { getInquiries } from "@/lib/actions/inquiries";
 
 const chartData = [
   { name: "Mon", visitors: 400 },
@@ -31,10 +32,33 @@ const chartConfig = {
 };
 
 export default function AdminDashboard() {
+  const [activeBlogs, setActiveBlogs] = useState<number | string>("...");
+  const [leadInquiries, setLeadInquiries] = useState<number | string>("...");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const [posts, inquiries] = await Promise.all([
+          getAdminPosts(),
+          getInquiries()
+        ]);
+        
+        setActiveBlogs(posts.filter(p => p.isPublished).length);
+        setLeadInquiries(inquiries.length);
+      } catch (error) {
+        console.error("Dashboard Stats Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadStats();
+  }, []);
+
   const stats = [
     { label: "Total Views", value: "24,500", change: "+12.5%", icon: <TrendingUp className="h-4 w-4" /> },
-    { label: "Active Blogs", value: "12", change: "+2", icon: <FileText className="h-4 w-4" /> },
-    { label: "Lead Inquiries", value: "48", change: "+8", icon: <MessageSquare className="h-4 w-4" /> },
+    { label: "Active Blogs", value: activeBlogs.toString(), change: "+2", icon: <FileText className="h-4 w-4" /> },
+    { label: "Lead Inquiries", value: leadInquiries.toString(), change: "+8", icon: <MessageSquare className="h-4 w-4" /> },
     { label: "Conversion Rate", value: "3.2%", change: "+0.4%", icon: <MousePointer2 className="h-4 w-4" /> },
   ];
 
