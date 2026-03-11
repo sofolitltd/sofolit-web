@@ -1,3 +1,4 @@
+
 'use server';
 
 import { db } from "@/lib/db";
@@ -113,6 +114,7 @@ export async function deletePost(id: number) {
         const parts = imageUrl.split('/upload/');
         if (parts.length > 1) {
           // Extract public ID including folders (e.g. sofolit/xyz)
+          // URL format: .../upload/v12345/folder/public_id.jpg
           const pathAfterUpload = parts[1].replace(/^v\d+\//, '');
           const publicId = pathAfterUpload.split('.')[0];
           

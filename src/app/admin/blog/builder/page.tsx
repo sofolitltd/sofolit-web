@@ -186,34 +186,35 @@ export default function BlogBuilderPage() {
   };
 
   const renderHierarchicalCategories = (parentId: number | null = null, level = 0) => {
-    return dbCategories
-      .filter(cat => cat.parentId === parentId)
-      .map(cat => (
-        <React.Fragment key={cat.id}>
-          <div 
-            onClick={() => toggleCategory(cat.id)}
-            className={cn(
-              "flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all border border-transparent",
-              selectedCategoryIds.includes(cat.id) 
-                ? "bg-blue-50 border-blue-100 text-blue-700" 
-                : "hover:bg-slate-50 text-slate-600"
-            )}
-            style={{ marginLeft: `${level * 16}px` }}
-          >
-            <div className={cn(
-              "w-4 h-4 rounded border flex items-center justify-center transition-colors",
-              selectedCategoryIds.includes(cat.id) ? "bg-blue-600 border-blue-600" : "border-slate-300 bg-white"
-            )}>
-              {selectedCategoryIds.includes(cat.id) && <Check className="w-3 h-3 text-white" strokeWidth={4} />}
-            </div>
-            {level > 0 && <ChevronRight className="w-3 h-3 text-slate-300 shrink-0" />}
-            <span className="text-[11px] font-bold uppercase tracking-wider truncate">
-              {cat.name}
-            </span>
+    const filtered = dbCategories.filter(cat => cat.parentId === parentId);
+    if (filtered.length === 0) return null;
+
+    return filtered.map(cat => (
+      <React.Fragment key={cat.id}>
+        <div 
+          onClick={() => toggleCategory(cat.id)}
+          className={cn(
+            "flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all border border-transparent",
+            selectedCategoryIds.includes(cat.id) 
+              ? "bg-blue-50 border-blue-100 text-blue-700" 
+              : "hover:bg-slate-50 text-slate-600"
+          )}
+          style={{ marginLeft: `${level * 16}px` }}
+        >
+          <div className={cn(
+            "w-4 h-4 rounded border flex items-center justify-center transition-colors",
+            selectedCategoryIds.includes(cat.id) ? "bg-blue-600 border-blue-600" : "border-slate-300 bg-white"
+          )}>
+            {selectedCategoryIds.includes(cat.id) && <Check className="w-3 h-3 text-white" strokeWidth={4} />}
           </div>
-          {renderHierarchicalCategories(cat.id, level + 1)}
-        </React.Fragment>
-      ));
+          {level > 0 && <ChevronRight className="w-3 h-3 text-slate-300 shrink-0" />}
+          <span className="text-[11px] font-bold uppercase tracking-wider truncate">
+            {cat.name}
+          </span>
+        </div>
+        {renderHierarchicalCategories(cat.id, level + 1)}
+      </React.Fragment>
+    ));
   };
 
   const toolbarItems = [
