@@ -1,40 +1,41 @@
+# SOFOL IT | The Technical Powerhouse for Founders
 
-# SOFOL IT | Enterprise-Grade Founder's Platform
-
-A premium, high-fidelity digital ecosystem designed for solo founders and startups. This platform combines a powerful WordPress-style CMS, strategic AI tools, and high-performance engineering to transform visionary concepts into market-ready products.
+Sofol IT is an elite software engineering agency focused on transforming visionary concepts into market-dominating digital assets. Built for early-stage and solo founders, this platform serves as the ultimate "Control Tower" for our agency operations, lead generation, and content strategy.
 
 ## 🚀 Key Features
 
-### 🏛️ Advanced Content Management (CMS)
-- **WordPress-Style Taxonomy**: Hierarchical category support with parent-child relationships (Subcategories).
-- **Dynamic Tagging System**: Flexible metadata management for SEO and content organization.
-- **Enterprise Editor**: A Markdown-ready blog builder with real-time local previews and synchronized Cloudinary media uploads.
-- **Atomic Persistence**: Integrated server actions ensuring data integrity between Neon DB and Cloudinary storage.
+### 🏛️ Advanced Architecture & Settings
+- **Dynamic Site Configurations**: A fully database-backed settings system to control SEO metadata, maintenance mode, and third-party integrations (e.g., Calendly) without touching code.
+- **Enterprise-Grade SEO**: Pre-configured dynamic OpenGraph and Twitter cards, semantic HTML, and dynamic sitemaps tailored for high-ticket client hunting.
+
+### 📝 CMS & Content Engineering
+- **WordPress-Style Taxonomy**: Hierarchical category support with parent-child relationships and dynamic tagging.
+- **Markdown Blog Builder**: An enterprise-grade editor with real-time local previews, automated slug generation (with manual overrides), and synchronized Cloudinary media uploads.
+- **Atomic Persistence**: Robust Next.js Server Actions ensuring data integrity between our Neon Serverless Postgres DB and Cloudinary edge storage.
 
 ### 🧠 Strategic AI Integration
-- **Project Ideator**: A Genkit-powered AI agent that outlines project roadmaps, tech stacks, and complexity estimations based on founder input.
-- **Vision-to-Value Mapping**: Automated insights designed to bridge the gap between imagination and technical reality.
+- **Project Ideator**: A Genkit-powered AI agent that estimates complexity, roadmaps, and tech stacks based on a founder's raw concept.
+- **Vision-to-Value Mapping**: Bridges the gap between a founder's imagination and technical reality.
 
 ### 💼 Admin & Operations
-- **Secure Dashboard**: Real-time monitoring of traffic performance and recent lead inquiries.
-- **Lead Management**: Robust inquiry system with database persistence and administrative overview.
-- **Taxonomy Manager**: Centralized interface for managing categories and global SEO meta-data.
+- **Dark/Light Mode Optimized UI**: A stunning, responsive Admin dashboard featuring glassmorphism and animated components that adapt perfectly to any device size.
+- **Secure Dashboard**: Monitor traffic, review inbound leads, and manage global settings.
+- **Lead Management**: Database-persisted inquiry system tracking high-value client engagements.
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: [Next.js 15 (App Router)](https://nextjs.org/) - React 19, TypeScript.
-- **UI Framework**: [Shadcn UI](https://ui.shadcn.com/) + [Tailwind CSS](https://tailwindcss.com/) - Custom HSL theme with mesh gradients and glassmorphism.
-- **Backend/ORM**: [Drizzle ORM](https://orm.drizzle.team/) with [Neon Database](https://neon.tech/) (Serverless PostgreSQL).
-- **Generative AI**: [Firebase Genkit](https://firebase.google.com/docs/genkit) - Enterprise AI orchestration.
-- **Media Management**: [Cloudinary](https://cloudinary.com/) - Automated asset optimization and global CDN delivery.
-- **Icons**: [Lucide React](https://lucide.dev/).
+- **Frontend**: [Next.js 15 (App Router)](https://nextjs.org/) - React 19, TypeScript
+- **UI Framework**: [Shadcn UI](https://ui.shadcn.com/) + [Tailwind CSS](https://tailwindcss.com/) - Custom HSL theme with mesh gradients
+- **Backend/ORM**: [Drizzle ORM](https://orm.drizzle.team/) with [Neon Database](https://neon.tech/) (Serverless PostgreSQL)
+- **Media Management**: [Cloudinary](https://cloudinary.com/) - Automated asset optimization and global CDN delivery
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ## 🛠️ Getting Started
 
 ### 1. Prerequisites
-- Node.js 20.x or later.
-- A Neon Database instance.
-- A Cloudinary account.
+- Node.js 20.x or later
+- A Neon Database instance
+- A Cloudinary account limit
 
 ### 2. Environment Setup
 Create a `.env` file in the root directory and configure the following variables:
@@ -48,8 +49,6 @@ CLOUDINARY_CLOUD_NAME="your_cloud_name"
 CLOUDINARY_API_KEY="your_api_key"
 CLOUDINARY_API_SECRET="your_api_secret"
 
-# GenAI (Google AI)
-GOOGLE_GENAI_API_KEY="your_api_key"
 ```
 
 ### 3. Installation
@@ -69,13 +68,13 @@ npm run dev
 
 ## 📂 Project Structure
 
-- `src/app/admin`: Secure administrative portal and CMS tools.
+- `src/app/admin`: Secure administrative portal, settings, and CMS tools.
 - `src/app/blog`: Public-facing journal and dynamic article rendering.
-- `src/ai`: Genkit flows and AI agent definitions.
-- `src/components/sections`: Reusable, high-fidelity UI sections (Hero, Services, Portfolio, etc.).
-- `src/lib/actions`: Server-side logic for DB, Cloudinary, and revalidation.
+- `src/app/projects`: Deep-dive, metric-driven portfolio case studies.
+- `src/components/sections`: Reusable, high-fidelity UI sections (Hero, Services, Portfolio, Contact, etc.).
+- `src/lib/actions`: Server-side logic for DB, Cloudinary, and Settings mutations.
 - `src/lib/db`: Schema definitions and Drizzle configuration.
 
 ## 📄 License
 
-Proprietary © 2024 Sofol IT. All rights reserved. Built for visionaries by entrepreneurs.
+Proprietary © 2024-2026 Sofol IT. All rights reserved. Built for visionaries by engineers.

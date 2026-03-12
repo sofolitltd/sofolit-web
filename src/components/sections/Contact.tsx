@@ -153,7 +153,7 @@ export const Contact = () => {
           </div>
 
           <div className={cn(
-            "glass-card p-8 md:p-10 rounded-2xl border-border bg-card relative opacity-0",
+            "glass-card p-8 md:p-10 rounded-2xl border-border bg-card text-card-foreground relative opacity-0",
             isVisible && "animate-slide-in-right"
           )} style={{ animationDelay: '0.2s' }}>
             <Form {...form}>
