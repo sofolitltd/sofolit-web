@@ -43,9 +43,13 @@ export const LatestBlog = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => {
-            const postImg = PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
-            const words = post.content.split(/\s+/).length;
-            const readTime = Math.ceil(words / 200);
+            const isExternal = post.featuredImage?.startsWith('http');
+            const postImg = isExternal
+              ? { imageUrl: post.featuredImage!, imageHint: 'external image' }
+              : PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10];
+            
+            const words = post.content?.split(/\s+/).length || 0;
+            const readTime = Math.max(1, Math.ceil(words / 200));
 
             return (
               <Link 
@@ -55,7 +59,7 @@ export const LatestBlog = () => {
               >
                 <div className="relative aspect-video overflow-hidden">
                   <Image 
-                    src={postImg.imageUrl} 
+                    src={postImg.imageUrl || "https://picsum.photos/seed/blog/800/600"} 
                     alt={post.title} 
                     fill 
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
