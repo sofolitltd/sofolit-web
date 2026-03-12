@@ -29,7 +29,7 @@ export const Portfolio = () => {
   }, []);
 
   return (
-    <section id="portfolio" ref={sectionRef} className="py-32 bg-background relative overflow-hidden">
+    <section id="portfolio" ref={sectionRef} className="py-20 bg-secondary/[0.03] border-y border-border/50 relative overflow-hidden">
       {/* Decorative background element */}
       <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
       
@@ -43,8 +43,8 @@ export const Portfolio = () => {
               Selected Works
             </div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
-              Case Studies of <br />
-              <span className="text-gradient">Strategic Engineering.</span>
+              Products we've shipped. <br />
+              <span className="text-muted-foreground/30">Real results.</span>
             </h2>
             <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
               We don't just build apps; we architect digital solutions that drive real-world business value for solo founders.
@@ -58,58 +58,49 @@ export const Portfolio = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {homeProjects.map((project, idx) => (
             <Link 
               key={idx}
               href={`/projects/${project.slug}`}
               className={cn(
-                "group flex flex-col bg-card/30 backdrop-blur-md rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/30 transition-all duration-500 hover:shadow-2xl hover:translate-y-[-8px] opacity-0",
+                "group relative bg-card/40 backdrop-blur-xl rounded-2xl border border-border/50 p-4 pb-8 hover:border-primary/30 transition-all duration-500 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.2)] hover:translate-y-[-4px] opacity-0",
                 isVisible && "animate-fade-in-up"
               )}
-              style={{ animationDelay: `${0.2 + idx * 0.15}s` }}
+              style={{ animationDelay: `${0.2 + idx * 0.1}s` }}
             >
-              {/* Image Container */}
-              <div className="relative aspect-video overflow-hidden bg-muted/20">
+              {/* Framed Image */}
+              <div className="relative aspect-[16/10] rounded-xl overflow-hidden bg-muted/20 mb-8 mt-1 mx-1">
                 <Image 
                   src={project.imageUrl}
                   alt={project.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                   data-ai-hint={project.imageHint}
                 />
-                
-                {/* Category Badge on Image */}
-                <div className="absolute top-6 left-6">
-                  <Badge className="bg-background/80 backdrop-blur-md border-border/50 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 text-foreground hover:bg-background/90">
-                    {project.category === 'app' ? 'Mobile App' : 'Web Platform'}
-                  </Badge>
-                </div>
               </div>
-
-              {/* Content Area */}
-              <div className="p-10 space-y-6">
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-primary/70 bg-primary/5 px-3 py-1 rounded-full border border-primary/10">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-3xl font-black tracking-tight group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground text-lg leading-relaxed line-clamp-2">
-                    {project.description}
-                  </p>
-                </div>
-
-                <div className="pt-6 border-t border-border/30 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-4 transition-all">
-                    View Case Study <ArrowRight className="w-4 h-4" />
+              
+              {/* Content Section */}
+              <div className="px-6 space-y-6">
+                <div className="flex justify-between items-start">
+                  <div className="space-y-2">
+                    <h3 className="text-3xl font-black tracking-tight group-hover:text-primary transition-colors">
+                      {project.title}
+                    </h3>
+                    <div className="flex gap-4">
+                      {project.tags.slice(0, 2).map(tag => (
+                        <span key={tag} className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest">{tag}</span>
+                      ))}
+                    </div>
                   </div>
+                </div>
+
+                <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
+                  {project.description}
+                </p>
+
+                <div className="pt-4 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-primary group-hover:gap-4 transition-all">
+                  VIEW CASE STUDY <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </Link>

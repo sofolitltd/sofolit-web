@@ -18,6 +18,42 @@ const legalLinks = [
   { title: "Refund Policy", href: "/refund" },
 ];
 
+const DhakaTime = () => {
+  const [time, setTime] = React.useState("");
+
+  React.useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: "Asia/Dhaka",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      };
+      setTime(new Intl.DateTimeFormat("en-US", options).format(now));
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 10000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="flex items-center gap-3 px-4 py-2 rounded-full border border-border/50 bg-muted/20 backdrop-blur-sm">
+      <div className="flex flex-col">
+        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 leading-none mb-1">Our Local Time</span>
+        <span className="text-xs font-bold text-foreground tabular-nums leading-none">
+          {time || "12:00 PM"} <span className="text-primary font-black ml-1">BST</span>
+        </span>
+      </div>
+      <div className="w-px h-6 bg-border" />
+      <div className="flex flex-col">
+        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 leading-none mb-1">Avg Response</span>
+        <span className="text-xs font-bold text-emerald-500 leading-none">&lt; 2 Hours</span>
+      </div>
+    </div>
+  );
+};
+
 export const Footer = () => {
   return (
     <footer className="bg-background border-t border-border pt-24 pb-12 relative overflow-hidden">
@@ -94,12 +130,15 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Sofol IT. All rights reserved.</p>
+        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-8 text-sm text-muted-foreground">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <p>&copy; {new Date().getFullYear()} Sofol IT. All rights reserved.</p>
+            <DhakaTime />
+          </div>
           <div className="flex items-center gap-6">
             <p className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> 
-              Accepting new projects
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> 
+              Currently accepting projects
             </p>
           </div>
         </div>

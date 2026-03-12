@@ -1,9 +1,13 @@
-"use client";
-
 import React from "react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Scale } from "lucide-react";
 import { Footer } from "@/components/sections/Footer";
+
+export const metadata: Metadata = {
+  title: 'Terms of Service',
+  description: 'Legal terms and conditions for using Sofol IT services.',
+};
 
 export default function TermsOfService() {
   return (
@@ -16,7 +20,7 @@ export default function TermsOfService() {
             </div>
             <div>
               <h1 className="text-4xl font-black tracking-tight">Terms of Service</h1>
-              <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
+              <p className="text-muted-foreground">Last updated: March 13, 2024</p>
             </div>
           </div>
 

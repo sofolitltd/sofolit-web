@@ -41,6 +41,12 @@ export const inquiries = pgTable("inquiries", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const settings = pgTable("settings", {
+  key: varchar("key", { length: 255 }).primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
 export type Category = typeof categories.$inferSelect;
@@ -49,3 +55,5 @@ export type Tag = typeof tags.$inferSelect;
 export type NewTag = typeof tags.$inferInsert;
 export type Inquiry = typeof inquiries.$inferSelect;
 export type NewInquiry = typeof inquiries.$inferInsert;
+export type Setting = typeof settings.$inferSelect;
+export type NewSetting = typeof settings.$inferInsert;

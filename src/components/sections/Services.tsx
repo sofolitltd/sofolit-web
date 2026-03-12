@@ -1,44 +1,38 @@
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Smartphone, Globe, Rocket, Zap, Heart, Target, Layout, MousePointer2, Calendar } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Smartphone, Globe, Layers, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const services = [
   {
-    title: "Custom Mobile App Development",
-    subtitle: "Native-Feel Experiences",
-    description: "Launch your vision on iOS and Android with a high-performance, single codebase. We specialize in building engaging mobile apps that turn your concept into a market-ready product, focusing on your first 1,000 users.",
-    icon: <Smartphone className="w-10 h-10 text-primary" />,
-    benefits: [
-      { icon: <Zap className="w-4 h-4" />, text: "Quick to Market" },
-      { icon: <Heart className="w-4 h-4" />, text: "User-First Design" },
-      { icon: <Target className="w-4 h-4" />, text: "Founder-Centric" }
-    ],
-    features: ["Flutter Expert Dev", "Secure Firebase Backend", "App Store Publishing", "Push Notifications"],
-    animation: "animate-slide-in-left"
+    icon: Smartphone,
+    title: "Mobile App Development",
+    desc: "Cross-platform Flutter apps for iOS and Android. From MVP to App Store — built for your first 1,000 users with performance and polish.",
+    tags: ["Flutter", "Firebase", "App Store", "Play Store"],
+    accent: "hsl(var(--primary))",
   },
   {
-    title: "High-Performance Web Development",
-    subtitle: "Your Scalable Digital Storefront",
-    description: "Convert visitors into loyal customers with lightning-fast, SEO-optimized web platforms. We build everything from custom SaaS dashboards to high-converting landing pages tailored to your business goals.",
-    icon: <Globe className="w-10 h-10 text-secondary" />,
-    benefits: [
-      { icon: <MousePointer2 className="w-4 h-4" />, text: "Built to Sell" },
-      { icon: <Layout className="w-4 h-4" />, text: "Super Fast" },
-      { icon: <Rocket className="w-4 h-4" />, text: "SEO Ready" }
-    ],
-    features: ["Next.js Architectures", "Secure Stripe Payments", "Custom Admin Panels", "Robust Analytics"],
-    animation: "animate-slide-in-right"
-  }
+    icon: Globe,
+    title: "Web App & SaaS Development",
+    desc: "High-performance Next.js web apps, SaaS dashboards, and landing pages that convert visitors into paying customers.",
+    tags: ["Next.js", "Stripe", "PostgreSQL", "Vercel"],
+    accent: "hsl(var(--secondary))",
+  },
+  {
+    icon: Layers,
+    title: "Product Design & Strategy",
+    desc: "End-to-end Figma design, UX strategy, and technical architecture — every decision made before a single line of code is written.",
+    tags: ["Figma", "UX Research", "System Design", "Prototyping"],
+    accent: "hsl(var(--primary))",
+  },
 ];
+
+import { BackgroundOrbs } from "@/components/ui/BackgroundOrbs";
 
 export const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,87 +49,75 @@ export const Services = () => {
   }, []);
 
   return (
-    <section id="services" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-secondary/5 blur-[120px] rounded-full pointer-events-none" />
-
-      <div className="container px-4 mx-auto relative z-10">
-        <div className={cn(
-          "max-w-3xl mb-16 space-y-6 text-center lg:text-left opacity-0",
-          isVisible && "animate-fade-in-up"
-        )}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20">
-            Expert App & Web Development
-          </div>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight">
-            We Build for Those Who <br />
-            <span className="text-gradient">Dream Big and Start Small.</span>
-          </h2>
-          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
-            Enterprise-grade technical excellence designed for solo founders. We build the foundation while you build the business.
+    <section id="services" ref={sectionRef} className="py-20 bg-transparent relative overflow-hidden">
+      <BackgroundOrbs className="opacity-30" />
+      <div className="container px-4 mx-auto">
+        <div
+          className={cn(
+            "mb-16 transition-all duration-700 opacity-0",
+            isVisible && "animate-fade-in-up"
+          )}
+        >
+          <p className="text-primary text-[10px] font-black tracking-[0.2em] uppercase mb-4">
+            What We Build
           </p>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight">
+            Full-stack expertise,
+            <br />
+            <span className="text-muted-foreground/30">startup speed.</span>
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {services.map((service, idx) => (
-            <Card 
-              key={idx} 
-              className={cn(
-                "group relative bg-card/60 dark:bg-card/40 backdrop-blur-xl border-border/50 shadow-2xl overflow-hidden transition-all duration-500 hover:border-primary/40 hover:translate-y-[-4px] opacity-0",
-                isVisible && service.animation
-              )}
-              style={{ animationDelay: `${0.2 + idx * 0.2}s` }}
-            >
-              <CardContent className="p-8 md:p-12 space-y-8">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                  <div className="p-4 rounded-2xl bg-muted group-hover:bg-primary/10 transition-colors">
-                    {service.icon}
-                  </div>
-                  <div className="flex gap-4">
-                    {service.benefits.map((benefit, bIdx) => (
-                      <div key={bIdx} className="flex flex-col items-center gap-1">
-                        <div className="w-7 h-7 rounded-full bg-background border border-border flex items-center justify-center text-primary">
-                          {benefit.icon}
-                        </div>
-                        <span className="text-[10px] font-bold uppercase text-muted-foreground text-center">
-                          {benefit.text}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {services.map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <div
+                key={s.title}
+                className={cn(
+                  "group relative p-8 rounded-2xl border border-border/50 bg-card/40 backdrop-blur-xl hover:bg-card/60 hover:border-primary/20 transition-all duration-500 cursor-default opacity-0",
+                  isVisible && "animate-fade-in-up"
+                )}
+                style={{ transitionDelay: `${i * 120}ms` }}
+              >
+                {/* Glow effect on hover */}
+                <div
+                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(400px at 50% 0%, ${s.accent}10, transparent 70%)`,
+                  }}
+                />
+
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-border/50 bg-background shadow-xl shadow-primary/5 group-hover:scale-110 group-hover:border-primary/30 transition-all duration-500"
+                >
+                  <Icon size={24} className="text-primary" />
                 </div>
 
-                <div className="space-y-3">
-                  <p className="text-primary font-bold uppercase tracking-widest text-xs">{service.subtitle}</p>
-                  <h3 className="text-3xl font-black tracking-tight">{service.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
+                <h3 className="text-foreground font-black text-2xl mb-4 leading-tight group-hover:text-primary transition-colors">
+                  {s.title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+                  {s.desc}
+                </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                  {service.features.map((feature, fIdx) => (
-                    <div key={fIdx} className="flex items-center gap-3 text-sm font-medium">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-                      <span>{feature}</span>
-                    </div>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {s.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-border/50 text-muted-foreground/60 bg-muted/30 group-hover:border-primary/10 group-hover:text-primary/70 transition-colors"
+                    >
+                      {t}
+                    </span>
                   ))}
                 </div>
 
-                <div className="pt-6 border-t border-border/50">
-                  <a 
-                    href={CALENDLY_URL} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-foreground font-bold flex items-center gap-2 group/btn hover:text-primary transition-colors"
-                  >
-                    Get Started
-                    <Rocket className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </a>
+                <div className="absolute top-8 right-8 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-2 group-hover:translate-x-0">
+                  <ArrowUpRight size={20} className="text-primary" />
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

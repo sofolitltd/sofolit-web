@@ -109,7 +109,8 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
+    <section id="contact" ref={sectionRef} className="py-20 bg-[#020617] text-white relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent" />
       <div className="container px-4 mx-auto relative z-10">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
           <div className={cn(
@@ -152,7 +153,7 @@ export const Contact = () => {
           </div>
 
           <div className={cn(
-            "glass-card p-10 md:p-12 rounded-[3rem] border-border bg-card relative opacity-0",
+            "glass-card p-8 md:p-10 rounded-2xl border-border bg-card relative opacity-0",
             isVisible && "animate-slide-in-right"
           )} style={{ animationDelay: '0.2s' }}>
             <Form {...form}>
@@ -229,7 +230,7 @@ export const Contact = () => {
                 <button
                   type="submit"
                   disabled={isPending}
-                  className="w-full py-5 rounded-2xl bg-primary text-primary-foreground font-black text-lg flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all active:scale-[0.98] disabled:opacity-70"
+                  className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-black text-base flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all active:scale-[0.98] disabled:opacity-70"
                 >
                   {isPending ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

@@ -1,9 +1,13 @@
-"use client";
-
 import React from "react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { RefreshCcw } from "lucide-react";
 import { Footer } from "@/components/sections/Footer";
+
+export const metadata: Metadata = {
+  title: 'Refund Policy',
+  description: 'Our policy regarding service payments and project cancellations.',
+};
 
 export default function RefundPolicy() {
   return (
@@ -16,7 +20,7 @@ export default function RefundPolicy() {
             </div>
             <div>
               <h1 className="text-4xl font-black tracking-tight">Refund Policy</h1>
-              <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
+              <p className="text-muted-foreground">Last updated: March 13, 2024</p>
             </div>
           </div>
 

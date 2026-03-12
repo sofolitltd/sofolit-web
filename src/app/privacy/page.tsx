@@ -1,9 +1,13 @@
-"use client";
-
 import React from "react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Shield } from "lucide-react";
 import { Footer } from "@/components/sections/Footer";
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'How we handle and protect your data at Sofol IT.',
+};
 
 export default function PrivacyPolicy() {
   return (
@@ -16,7 +20,7 @@ export default function PrivacyPolicy() {
             </div>
             <div>
               <h1 className="text-4xl font-black tracking-tight">Privacy Policy</h1>
-              <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
+              <p className="text-muted-foreground">Last updated: March 13, 2024</p>
             </div>
           </div>
 

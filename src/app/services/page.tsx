@@ -1,11 +1,14 @@
-
-"use client";
-
 import React from "react";
+import { Metadata } from "next";
 import { Footer } from "@/components/sections/Footer";
 import { Smartphone, Globe, Rocket, Zap, ShieldCheck, BarChart3, Users, Code2, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: 'Strategic Engineering Solutions',
+  description: 'Elite technical partnership for founders. We build foundational architectures, cross-platform mobile apps, and high-performance web entities optimized for scale.',
+};
 
 export default function ServicesPage() {
   const CALENDLY_URL = "https://calendly.com/sofolitltd/30min";
@@ -39,91 +42,125 @@ export default function ServicesPage() {
 
   return (
     <main className="min-h-screen bg-background pt-32">
-      <div className="container px-4 mx-auto text-center mb-24">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 mb-6">
-          Scalable Engineering
+      {/* Strategic Hero */}
+      <div className="container px-4 mx-auto text-center mb-32">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-[10px] font-black uppercase tracking-[0.3em] text-primary border border-primary/20 mb-8">
+          Enterprise Scaling & Architecture
         </div>
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6">
-          Expert <span className="text-gradient">App & Web</span> Development
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+          The Technical <br />
+          <span className="text-gradient">Powerhouse</span> for Founders
         </h1>
-        <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">
-          We build the technical foundation solo founders need to scale. Get enterprise-grade software without the enterprise overhead.
+        <p className="text-muted-foreground text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-medium">
+          We don't just write code. We architect scalable technical foundations that turn early-stage ideas into market-dominating products.
         </p>
       </div>
 
-      <section className="container px-4 mx-auto mb-32">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      {/* Core Solutions Grid */}
+      <section className="container px-4 mx-auto mb-40">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
           {serviceDetails.map((service, idx) => (
-            <Card key={idx} className="bg-card/80 dark:bg-card/40 backdrop-blur-xl border-border/50 shadow-2xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500">
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all">
-                {service.icon}
-              </div>
-              <CardContent className="p-8 md:p-12 space-y-8">
-                <div className="space-y-4">
-                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
+            <div key={idx} className="group relative">
+              <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
+              <div className="bg-card/40 backdrop-blur-2xl border border-border/50 rounded-2xl p-12 space-y-10 group-hover:border-primary/20 transition-colors duration-500">
+                <div className="flex justify-between items-start">
+                  <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-inner">
                     {service.icon}
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-black tracking-tight">{service.title}</h2>
+                  <div className="text-[10px] font-black uppercase tracking-widest text-primary/30 group-hover:text-primary/100 transition-colors">
+                    SOLUTION {idx + 1}
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <h2 className="text-4xl font-black tracking-tight">{service.title}</h2>
                   <p className="text-muted-foreground text-lg leading-relaxed">{service.description}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   {service.features.map((feature, fIdx) => (
-                    <div key={fIdx} className="flex items-center gap-3 text-sm font-semibold">
-                      <ShieldCheck className="w-5 h-5 text-primary shrink-0" />
+                    <div key={fIdx} className="flex items-center gap-4 text-sm font-bold">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
                       <span>{feature}</span>
                     </div>
                   ))}
                 </div>
 
-                <div className="p-4 rounded-xl bg-muted/50 border border-border text-sm font-bold italic text-primary">
-                  {service.forWho}
+                <div className="pt-8 border-t border-border/30">
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">Ideal Engagement</div>
+                  <div className="text-sm font-bold text-foreground/80">{service.forWho.replace('Perfect for: ', '')}</div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="bg-muted/30 py-24 border-y border-border">
-        <div className="container px-4 mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-black tracking-tight mb-4">Why Founders Partner With Us</h2>
-            <p className="text-muted-foreground">The technical expertise you need to launch with confidence.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
-              { icon: <Zap />, title: "Rapid MVP Launch", desc: "Go from idea to a working product in weeks, not months." },
-              { icon: <BarChart3 />, title: "Built to Scale", desc: "Architecture designed to handle your first 10,000+ users." },
-              { icon: <Code2 />, title: "Zero Technical Debt", desc: "Clean, professional code that grows with your business." }
-            ].map((item, idx) => (
-              <div key={idx} className="text-center space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto border border-primary/20 shadow-sm">
-                  {item.icon}
-                </div>
-                <h3 className="text-xl font-bold">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+      {/* The 8-Week Pillar */}
+      <section className="bg-[#020617] text-white py-32 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_50%,rgba(52,152,219,0.1),transparent)]" />
+        <div className="container px-4 mx-auto relative z-10">
+          <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="space-y-8">
+              <div className="text-primary font-black tracking-widest uppercase text-xs">Our Commitment</div>
+              <h2 className="text-5xl md:text-6xl font-black tracking-tighter leading-none">
+                Zero to Shipped <br />
+                <span className="text-primary">in 8 Weeks.</span>
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed">
+                Speed is a competitive advantage. We've optimized our entire engineering pipeline to take complex ideas from conception to market-ready in exactly 2 months. 
+              </p>
+              <div className="flex flex-col gap-4">
+                {[
+                  "Predictable Fixed-Timeline Delivery",
+                  "Elite Full-Stack Squad (No Juniors)",
+                  "Enterprise-Grade Scalability by Default"
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <Zap className="w-5 h-5 text-primary" />
+                    <span className="font-bold text-sm tracking-tight">{item}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              {[
+                { label: "Engineering Speed", val: "2.5x" },
+                { label: "Deployment Cycle", value: "Daily" },
+                { label: "Tech Debt", value: "Zero" },
+                { label: "Client ROI", value: "High" }
+              ].map((stat, sidx) => (
+                <div key={sidx} className="p-8 bg-white/5 border border-white/10 rounded-2xl text-center">
+                  <div className="text-3xl font-black text-primary mb-1">{stat.val || stat.value}</div>
+                  <div className="text-[9px] font-black uppercase tracking-widest text-white/40">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="py-24 container px-4 mx-auto text-center">
-        <div className="max-w-4xl mx-auto space-y-8 p-12 rounded-[3rem] bg-card/50 backdrop-blur-xl border border-primary/20 shadow-2xl">
-          <h2 className="text-4xl md:text-5xl font-black tracking-tight">Ready to build your next big idea?</h2>
-          <p className="text-lg text-muted-foreground">Stop worrying about the tech and start growing your business. Let's discuss your project today.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+      {/* Strategic Call to Action */}
+      <section className="py-40 container px-4 mx-auto text-center">
+        <div className="max-w-5xl mx-auto space-y-12">
+          <h2 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">
+            Stop Building Features. <br />
+            <span className="text-muted-foreground/30">Start Building Value.</span>
+          </h2>
+          <p className="text-xl text-muted-foreground/60 max-w-2xl mx-auto">
+            Your technical partner is a force multiplier. Let's discuss how we can accelerate your trajectory.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-6 pt-8">
             <a 
               href={CALENDLY_URL} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="px-10 py-4 rounded-full bg-primary text-white font-bold hover:shadow-[0_0_30px_rgba(51,150,230,0.4)] transition-all flex items-center justify-center gap-2"
+              className="px-12 py-5 rounded-full bg-primary text-white font-black hover:shadow-[0_0_50px_rgba(var(--primary),0.3)] transition-all flex items-center justify-center gap-3 text-lg"
             >
-              <Calendar className="w-5 h-5" /> Book a Strategy Call
+              <Calendar className="w-5 h-5 text-white/50" /> Schedule Audit
             </a>
-            <Link href="/projects" className="px-10 py-4 rounded-full border border-border bg-background font-bold hover:bg-muted transition-all">
-              View Our Projects
+            <Link href="/projects" className="px-12 py-5 rounded-full border border-border bg-background font-black text-lg hover:bg-muted transition-all">
+              Review ROI Stories
             </Link>
           </div>
         </div>

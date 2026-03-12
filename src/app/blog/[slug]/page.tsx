@@ -1,5 +1,5 @@
-
 import React from "react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
@@ -10,6 +10,33 @@ import { getCategories } from "@/lib/actions/categories";
 import { notFound } from "next/navigation";
 import { marked } from "marked";
 import { Badge } from "@/components/ui/badge";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug);
+  
+  if (!post) {
+    return { title: 'Article Not Found' };
+  }
+
+  const isExternalUrl = post.featuredImage?.startsWith('http');
+  const postImg = isExternalUrl 
+    ? post.featuredImage! 
+    : (PlaceHolderImages.find(img => img.id === post.featuredImage) || PlaceHolderImages[10]).imageUrl;
+
+  return {
+    title: `${post.title} | The Founder's Handbook`,
+    description: post.excerpt || "Strategy and insights for solo entrepreneurs building digital products.",
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || "Software strategy for modern founders.",
+      images: [{ url: postImg }],
+      type: 'article',
+      publishedTime: post.createdAt ? new Date(post.createdAt).toISOString() : undefined,
+      authors: [post.author || "Md Asifuzzaman Reyad"],
+    },
+  };
+}
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

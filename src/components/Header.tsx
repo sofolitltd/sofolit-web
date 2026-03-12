@@ -42,9 +42,9 @@ export const Header = () => {
   return (
     <div className="fixed top-4 left-0 w-full z-50 flex justify-center px-4 pointer-events-none">
       <nav className={cn(
-        "w-full max-w-7xl px-8 py-3 flex justify-between items-center transition-all duration-500 pointer-events-auto",
-        "bg-background/80 backdrop-blur-xl border border-border/50 shadow-2xl rounded-full",
-        isScrolled ? "scale-[0.98] border-primary/20 py-2.5" : "scale-100"
+        "w-full max-w-7xl px-4 md:px-8 py-3 flex justify-between items-center transition-all duration-500 pointer-events-auto",
+        "bg-background/80 backdrop-blur-xl border border-border/50 shadow-2xl rounded-2xl",
+        isScrolled ? "border-primary/20" : ""
       )}>
         <LinkNext href="/" className="text-xl font-black tracking-tighter flex items-center gap-2 group">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">

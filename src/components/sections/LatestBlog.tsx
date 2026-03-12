@@ -24,7 +24,7 @@ export const LatestBlog = () => {
   if (loading || posts.length === 0) return null;
 
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
+    <section className="py-20 bg-transparent relative overflow-hidden">
       <div className="container px-4 mx-auto relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="space-y-4">
@@ -51,7 +51,7 @@ export const LatestBlog = () => {
               <Link 
                 key={post.id} 
                 href={`/blog/${post.slug}`}
-                className="group flex flex-col bg-card/40 backdrop-blur-xl border border-border/50 rounded-3xl overflow-hidden hover:border-primary/40 transition-all hover:translate-y-[-4px]"
+                className="group flex flex-col bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl overflow-hidden hover:border-primary/40 transition-all hover:translate-y-[-4px]"
               >
                 <div className="relative aspect-video overflow-hidden">
                   <Image 
@@ -63,7 +63,7 @@ export const LatestBlog = () => {
                   />
                 </div>
                 
-                <div className="p-8 flex-1 flex flex-col">
+                <div className="p-6 flex-1 flex flex-col">
                   <div className="flex items-center gap-4 text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(post.createdAt!).toLocaleDateString()}</span>
                     <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {readTime} min read</span>

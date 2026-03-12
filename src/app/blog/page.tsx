@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "@/components/sections/Footer";
@@ -7,6 +8,11 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { getPublicPosts } from "@/lib/actions/blog";
 import { getCategories } from "@/lib/actions/categories";
 import { Badge } from "@/components/ui/badge";
+
+export const metadata: Metadata = {
+  title: "The Founder's Handbook | Startup Insights",
+  description: 'Actionable strategies, vision, and growth handbooks for modern solo entrepreneurs. Learn how to architect, build, and scale your digital products.',
+};
 
 export default async function BlogPage() {
   // Defensive fetching to prevent 500 errors on connection failure

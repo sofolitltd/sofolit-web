@@ -99,14 +99,17 @@ function BlogBuilderForm() {
     load();
   }, [editingId]);
 
+  const isSlugManuallyEdited = useRef(false);
+
   useEffect(() => {
-    if (editingId) return; 
+    if (isSlugManuallyEdited.current) return;
+    
     const generatedSlug = title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)+/g, "");
     setSlug(generatedSlug);
-  }, [title, editingId]);
+  }, [title]);
 
   const insertMarkdown = (prefix: string, suffix: string = "", placeholder: string = "text") => {
     const textarea = textareaRef.current;
@@ -285,7 +288,10 @@ function BlogBuilderForm() {
                   id="slug"
                   placeholder="article-url-slug" 
                   value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
+                  onChange={(e) => {
+                    setSlug(e.target.value);
+                    isSlugManuallyEdited.current = true;
+                  }}
                   className="font-mono text-xs"
                 />
               </div>

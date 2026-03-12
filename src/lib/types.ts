@@ -15,4 +15,6 @@ export interface Project {
   playStoreLink?: string;
   repoLink?: string;
   liveLink?: string;
+  results?: string[];
+  metrics?: { label: string; value: string }[];
 }

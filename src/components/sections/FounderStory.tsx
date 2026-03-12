@@ -35,7 +35,7 @@ export const FounderStory = () => {
             )}>
               <div className="relative group w-full">
                 <div className="absolute -inset-4 bg-primary/5 blur-3xl rounded-full opacity-50" />
-                <div className="relative aspect-[3/4] w-full rounded-[3rem] overflow-hidden bg-white border-8 border-white shadow-2xl">
+                <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-white border-8 border-white shadow-2xl">
                   <Image
                     src="/images/md-asifuzzaman-reyad.png"
                     alt="Md Asifuzzaman Reyad - Founder of Sofol IT"
@@ -47,6 +47,13 @@ export const FounderStory = () => {
                     <h4 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">Md Asifuzzaman Reyad</h4>
                     <p className="text-primary font-bold text-[10px] uppercase tracking-[0.2em] mt-2">Founder, Sofol IT</p>
                   </div>
+                </div>
+                {/* Floating availability badge */}
+                <div className="absolute -bottom-4 -right-4 bg-background border border-border shadow-2xl rounded-2xl px-5 py-3 flex items-center gap-3 z-20">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-foreground text-xs font-bold uppercase tracking-widest">
+                    Available for Projects
+                  </span>
                 </div>
               </div>
             </div>
@@ -73,11 +80,30 @@ export const FounderStory = () => {
                 </p>
               </div>
 
-              <div className="p-8 md:p-12 rounded-[3rem] bg-muted/30 border border-border/50 relative italic max-w-2xl mx-auto lg:mx-0">
-                <Quote className="absolute -top-4 -left-4 w-12 h-12 text-primary opacity-20" />
-                <p className="text-xl md:text-2xl font-medium text-foreground leading-relaxed">
-                  "Our mission is to empower the next generation of brands by making high-fidelity product development accessible and efficient."
-                </p>
+              <div className="flex flex-col sm:flex-row items-center gap-6 pt-4 justify-center lg:justify-start">
+                <div className="group/video relative aspect-video w-full max-w-[320px] rounded-2xl overflow-hidden border border-border/50 shadow-2xl transition-all hover:scale-[1.05] hover:border-primary/50 cursor-pointer">
+                  <Image
+                    src="/images/latest-demo-thumbnail.jpg"
+                    alt="Latest Product Demo"
+                    fill
+                    className="object-cover opacity-50 grayscale group-hover/video:grayscale-0 group-hover/video:opacity-100 transition-all duration-700"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover/video:bg-transparent transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30 group-hover/video:scale-110 transition-transform">
+                      <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-white border-b-[6px] border-b-transparent ml-1" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-3 left-3 px-2 py-1 rounded-md bg-black/60 backdrop-blur-md border border-white/10">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-white">Watch Recent Demo</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-bold text-foreground">"Wait, let me show you..."</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed max-w-[200px]">
+                    Quick 1-min video walkthrough of our latest build for a US-based SaaS founder.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
